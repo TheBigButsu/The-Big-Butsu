@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Ashveil Delve — Town Map</title>
+  <style>
+    body {
+      background: #1a0f05;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    canvas {
+      display: block;
+      max-width: 100%;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.8);
+    }
+    .controls {
+      margin-top: 16px;
+    }
+    button {
+      padding: 10px 24px;
+      background: #8b5e3c;
+      color: #f4e4c1;
+      border: 2px solid #5a3820;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: Georgia, serif;
+      font-size: 14px;
+      letter-spacing: 1px;
+    }
+    button:hover { background: #a0714d; }
+  </style>
+</head>
+<body>
+  <canvas id="map" width="900" height="1100"></canvas>
+  <div class="controls">
+    <button onclick="downloadMap()">Download Map (PNG)</button>
+  </div>
+
+<script>
+const canvas = document.getElementById('map');
+const ctx = canvas.getContext('2d');
+
+// Seeded RNG for consistent output
+let _seed = 42;
+function rng() {
+  _seed = (_seed * 9301 + 49297) % 233280;
+  return _seed / 233280;
+}
+
+const INK       = '#2c1810';
+const INK_LIGHT = '#5c3820';
+const PARCHMENT = '#f2e2b8';
+
+// ─── PARCHMENT BACKGROUND ────────────────────────────────────────────────────
+function drawParchment() {
+  ctx.fillStyle = PARCHMENT;
+  ctx.fillRect(0, 0, 900, 1100);
+
+  // Aged texture dots
+  for (let i = 0; i < 18000; i++) {
+    ctx.fillStyle = `rgba(100,60,20,${rng() * 0.04})`;
+    ctx.fillRect(rng() * 900, rng() * 1100, 1, 1);
+  }
+
+  // Larger aged blotches
+  for (let i = 0; i < 10; i++) {
+    const x = rng() * 900, y = rng() * 1100, r = 40 + rng() * 100;
+    const g = ctx.createRadialGradient(x, y, 0, x, y, r);
+    g.addColorStop(0, 'rgba(90,50,15,0.07)');
+    g.addColorStop(1, 'rgba(90,50,15,0)');
+    ctx.fillStyle = g;
+    ctx.fillRect(x - r, y - r, r * 2, r * 2);
+  }
+}
+
+// ─── HILL ────────────────────────────────────────────────────────────────────
+function drawHill() {
+  const cx = 450, cy = 540;
+
+  // Soft drop shadow
+  const shadow = ctx.createRadialGradient(cx + 30, cy + 40, 100, cx, cy, 460);
+  shadow.addColorStop(0, 'rgba(60,40,10,0.35)');
+  shadow.addColorStop(1, 'rgba(60,40,10,0)');
+  ctx.fillStyle = shadow;
+  ctx.fillRect(0, 0, 900, 1100);
+
+  // Hill body
+  ctx.save();
+  ctx.beginPath();
+  ctx.ellipse(cx, cy, 385, 460, 0, 0, Math.PI * 2);
+  const hillGrad = ctx.createRadialGradient(cx - 60, cy - 120, 30, cx, cy, 430);
+  hillGrad.addColorStop(0,   '#ddd090');
+  hillGrad.addColorStop(0.4, '#b8a060');
+  hillGrad.addColorStop(0.8, '#948040');
+  hillGrad.addColorStop(1,   '#706020');
+  ctx.fillStyle = hillGrad;
+  ctx.fill();
+  ctx.strokeStyle = INK;
+  ctx.lineWidth = 2.5;
+  ctx.stroke();
+  ctx.restore();
+
+  // Highlight (light source top-left)
+  ctx.save();
+  ctx.beginPath();
+  ctx.ellipse(cx, cy, 385, 460, 0, 0, Math.PI * 2);
+  ctx.clip();
+  const hi = ctx.createLinearGradient(cx - 385, cy, cx + 385, cy);
+  hi.addColorStop(0,   'rgba(255,245,200,0.18)');
+  hi.addColorStop(0.4, 'rgba(255,245,200,0)');
+  hi.addColorStop(1,   'rgba(0,0,0,0.22)');
+  ctx.fillStyle = hi;
+  ctx.fillRect(cx - 400, cy - 500, 800, 1000);
+  ctx.restore();
+}
+
+// ─── CONTOUR LINES ───────────────────────────────────────────────────────────
+function drawContours() {
+  const cx = 450, cy = 530;
+  const rings = [
+    { rx: 345, ry: 415 },
+    { rx: 285, ry: 345 },
+    { rx: 220, ry: 270 },
+    { rx: 155, ry: 195 },
+    { rx:  90, ry: 120 },
+  ];
+
+  ctx.save();
+  ctx.strokeStyle = INK_LIGHT;
+  ctx.lineWidth = 0.9;
+  ctx.setLineDash([5, 4]);
+  ctx.globalAlpha = 0.45;
+  rings.forEach(r => {
+    ctx.beginPath();
+    ctx.ellipse(cx, cy - 15, r.rx, r.ry, 0, 0, Math.PI * 2);
+    ctx.stroke();
+  });
+  ctx.setLineDash([]);
+  ctx.globalAlpha = 1;
+  ctx.restore();
+
+  // Elevation labels on right edge of each ring
+  ctx.save();
+  ctx.font = 'italic 8px Georgia, serif';
+  ctx.fillStyle = INK_LIGHT;
+  ctx.textAlign = 'left';
+  const elev = [200, 400, 600, 800, 1000];
+  rings.forEach((r, i) => {
+    ctx.fillText(`${elev[i]}'`, cx + r.rx + 3, cy - 15 + 4);
+  });
+  ctx.restore();
+}
+
+// ─── MINE ENTRANCE ───────────────────────────────────────────────────────────
+function drawMine() {
+  const mx = 450, my = 930;
+
+  // Dirt clearing
+  ctx.save();
+  ctx.beginPath();
+  ctx.ellipse(mx, my + 10, 130, 55, 0, 0, Math.PI * 2);
+  ctx.fillStyle = '#7a6640';
+  ctx.fill();
+  ctx.strokeStyle = INK;
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+  ctx.restore();
+
+  // Rail tracks
+  ctx.save();
+  ctx.strokeStyle = '#4a3828';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(mx - 9, my + 55); ctx.lineTo(mx - 9, my + 15);
+  ctx.moveTo(mx + 9, my + 55); ctx.lineTo(mx + 9, my + 15);
+  for (let y = my + 20; y < my + 55; y += 9) {
+    ctx.moveTo(mx - 13, y); ctx.lineTo(mx + 13, y);
+  }
+  ctx.stroke();
+  ctx.restore();
+
+  // Arch entrance
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(mx, my - 8, 34, Math.PI, 0);
+  ctx.lineTo(mx + 34, my + 18);
+  ctx.lineTo(mx - 34, my + 18);
+  ctx.closePath();
+  ctx.fillStyle = '#120a04';
+  ctx.fill();
+  ctx.strokeStyle = INK;
+  ctx.lineWidth = 2;
+  ctx.stroke();
+  ctx.restore();
+
+  // Stone voussoirs around arch
+  ctx.save();
+  ctx.strokeStyle = '#3a2810';
+  ctx.lineWidth = 1;
+  for (let i = 0; i <= 8; i++) {
+    const a = (i / 8) * Math.PI;
+    const x1 = mx + Math.cos(Math.PI - a) * 32,  y1 = my - 8 + Math.sin(Math.PI - a) * 18;
+    const x2 = mx + Math.cos(Math.PI - a) * 40,  y2 = my - 8 + Math.sin(Math.PI - a) * 24;
+    ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+  }
+  ctx.restore();
+
+  // Timber frame supports
+  [[mx - 42, my], [mx + 28, my]].forEach(([x, y]) => {
+    ctx.save();
+    ctx.strokeStyle = '#3a2810'; ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(x, y); ctx.lineTo(x, y - 22);
+    ctx.lineTo(x + 16, y - 22); ctx.lineTo(x + 16, y);
+    ctx.moveTo(x, y - 11); ctx.lineTo(x + 16, y - 11);
+    ctx.stroke();
+    ctx.restore();
+  });
+
+  // Mine carts
+  drawCart(mx - 65, my + 8);
+  drawCart(mx + 42, my + 4);
+
+  // Ore piles
+  drawOrePile(mx - 95, my + 22);
+  drawOrePile(mx + 82, my + 18);
+}
+
+function drawCart(x, y) {
+  ctx.save();
+  ctx.fillStyle = '#5a4020'; ctx.strokeStyle = INK; ctx.lineWidth = 1;
+  ctx.fillRect(x, y, 20, 11); ctx.strokeRect(x, y, 20, 11);
+  [x + 4, x + 16].forEach(wx => {
+    ctx.beginPath(); ctx.arc(wx, y + 13, 3.5, 0, Math.PI * 2);
+    ctx.fillStyle = '#2a1808'; ctx.fill(); ctx.stroke();
+  });
+  ctx.restore();
+}
+
+function drawOrePile(x, y) {
+  ctx.save();
+  ctx.beginPath(); ctx.ellipse(x, y, 13, 8, 0, 0, Math.PI * 2);
+  ctx.fillStyle = '#6a5840'; ctx.fill();
+  ctx.strokeStyle = INK; ctx.lineWidth = 1; ctx.stroke();
+  ctx.fillStyle = '#c8a850';
+  ctx.beginPath(); ctx.arc(x - 3, y - 2, 2.5, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.arc(x + 4, y + 1, 1.5, 0, Math.PI * 2); ctx.fill();
+  ctx.restore();
+}
+
+// ─── PATH: MINE → BAR STREET ─────────────────────────────────────────────────
+function drawMinePath() {
+  ctx.save();
+  ctx.lineWidth = 14;
+  ctx.lineCap = 'round';
+  ctx.strokeStyle = '#b09850';
+  ctx.beginPath(); ctx.moveTo(450, 878); ctx.lineTo(450, 828); ctx.stroke();
+  ctx.strokeStyle = INK; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(443, 878); ctx.lineTo(443, 828); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(457, 878); ctx.lineTo(457, 828); ctx.stroke();
+  ctx.restore();
+}
+
+// ─── BAR / FOOD STREET ───────────────────────────────────────────────────────
+function drawBarStreet() {
+  const sy = 790, left = 265, right = 635;
+
+  // Street surface
+  ctx.save();
+  ctx.fillStyle = '#c4a850';
+  ctx.fillRect(left, sy - 32, right - left, 78);
+  ctx.strokeStyle = INK; ctx.lineWidth = 1.5;
+  ctx.strokeRect(left, sy - 32, right - left, 78);
+  ctx.restore();
+
+  // Cobble texture
+  ctx.save();
+  ctx.globalAlpha = 0.18;
+  ctx.strokeStyle = INK; ctx.lineWidth = 0.5;
+  for (let xi = left + 5; xi < right - 5; xi += 18) {
+    for (let yi = sy - 28; yi < sy + 44; yi += 14) {
+      ctx.strokeRect(xi, yi, 16, 12);
+    }
+  }
+  ctx.globalAlpha = 1;
+  ctx.restore();
+
+  // North row of buildings (taverns + shops)
+  const bw = 44;
+  for (let i = 0; i < 8; i++) {
+    drawBuilding(left + 4 + i * (bw + 2), sy - 90, bw, 55, i % 3 === 0 ? 'tavern' : 'shop');
+  }
+
+  // South row
+  for (let i = 0; i < 7; i++) {
+    drawBuilding(left + 26 + i * (bw + 2), sy + 50, bw, 45, i % 4 === 0 ? 'tavern' : 'shop');
+  }
+
+  // Street props
+  [left + 55, left + 130, left + 220, left + 295].forEach(x => drawBarrel(x, sy + 18));
+  drawWell(450, sy + 10);
+
+  // Hanging lanterns over street
+  ctx.save();
+  ctx.strokeStyle = '#3a2810'; ctx.lineWidth = 1;
+  for (let x = left + 40; x < right; x += 55) {
+    ctx.beginPath();
+    ctx.moveTo(x - 18, sy - 32); ctx.quadraticCurveTo(x, sy - 48, x + 18, sy - 32);
+    ctx.stroke();
+    ctx.fillStyle = '#e0b840';
+    ctx.beginPath(); ctx.arc(x, sy - 46, 4, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = INK; ctx.stroke();
+  }
+  ctx.restore();
+}
+
+function drawBuilding(x, y, w, h, type) {
+  const isTavern = type === 'tavern';
+  ctx.save();
+  ctx.fillStyle = isTavern ? '#c8a060' : '#d4b870';
+  ctx.strokeStyle = INK; ctx.lineWidth = 1.5;
+  ctx.fillRect(x, y, w, h); ctx.strokeRect(x, y, w, h);
+
+  // Roof
+  ctx.beginPath();
+  ctx.moveTo(x - 2, y); ctx.lineTo(x + w / 2, y - (isTavern ? 16 : 11)); ctx.lineTo(x + w + 2, y);
+  ctx.closePath();
+  ctx.fillStyle = isTavern ? '#8a4828' : '#6a3c1c'; ctx.fill(); ctx.stroke();
+
+  // Door
+  ctx.fillStyle = '#2a1008';
+  ctx.fillRect(x + w / 2 - 4, y + h - 13, 8, 13);
+
+  // Windows
+  ctx.fillStyle = '#d4c890'; ctx.strokeStyle = INK; ctx.lineWidth = 0.5;
+  ctx.fillRect(x + 5, y + 7, 8, 7); ctx.strokeRect(x + 5, y + 7, 8, 7);
+  if (w > 30) { ctx.fillRect(x + w - 13, y + 7, 8, 7); ctx.strokeRect(x + w - 13, y + 7, 8, 7); }
+
+  // Tavern sign post
+  if (isTavern) {
+    ctx.strokeStyle = '#3a2010'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(x + w - 4, y - 2); ctx.lineTo(x + w - 4, y - 14); ctx.stroke();
+    ctx.fillStyle = '#5a3010';
+    ctx.fillRect(x + w - 14, y - 14, 14, 7); ctx.strokeRect(x + w - 14, y - 14, 14, 7);
+  }
+  ctx.restore();
+}
+
+function drawBarrel(x, y) {
+  ctx.save();
+  ctx.fillStyle = '#6a4020'; ctx.strokeStyle = INK; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.ellipse(x, y, 7, 10, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+  ctx.strokeStyle = '#3a2010';
+  [-3, 3].forEach(dy => { ctx.beginPath(); ctx.ellipse(x, y + dy, 7, 2.5, 0, 0, Math.PI); ctx.stroke(); });
+  ctx.restore();
+}
+
+function drawWell(x, y) {
+  ctx.save();
+  ctx.fillStyle = '#8a7858'; ctx.strokeStyle = INK; ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.arc(x, y, 11, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = '#100804';
+  ctx.beginPath(); ctx.arc(x, y, 6, 0, Math.PI * 2); ctx.fill();
+  ctx.strokeStyle = '#3a2010'; ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(x - 13, y - 12); ctx.lineTo(x + 13, y - 12);
+  ctx.moveTo(x, y - 12); ctx.lineTo(x, y - 20);
+  ctx.stroke();
+  ctx.restore();
+}
+
+// ─── ZIGZAG SHOP PATH ────────────────────────────────────────────────────────
+function drawZigzagShops() {
+  const pts = [
+    { x: 450, y: 758 },
+    { x: 305, y: 685 },
+    { x: 570, y: 608 },
+    { x: 300, y: 525 },
+    { x: 575, y: 442 },
+    { x: 315, y: 360 },
+    { x: 450, y: 295 },
+  ];
+
+  // Path fill (wide)
+  ctx.save();
+  ctx.strokeStyle = '#b09050'; ctx.lineWidth = 14;
+  ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  ctx.beginPath(); ctx.moveTo(pts[0].x, pts[0].y);
+  pts.slice(1).forEach(p => ctx.lineTo(p.x, p.y));
+  ctx.stroke();
+
+  // Edge lines
+  ctx.strokeStyle = INK; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(pts[0].x, pts[0].y);
+  pts.slice(1).forEach(p => ctx.lineTo(p.x, p.y));
+  ctx.stroke();
+  ctx.restore();
+
+  // Step tick marks
+  for (let i = 1; i < pts.length; i++) {
+    drawSteps(pts[i - 1], pts[i]);
+  }
+
+  // Shop clusters beside each switchback
+  const clusters = [
+    { x: 228, y: 668, rot: 0 },
+    { x: 598, y: 595, rot: 0 },
+    { x: 218, y: 510, rot: 0 },
+    { x: 605, y: 428, rot: 0 },
+    { x: 230, y: 346, rot: 0 },
+  ];
+  clusters.forEach((c, i) => drawShopCluster(c.x, c.y, i));
+}
+
+function drawSteps(p1, p2) {
+  const dx = p2.x - p1.x, dy = p2.y - p1.y;
+  const dist = Math.hypot(dx, dy);
+  const n = Math.floor(dist / 18);
+  ctx.save();
+  ctx.strokeStyle = 'rgba(44,24,16,0.35)'; ctx.lineWidth = 1;
+  for (let i = 1; i < n; i++) {
+    const t = i / n;
+    const mx = p1.x + dx * t, my = p1.y + dy * t;
+    const px = -dy / dist * 8, py = dx / dist * 8;
+    ctx.beginPath(); ctx.moveTo(mx - px, my - py); ctx.lineTo(mx + px, my + py); ctx.stroke();
+  }
+  ctx.restore();
+}
+
+function drawShopCluster(cx, cy, idx) {
+  const count = 3 + (idx % 2);
+  const sw = 22, sh = 28;
+  const roofColors = ['#7a4028', '#5a3818', '#6a4430', '#884020'];
+  const wallColors = ['#c8a868', '#d0b070', '#c0a060'];
+
+  ctx.save();
+  for (let i = 0; i < count; i++) {
+    const sx = cx + (i - (count - 1) / 2) * (sw + 3);
+    const sy = cy - sh / 2;
+
+    ctx.fillStyle = wallColors[i % wallColors.length];
+    ctx.strokeStyle = INK; ctx.lineWidth = 1;
+    ctx.fillRect(sx, sy, sw, sh); ctx.strokeRect(sx, sy, sw, sh);
+
+    ctx.fillStyle = roofColors[(idx + i) % roofColors.length];
+    ctx.beginPath();
+    ctx.moveTo(sx - 1, sy); ctx.lineTo(sx + sw / 2, sy - 10); ctx.lineTo(sx + sw + 1, sy);
+    ctx.closePath(); ctx.fill(); ctx.stroke();
+
+    // Awning
+    ctx.fillStyle = idx % 2 === 0 ? 'rgba(140,50,30,0.75)' : 'rgba(30,70,130,0.75)';
+    ctx.fillRect(sx - 2, sy + sh * 0.38, sw + 4, 5);
+
+    // Door
+    ctx.fillStyle = '#2a1008';
+    ctx.fillRect(sx + sw / 2 - 3, sy + sh - 10, 6, 10);
+  }
+  ctx.restore();
+}
+
+// ─── PROMENADE ───────────────────────────────────────────────────────────────
+function drawPromenade() {
+  const px = 450, py = 222, rx = 98, ry = 70;
+
+  // Platform
+  ctx.save();
+  ctx.beginPath(); ctx.ellipse(px, py, rx, ry, 0, 0, Math.PI * 2);
+  ctx.fillStyle = '#d8c882'; ctx.fill();
+  ctx.strokeStyle = INK; ctx.lineWidth = 2.5; ctx.stroke();
+  ctx.restore();
+
+  // Paving grid
+  ctx.save();
+  ctx.globalAlpha = 0.22;
+  ctx.strokeStyle = INK; ctx.lineWidth = 0.6;
+  for (let gi = -5; gi <= 5; gi++) {
+    for (let gj = -4; gj <= 4; gj++) {
+      const tx = px + gi * 18, ty = py + gj * 14;
+      if ((tx - px) ** 2 / rx ** 2 + (ty - py) ** 2 / ry ** 2 < 0.92) {
+        ctx.strokeRect(tx - 8, ty - 6, 16, 12);
+      }
+    }
+  }
+  ctx.globalAlpha = 1;
+  ctx.restore();
+
+  // Balustrade posts
+  ctx.save();
+  for (let a = 0; a < Math.PI * 2; a += 0.28) {
+    const bx = px + Math.cos(a) * rx, by = py + Math.sin(a) * ry;
+    ctx.beginPath(); ctx.arc(bx, by, 3.5, 0, Math.PI * 2);
+    ctx.fillStyle = '#a09060'; ctx.fill();
+    ctx.strokeStyle = INK; ctx.lineWidth = 0.8; ctx.stroke();
+  }
+  ctx.restore();
+
+  // Inner performance circle
+  ctx.save();
+  ctx.beginPath(); ctx.ellipse(px, py, rx * 0.42, ry * 0.42, 0, 0, Math.PI * 2);
+  ctx.fillStyle = '#c8b868'; ctx.fill();
+  ctx.strokeStyle = INK_LIGHT; ctx.lineWidth = 1;
+  ctx.setLineDash([3, 3]); ctx.stroke(); ctx.setLineDash([]);
+  ctx.restore();
+
+  // Performer figure
+  ctx.save();
+  ctx.fillStyle = INK;
+  ctx.beginPath(); ctx.arc(px, py - 10, 5, 0, Math.PI * 2); ctx.fill();
+  ctx.strokeStyle = INK; ctx.lineWidth = 1.8;
+  ctx.beginPath();
+  ctx.moveTo(px, py - 5); ctx.lineTo(px, py + 8);
+  ctx.moveTo(px - 8, py - 1); ctx.lineTo(px + 8, py - 1);
+  ctx.moveTo(px, py + 8); ctx.lineTo(px - 5, py + 15);
+  ctx.moveTo(px, py + 8); ctx.lineTo(px + 5, py + 15);
+  ctx.stroke();
+  ctx.restore();
+
+  // Benches
+  for (let i = 0; i < 6; i++) {
+    const a = (i / 6) * Math.PI * 2;
+    drawBench(px + Math.cos(a) * rx * 0.72, py + Math.sin(a) * ry * 0.72, a + Math.PI / 2);
+  }
+
+  // Torches / lantern posts at edge
+  for (let i = 0; i < 5; i++) {
+    const a = (i / 5) * Math.PI * 2 + 0.3;
+    const tx = px + Math.cos(a) * (rx - 6), ty = py + Math.sin(a) * (ry - 6);
+    drawTorchPost(tx, ty);
+  }
+}
+
+function drawBench(x, y, angle) {
+  ctx.save();
+  ctx.translate(x, y); ctx.rotate(angle);
+  ctx.fillStyle = '#7a5830'; ctx.strokeStyle = INK; ctx.lineWidth = 0.6;
+  ctx.fillRect(-9, -3, 18, 5); ctx.strokeRect(-9, -3, 18, 5);
+  ctx.restore();
+}
+
+function drawTorchPost(x, y) {
+  ctx.save();
+  ctx.strokeStyle = '#3a2810'; ctx.lineWidth = 1.2;
+  ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x, y - 14); ctx.stroke();
+  ctx.beginPath(); ctx.arc(x, y - 16, 3, 0, Math.PI * 2);
+  ctx.fillStyle = '#f0c040'; ctx.fill();
+  ctx.fillStyle = 'rgba(240,180,40,0.35)';
+  ctx.beginPath(); ctx.arc(x, y - 16, 7, 0, Math.PI * 2); ctx.fill();
+  ctx.restore();
+}
+
+// ─── RESIDENTIAL TERRACES (sides of hill) ────────────────────────────────────
+function drawResidential() {
+  const clusters = [
+    { x: 168, y: 572 }, { x: 158, y: 638 }, { x: 172, y: 704 },
+    { x: 698, y: 572 }, { x: 706, y: 638 }, { x: 690, y: 704 },
+  ];
+  clusters.forEach(c => drawHouseCluster(c.x, c.y));
+}
+
+function drawHouseCluster(cx, cy) {
+  ctx.save();
+  const n = 3 + Math.floor(rng() * 3);
+  for (let i = 0; i < n; i++) {
+    const a = (i / n) * Math.PI * 2;
+    const d = 10 + rng() * 14;
+    const bx = cx + Math.cos(a) * d, by = cy + Math.sin(a) * d;
+    const w = 14 + rng() * 8, h = 12 + rng() * 7;
+    ctx.fillStyle = '#c0a060'; ctx.strokeStyle = INK; ctx.lineWidth = 1;
+    ctx.fillRect(bx - w / 2, by - h / 2, w, h);
+    ctx.strokeRect(bx - w / 2, by - h / 2, w, h);
+    ctx.fillStyle = '#6a4828';
+    ctx.beginPath();
+    ctx.moveTo(bx - w / 2 - 1, by - h / 2);
+    ctx.lineTo(bx, by - h / 2 - 7);
+    ctx.lineTo(bx + w / 2 + 1, by - h / 2);
+    ctx.closePath(); ctx.fill(); ctx.stroke();
+  }
+  ctx.restore();
+}
+
+// ─── LABELS ──────────────────────────────────────────────────────────────────
+function drawLabels() {
+  const labels = [
+    { text: 'THE PROMENADE',       x: 450,  y: 140,  size: 13, bold: true },
+    { text: 'performance & gathering', x: 450, y: 155, size: 8, italic: true },
+    { text: 'ZIGZAG MARKET',       x: 208,  y: 508,  size: 10, bold: true },
+    { text: 'shops & stalls',      x: 208,  y: 520,  size: 8,  italic: true },
+    { text: 'LANTERN ROW',         x: 450,  y: 753,  size: 12, bold: true },
+    { text: 'food, drink & rest',  x: 450,  y: 766,  size: 8,  italic: true },
+    { text: 'MINE ENTRANCE',       x: 450,  y: 1002, size: 12, bold: true },
+    { text: 'The Deep Road',       x: 450,  y: 1016, size: 8,  italic: true },
+    { text: 'Residential Terraces', x: 160, y: 750,  size: 7,  italic: true },
+    { text: 'Residential Terraces', x: 698, y: 750,  size: 7,  italic: true },
+  ];
+
+  ctx.save();
+  ctx.textAlign = 'center';
+  labels.forEach(l => {
+    ctx.font = `${l.italic ? 'italic ' : ''}${l.bold ? 'bold ' : ''}${l.size}px Georgia, serif`;
+    ctx.fillStyle = `rgba(242,226,184,0.75)`;
+    ctx.fillText(l.text, l.x + 1, l.y + 1);
+    ctx.fillStyle = INK;
+    ctx.fillText(l.text, l.x, l.y);
+  });
+  ctx.restore();
+}
+
+// ─── COMPASS ─────────────────────────────────────────────────────────────────
+function drawCompass() {
+  const cx = 790, cy = 950, r = 34;
+
+  ctx.save();
+  ctx.beginPath(); ctx.arc(cx, cy, r + 6, 0, Math.PI * 2);
+  ctx.fillStyle = 'rgba(242,226,184,0.88)'; ctx.fill();
+  ctx.strokeStyle = INK; ctx.lineWidth = 1.5; ctx.stroke();
+
+  [{ l: 'N', a: -Math.PI / 2 }, { l: 'E', a: 0 }, { l: 'S', a: Math.PI / 2 }, { l: 'W', a: Math.PI }].forEach(d => {
+    ctx.strokeStyle = INK; ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.lineTo(cx + Math.cos(d.a) * r, cy + Math.sin(d.a) * r);
+    ctx.stroke();
+    ctx.font = `bold 11px Georgia, serif`;
+    ctx.fillStyle = d.l === 'N' ? '#8a1808' : INK;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(d.l, cx + Math.cos(d.a) * (r + 13), cy + Math.sin(d.a) * (r + 13));
+  });
+
+  ctx.beginPath(); ctx.arc(cx, cy, 4, 0, Math.PI * 2);
+  ctx.fillStyle = INK; ctx.fill();
+  ctx.restore();
+}
+
+// ─── TITLE ───────────────────────────────────────────────────────────────────
+function drawTitle() {
+  ctx.save();
+
+  // Banner background
+  ctx.fillStyle = 'rgba(44,24,16,0.12)';
+  ctx.fillRect(160, 22, 580, 52);
+  ctx.strokeStyle = INK; ctx.lineWidth = 1.5;
+  ctx.strokeRect(160, 22, 580, 52);
+  ctx.strokeStyle = INK_LIGHT; ctx.lineWidth = 0.5;
+  ctx.beginPath(); ctx.moveTo(168, 30); ctx.lineTo(732, 30); ctx.stroke();
+
+  ctx.textAlign = 'center';
+  ctx.font = 'bold 26px Georgia, serif';
+  ctx.fillStyle = INK;
+  ctx.fillText('ASHVEIL DELVE', 450, 51);
+
+  ctx.font = 'italic 10px Georgia, serif';
+  ctx.fillStyle = INK_LIGHT;
+  ctx.fillText('A Mining Town of the Hillward Reaches', 450, 66);
+
+  ctx.restore();
+}
+
+// ─── BORDER ──────────────────────────────────────────────────────────────────
+function drawBorder() {
+  ctx.save();
+  ctx.strokeStyle = INK; ctx.lineWidth = 4;
+  ctx.strokeRect(14, 14, 872, 1072);
+  ctx.lineWidth = 1;
+  ctx.strokeRect(21, 21, 858, 1058);
+
+  // Corner ornaments
+  [[14, 14], [886, 14], [14, 1086], [886, 1086]].forEach(([x, y]) => {
+    ctx.beginPath(); ctx.arc(x, y, 9, 0, Math.PI * 2);
+    ctx.fillStyle = INK; ctx.fill();
+  });
+  ctx.restore();
+}
+
+// ─── LEGEND ──────────────────────────────────────────────────────────────────
+function drawLegend() {
+  const lx = 55, ly = 880;
+  ctx.save();
+  ctx.fillStyle = 'rgba(242,226,184,0.75)';
+  ctx.fillRect(lx - 5, ly - 18, 120, 110);
+  ctx.strokeStyle = INK; ctx.lineWidth = 1;
+  ctx.strokeRect(lx - 5, ly - 18, 120, 110);
+
+  ctx.font = 'bold 9px Georgia, serif';
+  ctx.fillStyle = INK; ctx.textAlign = 'left';
+  ctx.fillText('LEGEND', lx, ly - 5);
+
+  const entries = [
+    { color: '#1a1008', label: 'Mine entrance' },
+    { color: '#c4a850', label: 'Main street' },
+    { color: '#b09050', label: 'Market path' },
+    { color: '#d8c882', label: 'Promenade' },
+    { color: '#c0a060', label: 'Residences' },
+  ];
+
+  ctx.font = '8px Georgia, serif';
+  entries.forEach((e, i) => {
+    const ey = ly + 10 + i * 17;
+    ctx.fillStyle = e.color;
+    ctx.fillRect(lx, ey - 7, 12, 9);
+    ctx.strokeStyle = INK; ctx.lineWidth = 0.5;
+    ctx.strokeRect(lx, ey - 7, 12, 9);
+    ctx.fillStyle = INK;
+    ctx.fillText(e.label, lx + 16, ey);
+  });
+  ctx.restore();
+}
+
+// ─── MAIN DRAW ───────────────────────────────────────────────────────────────
+function drawMap() {
+  drawParchment();
+  drawHill();
+  drawContours();
+  drawResidential();
+  drawZigzagShops();
+  drawMinePath();
+  drawMine();
+  drawBarStreet();
+  drawPromenade();
+  drawLabels();
+  drawLegend();
+  drawCompass();
+  drawTitle();
+  drawBorder();
+}
+
+function downloadMap() {
+  const a = document.createElement('a');
+  a.download = 'ashveil-delve.png';
+  a.href = canvas.toDataURL('image/png');
+  a.click();
+}
+
+drawMap();
+</script>
+</body>
+</html>
