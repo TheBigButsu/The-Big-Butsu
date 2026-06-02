@@ -1332,7 +1332,12 @@
         <h2>Initiative Tracker</h2>
         <div class="sub">Click headers to sort · edit inline · statblocks for anything in the fight appear below</div>
         <div class="actions">
-          <button class="btn tiny" onclick="addParty()">+ Add Party</button>
+          <button class="btn tiny" onclick="addParty()">+ Party</button>
+          <button class="btn tiny" onclick="addPC('Luke')">Luke</button>
+          <button class="btn tiny" onclick="addPC('Rick')">Rick</button>
+          <button class="btn tiny" onclick="addPC('AV')">AV</button>
+          <button class="btn tiny" onclick="addPC('Duane')">Duane</button>
+          <button class="btn tiny" onclick="addPC('Barakas')">Barakas</button>
           <button class="btn tiny" onclick="nextTurn()">▶ Next turn</button>
           <button class="btn tiny" onclick="sortByInitiative()">Sort by init</button>
           <button class="btn tiny warn" onclick="clearTracker()">Clear</button>
@@ -1491,9 +1496,15 @@
         <h2>Rumors &amp; World Signs</h2>
         <div class="sub">Roll tavern talk or DM prompts by front · used rumors are crossed off</div>
         <div class="actions">
-          <button class="btn tiny" onclick="rollAnyRumor()">⚄ Any rumor</button>
+          <button class="btn primary" onclick="rollAnyRumor()">⚄ Any rumor</button>
           <button class="btn tiny warn" onclick="clearUsedRumors()">Clear used</button>
         </div>
+      </div>
+
+      <div class="rumor-result" id="rumorResultTop">
+        <div class="rr-label">Rolled rumor</div>
+        <div class="rr-front"></div>
+        <div class="rr-text"></div>
       </div>
 
       <div class="rumors-layout" id="rumorsLayout"></div>
@@ -1910,10 +1921,17 @@ const PARTY_MEMBERS = ['Luke', 'Rick', 'AV', 'Barakas', 'Duane'];
 function addParty() {
   if (!session._tracker) session._tracker = [];
   PARTY_MEMBERS.forEach(name => {
-    // Skip if already present (avoid double-adding)
     if (session._tracker.some(c => c.name === name)) return;
     session._tracker.push({ name, initiative: 0, hp: 0, maxHp: 0, ac: 0, notes: 'PC', isPC: true });
   });
+  persistTracker();
+  renderTracker();
+}
+
+function addPC(name) {
+  if (!session._tracker) session._tracker = [];
+  if (session._tracker.some(c => c.name === name)) return;
+  session._tracker.push({ name, initiative: 0, hp: 0, maxHp: 0, ac: 0, notes: 'PC', isPC: true });
   persistTracker();
   renderTracker();
 }
@@ -2785,7 +2803,7 @@ function rollAnyRumor() {
 }
 
 function showRumorResult(frontLabel, text, key) {
-  const box = document.getElementById('rumorResultBox');
+  const box = document.getElementById('rumorResultTop');
   if (!box) return;
   box.classList.add('visible');
   box.querySelector('.rr-front').textContent = frontLabel;
@@ -2817,17 +2835,6 @@ function renderRumors() {
   });
 
   layout.innerHTML = '';
-
-  // Result box at top
-  const resultBox = document.createElement('div');
-  resultBox.className = 'rumor-result';
-  resultBox.id = 'rumorResultBox';
-  resultBox.innerHTML = `
-    <div class="rr-label">Rolled rumor</div>
-    <div class="rr-front"></div>
-    <div class="rr-text"></div>
-  `;
-  layout.appendChild(resultBox);
 
   Object.keys(fronts).forEach(frontId => {
     const front = fronts[frontId];
