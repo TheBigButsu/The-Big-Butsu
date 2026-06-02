@@ -1,0 +1,1017 @@
+{
+  "monsters": {
+    "shade_thornwall": {
+      "name": "Thornwall Shade",
+      "type": "Hollow manifestation · CR ~1/2",
+      "ac": 12,
+      "hp": 22,
+      "speed": "30 ft, fly 30 ft (hover)",
+      "simple": {
+        "attacks": "Withering touch +4, 2d6 necrotic, target makes DC 10 CON or max HP reduced by damage taken until long rest",
+        "resistances": "necrotic, cold, non-magical weapon damage",
+        "vulnerabilities": "radiant, music played with intent (advantage on saves caused by such)",
+        "notes": "Forms at overfull resonance sites. Recognizable as the dead. Dissipates with a flicker of recognition if released properly."
+      },
+      "full": {
+        "stats": {
+          "str": 8,
+          "dex": 14,
+          "con": 12,
+          "int": 6,
+          "wis": 10,
+          "cha": 13
+        },
+        "saves": "Cha +3",
+        "skills": "Stealth +4",
+        "senses": "darkvision 60 ft, passive Perception 10",
+        "languages": "understands languages it knew in life",
+        "traits": [
+          {
+            "name": "Incorporeal Movement",
+            "text": "Can move through other creatures and objects as difficult terrain. Takes 5 (1d10) force damage if it ends turn inside an object."
+          },
+          {
+            "name": "Sunlight Sensitivity",
+            "text": "While in sunlight, has disadvantage on attack rolls and Perception checks relying on sight."
+          }
+        ],
+        "actions": [
+          {
+            "name": "Withering Touch",
+            "text": "Melee attack: +4 to hit, reach 5 ft, one target. Hit: 7 (2d6) necrotic. Target makes DC 10 CON save or max HP reduced by damage taken until long rest."
+          }
+        ]
+      }
+    },
+    "site_skeleton": {
+      "name": "Site Skeleton",
+      "type": "Undead · CR 1/4",
+      "ac": 13,
+      "hp": 13,
+      "speed": "30 ft",
+      "simple": {
+        "attacks": "Shortsword +4, 1d6+2 piercing · Shortbow +4, 1d6+2 piercing 80/320",
+        "resistances": "—",
+        "vulnerabilities": "bludgeoning",
+        "notes": "Standard skeleton. Animated by site overfullness, not necromancy proper."
+      },
+      "full": {
+        "stats": {
+          "str": 10,
+          "dex": 14,
+          "con": 15,
+          "int": 6,
+          "wis": 8,
+          "cha": 5
+        },
+        "saves": "—",
+        "skills": "—",
+        "senses": "darkvision 60 ft, passive Perception 9",
+        "languages": "understands but cannot speak",
+        "traits": [
+          {
+            "name": "Vulnerabilities/Resistances",
+            "text": "Vulnerable to bludgeoning. Immune to poison, exhaustion. Resistant to nothing."
+          }
+        ],
+        "actions": [
+          {
+            "name": "Shortsword",
+            "text": "Melee: +4 to hit, reach 5 ft. Hit: 5 (1d6+2) piercing."
+          },
+          {
+            "name": "Shortbow",
+            "text": "Ranged: +4 to hit, range 80/320, one target. Hit: 5 (1d6+2) piercing."
+          }
+        ]
+      }
+    },
+    "graveyard_golem": {
+      "name": "Graveyard Golem",
+      "type": "Large undead · CR 4 · 1,100 XP",
+      "ac": 14,
+      "hp": 93,
+      "speed": "30 ft",
+      "simple": {
+        "attacks": "Multiattack: 2 slams · Slam +6, 2d8+4 bludgeoning · Tombstone Slam (recharge 5–6) 15-ft cone, DC 14 Dex, 4d8+4 bludgeoning · Gravestone Hurl (recharge 5–6) 60 ft, 10-ft radius, DC 14 Dex, 3d8 bludgeoning",
+        "resistances": "necrotic",
+        "vulnerabilities": "—",
+        "notes": "Grave-Bound: cannot leave its graveyard unless commanded. Siege Monster: double damage to objects. Unholy Mass: at 0 HP, explodes in 20-ft burst — DC 13 Dex or 1d8 piercing + 1d8 bludgeoning + prone."
+      },
+      "full": {
+        "stats": {
+          "str": 18,
+          "dex": 8,
+          "con": 16,
+          "int": 3,
+          "wis": 10,
+          "cha": 5
+        },
+        "saves": "Con +5",
+        "skills": "—",
+        "senses": "darkvision 60 ft, passive Perception 10",
+        "languages": "—",
+        "traits": [
+          {
+            "name": "Damage Immunities",
+            "text": "Poison."
+          },
+          {
+            "name": "Damage Resistances",
+            "text": "Necrotic."
+          },
+          {
+            "name": "Condition Immunities",
+            "text": "Charmed, frightened, paralyzed, poisoned."
+          },
+          {
+            "name": "Grave-Bound",
+            "text": "Cannot leave the graveyard it was created in unless commanded by its creator or by powerful necromantic energy."
+          },
+          {
+            "name": "Siege Monster",
+            "text": "Deals double damage to objects and structures."
+          },
+          {
+            "name": "Unholy Mass",
+            "text": "When reduced to 0 HP, the golem explodes in a burst of bone and stone. Each creature within 20 ft must succeed on a DC 13 Dex save or take 4 (1d8) piercing damage and 4 (1d8) bludgeoning damage and fall prone."
+          }
+        ],
+        "actions": [
+          {
+            "name": "Multiattack",
+            "text": "The Graveyard Golem makes two Slam attacks."
+          },
+          {
+            "name": "Slam",
+            "text": "Melee: +6 to hit, reach 5 ft, one target. Hit: 13 (2d8+4) bludgeoning."
+          },
+          {
+            "name": "Tombstone Slam (Recharge 5–6)",
+            "text": "Swings a massive slab of tombstone. Each creature in a 15-ft cone makes a DC 14 Dex save, taking 22 (4d8+4) bludgeoning on a fail or half on a success."
+          },
+          {
+            "name": "Gravestone Hurl (Recharge 5–6)",
+            "text": "Rips a piece of broken monument and hurls it at a point within 60 ft. Each creature in a 10-ft radius makes a DC 14 Dex save, taking 13 (3d8) bludgeoning on a fail or half on a success."
+          }
+        ]
+      }
+    },
+    "harpy": {
+      "name": "Harpy",
+      "type": "Medium monstrosity · CR 1 · 200 XP",
+      "ac": 11,
+      "hp": 38,
+      "speed": "20 ft, fly 40 ft",
+      "simple": {
+        "attacks": "Claw +3, 2d4+1 slashing",
+        "resistances": "—",
+        "vulnerabilities": "—",
+        "notes": "Luring Song: 300-ft emanation, DC 11 Wis or charmed + incapacitated, target moves toward harpy. Repeats save each turn and on damage from non-harpy source."
+      },
+      "full": {
+        "stats": {
+          "str": 12,
+          "dex": 13,
+          "con": 12,
+          "int": 7,
+          "wis": 10,
+          "cha": 13
+        },
+        "saves": "Str +1, Dex +1, Con +1, Int −2, Wis +0, Cha +1",
+        "skills": "—",
+        "senses": "passive Perception 10",
+        "languages": "Common",
+        "traits": [],
+        "actions": [
+          {
+            "name": "Claw",
+            "text": "Melee: +3 to hit, reach 5 ft. Hit: 6 (2d4+1) slashing."
+          },
+          {
+            "name": "Luring Song",
+            "text": "The harpy sings a magical melody, lasting until concentration ends. DC 11 Wis save for each humanoid and giant in a 300-ft emanation. On a fail: charmed (and incapacitated, ignoring other harpies' songs); if more than 5 ft away, target moves toward the harpy by the most direct route, ignoring opportunity attacks but stopping before damaging terrain. Save repeats at end of each turn and whenever target takes damage from a source other than the harpy. On success: immune to this harpy's song for 24 hours."
+          }
+        ]
+      }
+    },
+    "specter": {
+      "name": "Specter",
+      "type": "Medium undead · CR 1 · 200 XP",
+      "ac": 12,
+      "hp": 22,
+      "speed": "30 ft, fly 50 ft (hover)",
+      "simple": {
+        "attacks": "Life Drain +4, 2d6 necrotic + HP max reduction",
+        "resistances": "Acid, cold, fire, lightning, thunder, B/P/S",
+        "vulnerabilities": "—",
+        "notes": "Incorporeal — moves through creatures/objects (5/1d10 force if ends turn inside). Sunlight Sensitivity: disadvantage on attacks/checks in sunlight. Immune to necrotic, poison, charm, exhaustion, grapple, paralyze, petrify, poison, prone, restrain, unconscious."
+      },
+      "full": {
+        "stats": {
+          "str": 1,
+          "dex": 14,
+          "con": 11,
+          "int": 10,
+          "wis": 10,
+          "cha": 11
+        },
+        "saves": "Str −5, Dex +2, Con +0, Int +0, Wis +0, Cha +0",
+        "skills": "—",
+        "senses": "darkvision 60 ft, passive Perception 10",
+        "languages": "Understands Common plus one other language but can't speak",
+        "traits": [
+          {
+            "name": "Incorporeal Movement",
+            "text": "The specter can move through other creatures and objects as difficult terrain. Takes 5 (1d10) force damage if it ends its turn inside an object."
+          },
+          {
+            "name": "Sunlight Sensitivity",
+            "text": "While in sunlight, the specter has disadvantage on ability checks and attack rolls."
+          }
+        ],
+        "actions": [
+          {
+            "name": "Life Drain",
+            "text": "Melee: +4 to hit, reach 5 ft. Hit: 7 (2d6) necrotic. If target is a creature, its HP maximum decreases by the damage taken."
+          }
+        ]
+      }
+    },
+    "quickling": {
+      "name": "Quickling",
+      "type": "Tiny fey · CR 1 · 200 XP",
+      "ac": 16,
+      "hp": 10,
+      "speed": "120 ft",
+      "simple": {
+        "attacks": "Dagger ×3, +8, 1d4+6 piercing (melee or 20/60 ft)",
+        "resistances": "—",
+        "vulnerabilities": "—",
+        "notes": "Blurred Movement: attacks against it have disadvantage unless incapacitated or speed 0. Evasion: on Dex saves for half — take none on success, half on fail."
+      },
+      "full": {
+        "stats": {
+          "str": 4,
+          "dex": 23,
+          "con": 13,
+          "int": 10,
+          "wis": 12,
+          "cha": 7
+        },
+        "saves": "Str −3, Dex +6, Con +1, Int +0, Wis +1, Cha −2",
+        "skills": "Acrobatics +8, Perception +5, Sleight of Hand +8, Stealth +8",
+        "senses": "darkvision 60 ft, passive Perception 15",
+        "languages": "Common, Sylvan",
+        "traits": [
+          {
+            "name": "Blurred Movement",
+            "text": "Attack rolls against the quickling have disadvantage unless it is incapacitated or its speed is 0."
+          },
+          {
+            "name": "Evasion",
+            "text": "If the quickling is subjected to an effect that allows a Dex save for half damage, it instead takes no damage on a success and only half on a fail (unless incapacitated)."
+          }
+        ],
+        "actions": [
+          {
+            "name": "Multiattack",
+            "text": "The quickling makes three Dagger attacks."
+          },
+          {
+            "name": "Dagger",
+            "text": "Melee or Ranged: +8 to hit, reach 5 ft or range 20/60 ft. Hit: 8 (1d4+6) piercing."
+          }
+        ]
+      }
+    },
+    "choker": {
+      "name": "Choker",
+      "type": "Small aberration · CR 1 · 200 XP",
+      "ac": 16,
+      "hp": 13,
+      "speed": "30 ft, climb 30 ft (any surface)",
+      "simple": {
+        "attacks": "Tentacle ×2, +5, 1d4+3 piercing + grapple (escape DC 15, restrained)",
+        "resistances": "—",
+        "vulnerabilities": "—",
+        "notes": "Aberrant Quickness (recharge SR/LR): extra action. Boneless: fits through 4-inch gaps. Spider Climb. Crit grapple → target can't breathe or speak until grapple ends."
+      },
+      "full": {
+        "stats": {
+          "str": 16,
+          "dex": 14,
+          "con": 13,
+          "int": 4,
+          "wis": 12,
+          "cha": 7
+        },
+        "saves": "Str +3, Dex +2, Con +1, Int −3, Wis +1, Cha −2",
+        "skills": "Stealth +6",
+        "senses": "darkvision 60 ft, passive Perception 11",
+        "languages": "Deep Speech",
+        "traits": [
+          {
+            "name": "Aberrant Quickness",
+            "text": "Recharges after a short or long rest. The choker can take an extra action on its turn."
+          },
+          {
+            "name": "Boneless",
+            "text": "The choker can move through and occupy a space as narrow as 4 inches wide without squeezing."
+          },
+          {
+            "name": "Spider Climb",
+            "text": "The choker can climb difficult surfaces, including upside down on ceilings, without needing to make an ability check."
+          }
+        ],
+        "actions": [
+          {
+            "name": "Multiattack",
+            "text": "The choker makes two Tentacle attacks."
+          },
+          {
+            "name": "Tentacle",
+            "text": "Melee: +5 to hit, reach 10 ft. Hit: 5 (1d4+3) piercing. Large or smaller target is grappled (escape DC 15, restrained). Choker has two tentacles. On a crit, target also can't breathe or speak until grapple ends."
+          }
+        ]
+      }
+    },
+    "ghast": {
+      "name": "Ghast",
+      "type": "Medium undead · CR 2 · 450 XP",
+      "ac": 13,
+      "hp": 36,
+      "speed": "30 ft",
+      "simple": {
+        "attacks": "Bite +5, 1d8+3 piercing + 2d8 necrotic; Claw +5, 2d6+3 slashing + paralyze (DC 10 Con) on non-undead",
+        "resistances": "Necrotic",
+        "vulnerabilities": "—",
+        "notes": "Stench: 5-ft emanation, DC 10 Con or poisoned until start of next turn (success = immune 24 hours). Immune poison, charm, exhaustion, poisoned."
+      },
+      "full": {
+        "stats": {
+          "str": 16,
+          "dex": 17,
+          "con": 10,
+          "int": 11,
+          "wis": 10,
+          "cha": 8
+        },
+        "saves": "Str +3, Dex +3, Con +0, Int +0, Wis +2, Cha −1",
+        "skills": "—",
+        "senses": "darkvision 60 ft, passive Perception 10",
+        "languages": "Common",
+        "traits": [
+          {
+            "name": "Stench",
+            "text": "Con save DC 10 for any creature that starts its turn in a 5-ft emanation from the ghast. Failure: poisoned until start of its next turn. Success: immune to this ghast's stench for 24 hours."
+          }
+        ],
+        "actions": [
+          {
+            "name": "Bite",
+            "text": "Melee: +5 to hit, reach 5 ft. Hit: 7 (1d8+3) piercing + 9 (2d8) necrotic."
+          },
+          {
+            "name": "Claw",
+            "text": "Melee: +5 to hit, reach 5 ft. Hit: 10 (2d6+3) slashing. If target is non-undead: DC 10 Con save, fail = paralyzed until end of its next turn."
+          }
+        ]
+      }
+    },
+    "wight": {
+      "name": "Wight",
+      "type": "Medium undead · CR 3 · 700 XP",
+      "ac": 14,
+      "hp": 82,
+      "speed": "30 ft",
+      "simple": {
+        "attacks": "Multiattack: 2 attacks (Necrotic Sword +4, 1d8+2 slash + 1d8 necrotic; or Necrotic Bow +4, 1d8+2 pierce + 1d8 necrotic, 150/600). Can replace one with Life Drain.",
+        "resistances": "Necrotic",
+        "vulnerabilities": "—",
+        "notes": "Life Drain: DC 13 Con save, 1d8+2 necrotic + HP max reduction. Humanoid slain rises as zombie under wight's control in 24 hrs (max 12). Sunlight Sensitivity. Studded leather."
+      },
+      "full": {
+        "stats": {
+          "str": 15,
+          "dex": 14,
+          "con": 16,
+          "int": 10,
+          "wis": 13,
+          "cha": 15
+        },
+        "saves": "Str +2, Dex +2, Con +3, Int +0, Wis +1, Cha +2",
+        "skills": "Perception +3, Stealth +4",
+        "senses": "darkvision 60 ft, passive Perception 13",
+        "languages": "Common plus one other language",
+        "traits": [
+          {
+            "name": "Sunlight Sensitivity",
+            "text": "While in sunlight, the wight has disadvantage on ability checks and attack rolls."
+          }
+        ],
+        "actions": [
+          {
+            "name": "Multiattack",
+            "text": "Two attacks using Necrotic Sword or Necrotic Bow in any combination. Can replace one attack with Life Drain."
+          },
+          {
+            "name": "Necrotic Sword",
+            "text": "Melee: +4 to hit, reach 5 ft. Hit: 6 (1d8+2) slashing + 4 (1d8) necrotic."
+          },
+          {
+            "name": "Necrotic Bow",
+            "text": "Ranged: +4 to hit, range 150/600 ft. Hit: 6 (1d8+2) piercing + 4 (1d8) necrotic."
+          },
+          {
+            "name": "Life Drain",
+            "text": "DC 13 Con save, one creature within 5 ft. Failure: 6 (1d8+2) necrotic, target's HP max decreases by damage taken. A humanoid slain rises 24 hrs later as a zombie under the wight's control (max 12) unless restored to life or body destroyed."
+          }
+        ]
+      }
+    },
+    "ghoul": {
+      "name": "Ghoul",
+      "type": "Medium undead · CR 1 · 200 XP",
+      "ac": 12,
+      "hp": 22,
+      "speed": "30 ft",
+      "simple": {
+        "attacks": "Bite ×2, +4, 1d6+2 piercing + 1d6 necrotic; Claw +4, 1d4+2 slashing + paralyze (DC 10 Con) on non-undead/non-elf",
+        "resistances": "—",
+        "vulnerabilities": "—",
+        "notes": "Immune poison, charm, exhaustion, poisoned. Elves are immune to ghoul paralysis."
+      },
+      "full": {
+        "stats": {
+          "str": 13,
+          "dex": 15,
+          "con": 10,
+          "int": 7,
+          "wis": 10,
+          "cha": 6
+        },
+        "saves": "Str +1, Dex +2, Con +0, Int −2, Wis +0, Cha −2",
+        "skills": "—",
+        "senses": "darkvision 60 ft, passive Perception 10",
+        "languages": "Common",
+        "traits": [],
+        "actions": [
+          {
+            "name": "Multiattack",
+            "text": "The ghoul makes two Bite attacks."
+          },
+          {
+            "name": "Bite",
+            "text": "Melee: +4 to hit, reach 5 ft. Hit: 5 (1d6+2) piercing + 3 (1d6) necrotic."
+          },
+          {
+            "name": "Claw",
+            "text": "Melee: +4 to hit, reach 5 ft. Hit: 4 (1d4+2) slashing. If target is not undead or elf: DC 10 Con save, fail = paralyzed until end of its next turn."
+          }
+        ]
+      }
+    },
+    "bugbear_chief": {
+      "name": "Bugbear Chief",
+      "type": "Medium humanoid (goblinoid) · CR 3 · 700 XP",
+      "ac": 17,
+      "hp": 65,
+      "speed": "30 ft",
+      "simple": {
+        "attacks": "Multiattack: 2 melee. Morningstar +5, 2d8+3 piercing. Javelin +5, 2d6+3 piercing (melee) or 1d6+3 (30/120).",
+        "resistances": "—",
+        "vulnerabilities": "—",
+        "notes": "Brute: melee weapons deal +1 die damage (already in attacks). Heart of Hruggek: advantage vs charm/fear/paralyze/poison/stun/sleep. Surprise Attack: +2d6 on first round if surprised target."
+      },
+      "full": {
+        "stats": {
+          "str": 17,
+          "dex": 14,
+          "con": 14,
+          "int": 11,
+          "wis": 12,
+          "cha": 11
+        },
+        "saves": "Str +3, Dex +2, Con +2, Int +0, Wis +1, Cha +0",
+        "skills": "Intimidation +2, Stealth +6, Survival +3",
+        "senses": "darkvision 60 ft, passive Perception 11",
+        "languages": "Common, Goblin",
+        "traits": [
+          {
+            "name": "Brute",
+            "text": "A melee weapon deals one extra die of its damage when the bugbear hits with it (included in attack damage)."
+          },
+          {
+            "name": "Heart of Hruggek",
+            "text": "Advantage on saves vs being charmed, frightened, paralyzed, poisoned, stunned, or put to sleep."
+          },
+          {
+            "name": "Surprise Attack",
+            "text": "If the bugbear surprises a creature and hits it on the first round of combat, target takes an extra 7 (2d6) damage from the attack."
+          }
+        ],
+        "actions": [
+          {
+            "name": "Multiattack",
+            "text": "The bugbear makes two melee attacks."
+          },
+          {
+            "name": "Morningstar",
+            "text": "Melee: +5 to hit, reach 5 ft. Hit: 11 (2d8+3) piercing."
+          },
+          {
+            "name": "Javelin",
+            "text": "Melee or Ranged: +5 to hit, reach 5 ft or range 30/120 ft. Hit: 9 (2d6+3) piercing in melee or 5 (1d6+3) at range."
+          }
+        ]
+      }
+    },
+    "bugbear_stalker": {
+      "name": "Bugbear Stalker",
+      "type": "Medium fey (goblinoid) · CR 3 · 700 XP",
+      "ac": 15,
+      "hp": 65,
+      "speed": "30 ft",
+      "simple": {
+        "attacks": "Multiattack: 2 attacks. Javelin +5, 3d6+3 piercing (reach 10 ft or 30/120). Morningstar +5 (adv. if grappled), 2d8+3 piercing (reach 10 ft).",
+        "resistances": "—",
+        "vulnerabilities": "—",
+        "notes": "Abduct: no extra movement to drag grappled. Bonus action Quick Grapple: DC 13 Dex save, one Medium or smaller within 10 ft, fail = grappled (escape DC 13). Chain shirt, 6 javelins."
+      },
+      "full": {
+        "stats": {
+          "str": 17,
+          "dex": 14,
+          "con": 14,
+          "int": 11,
+          "wis": 12,
+          "cha": 11
+        },
+        "saves": "Str +3, Dex +2, Con +4, Int +0, Wis +3, Cha +0",
+        "skills": "Stealth +6, Survival +3",
+        "senses": "darkvision 60 ft, passive Perception 11",
+        "languages": "Common, Goblin",
+        "traits": [
+          {
+            "name": "Abduct",
+            "text": "The bugbear needn't spend extra movement to move a creature it is grappling."
+          }
+        ],
+        "actions": [
+          {
+            "name": "Multiattack",
+            "text": "The bugbear makes two Javelin or Morningstar attacks."
+          },
+          {
+            "name": "Javelin",
+            "text": "Melee or Ranged: +5 to hit, reach 10 ft or range 30/120 ft. Hit: 13 (3d6+3) piercing."
+          },
+          {
+            "name": "Morningstar",
+            "text": "Melee: +5 to hit (advantage if target is grappled by the bugbear), reach 10 ft. Hit: 12 (2d8+3) piercing."
+          },
+          {
+            "name": "Quick Grapple (bonus)",
+            "text": "DC 13 Dex save, one Medium or smaller creature the bugbear can see within 10 ft. Failure: grappled (escape DC 13)."
+          }
+        ]
+      }
+    },
+    "grick": {
+      "name": "Grick",
+      "type": "Medium monstrosity · CR 2 · 450 XP",
+      "ac": 14,
+      "hp": 27,
+      "speed": "30 ft, climb 30 ft",
+      "simple": {
+        "attacks": "Multiattack: Tentacles, on hit then Beak vs same target. Tentacles +4, 2d6+2 slashing. Beak +4, 1d6+2 piercing.",
+        "resistances": "B/P/S from nonmagical attacks",
+        "vulnerabilities": "—",
+        "notes": "Stone Camouflage: advantage on Stealth in rocky terrain. Ambush predator."
+      },
+      "full": {
+        "stats": {
+          "str": 14,
+          "dex": 14,
+          "con": 11,
+          "int": 3,
+          "wis": 14,
+          "cha": 5
+        },
+        "saves": "Str +2, Dex +2, Con +0, Int −4, Wis +2, Cha −3",
+        "skills": "—",
+        "senses": "darkvision 60 ft, passive Perception 12",
+        "languages": "—",
+        "traits": [
+          {
+            "name": "Stone Camouflage",
+            "text": "The grick has advantage on Dex (Stealth) checks made to hide in rocky terrain."
+          }
+        ],
+        "actions": [
+          {
+            "name": "Multiattack",
+            "text": "The grick makes one Tentacles attack. If that hits, it can make one Beak attack against the same target."
+          },
+          {
+            "name": "Tentacles",
+            "text": "Melee: +4 to hit, reach 5 ft. Hit: 9 (2d6+2) slashing."
+          },
+          {
+            "name": "Beak",
+            "text": "Melee: +4 to hit, reach 5 ft. Hit: 5 (1d6+2) piercing."
+          }
+        ]
+      }
+    },
+    "yeti": {
+      "name": "Yeti",
+      "type": "Large monstrosity · CR 3 · 700 XP",
+      "ac": 12,
+      "hp": 51,
+      "speed": "40 ft, climb 40 ft",
+      "simple": {
+        "attacks": "Multiattack: Chilling Gaze + 2 attacks (Claw +6, 1d6+4 slashing + 1d6 cold; Ice Throw +6, 1d4+4 bludgeoning + 1d4 cold, 30/120).",
+        "resistances": "—",
+        "vulnerabilities": "—",
+        "notes": "Immune cold. Fear of Fire: if takes fire damage, disadvantage on attacks/checks until end of next turn. Chilling Gaze: DC 13 Con, fail = 2d4 cold + paralyzed until start of yeti's next turn (success = immune to all yeti gazes 1 hr, abominable yetis excluded)."
+      },
+      "full": {
+        "stats": {
+          "str": 18,
+          "dex": 13,
+          "con": 16,
+          "int": 8,
+          "wis": 12,
+          "cha": 7
+        },
+        "saves": "Str +4, Dex +1, Con +3, Int −1, Wis +1, Cha −2",
+        "skills": "Perception +5, Stealth +5",
+        "senses": "darkvision 60 ft, passive Perception 15",
+        "languages": "Yeti",
+        "traits": [
+          {
+            "name": "Fear of Fire",
+            "text": "If the yeti takes fire damage, it has disadvantage on attack rolls and ability checks until the end of its next turn."
+          }
+        ],
+        "actions": [
+          {
+            "name": "Multiattack",
+            "text": "The yeti uses Chilling Gaze and makes two attacks, using Claw or Ice Throw in any combination."
+          },
+          {
+            "name": "Claw",
+            "text": "Melee: +6 to hit, reach 5 ft. Hit: 7 (1d6+4) slashing + 3 (1d6) cold."
+          },
+          {
+            "name": "Ice Throw",
+            "text": "Ranged: +6 to hit, range 30/120 ft. Hit: 6 (1d4+4) bludgeoning + 2 (1d4) cold."
+          },
+          {
+            "name": "Chilling Gaze",
+            "text": "DC 13 Con save, one creature the yeti can see within 30 ft. Failure: 5 (2d4) cold + paralyzed until start of yeti's next turn unless immune to cold. Success: immune to chilling gaze of all yetis (not abominable yetis) for 1 hr."
+          }
+        ]
+      }
+    },
+    "adult_kruthik": {
+      "name": "Adult Kruthik",
+      "type": "Medium monstrosity · CR 2 · 450 XP",
+      "ac": 18,
+      "hp": 39,
+      "speed": "40 ft, burrow 20 ft, climb 40 ft",
+      "simple": {
+        "attacks": "Multiattack: 2 Stab or Spike. Stab +5, 1d6+3 piercing. Spike (ranged) +5, 1d4+3 piercing, 20/60.",
+        "resistances": "—",
+        "vulnerabilities": "—",
+        "notes": "Pack Tactics: advantage on attacks if ally within 5 ft of target. Tunneler: burrows solid rock at half speed, leaves 5-ft tunnel. Tremorsense 60 ft."
+      },
+      "full": {
+        "stats": {
+          "str": 15,
+          "dex": 16,
+          "con": 15,
+          "int": 7,
+          "wis": 12,
+          "cha": 8
+        },
+        "saves": "Str +2, Dex +3, Con +2, Int −2, Wis +1, Cha −1",
+        "skills": "Perception +5",
+        "senses": "darkvision 60 ft, tremorsense 60 ft, passive Perception 15",
+        "languages": "Kruthik",
+        "traits": [
+          {
+            "name": "Pack Tactics",
+            "text": "Advantage on attack rolls against a creature if at least one of the kruthik's allies is within 5 ft of the creature and not incapacitated."
+          },
+          {
+            "name": "Tunneler",
+            "text": "Can burrow through solid rock at half its burrow speed and leaves a 5-ft-diameter tunnel in its wake."
+          }
+        ],
+        "actions": [
+          {
+            "name": "Multiattack",
+            "text": "The kruthik makes two Stab or Spike attacks."
+          },
+          {
+            "name": "Stab",
+            "text": "Melee: +5 to hit, reach 5 ft. Hit: 6 (1d6+3) piercing."
+          },
+          {
+            "name": "Spike",
+            "text": "Ranged: +5 to hit, range 20/60 ft. Hit: 5 (1d4+3) piercing."
+          }
+        ]
+      }
+    },
+    "carrion_crawler": {
+      "name": "Carrion Crawler",
+      "type": "Large monstrosity · CR 2 · 450 XP",
+      "ac": 13,
+      "hp": 51,
+      "speed": "30 ft, climb 30 ft (any surface)",
+      "simple": {
+        "attacks": "Multiattack: Paralyzing Tentacles + 1 Bite. Bite +4, 2d4+2 piercing + 1d6 poison. Tentacles DC 12 Con, fail = poisoned (paralyzed while poisoned).",
+        "resistances": "—",
+        "vulnerabilities": "—",
+        "notes": "Spider Climb (incl. ceilings). Paralyzing Tentacles: repeats save end of each turn, ends on success; auto ends after 1 min."
+      },
+      "full": {
+        "stats": {
+          "str": 14,
+          "dex": 13,
+          "con": 16,
+          "int": 1,
+          "wis": 12,
+          "cha": 5
+        },
+        "saves": "Str +2, Dex +1, Con +3, Int −5, Wis +1, Cha −3",
+        "skills": "Perception +5",
+        "senses": "darkvision 60 ft, passive Perception 15",
+        "languages": "—",
+        "traits": [
+          {
+            "name": "Spider Climb",
+            "text": "The carrion crawler can climb difficult surfaces, including along ceilings, without needing to make an ability check."
+          }
+        ],
+        "actions": [
+          {
+            "name": "Multiattack",
+            "text": "The carrion crawler uses Paralyzing Tentacles and makes one Bite attack."
+          },
+          {
+            "name": "Bite",
+            "text": "Melee: +4 to hit, reach 5 ft. Hit: 7 (2d4+2) piercing + 3 (1d6) poison."
+          },
+          {
+            "name": "Paralyzing Tentacles",
+            "text": "DC 12 Con save, one creature the carrion crawler can see within 10 ft. Failure: poisoned and repeats save at end of each turn, ending on success. After 1 min, auto succeeds. While poisoned, target is paralyzed."
+          }
+        ]
+      }
+    },
+    "bard": {
+      "name": "Bard",
+      "type": "Medium humanoid · CR 2 · 450 XP",
+      "ac": 15,
+      "hp": 44,
+      "speed": "30 ft",
+      "simple": {
+        "attacks": "Multiattack: 2 Shortsword or Shortbow (can swap one for Spellcasting). Shortsword +4, 1d6+2 piercing. Shortbow +4, 1d6+2 piercing (80/320).",
+        "resistances": "—",
+        "vulnerabilities": "—",
+        "notes": "Cacophony (recharge 4-6): 15-ft cube, DC 12 Con, 2d8 thunder + pushed 10 ft (half/no push on save). Spellcasting (Cha, DC 12) at will: dancing lights, mage hand, prestidigitation; 1/day each: charm person, invisibility, sleep. Taunt (2/day, bonus): one creature within 30 ft, DC 12 Cha or disadvantage on checks/attacks/saves until bard's next turn."
+      },
+      "full": {
+        "stats": {
+          "str": 11,
+          "dex": 14,
+          "con": 12,
+          "int": 10,
+          "wis": 13,
+          "cha": 14
+        },
+        "saves": "Dex +4, Wis +3",
+        "skills": "Acrobatics +4, Perception +5, Performance +6",
+        "senses": "passive Perception 15",
+        "languages": "Any two languages",
+        "traits": [],
+        "actions": [
+          {
+            "name": "Multiattack",
+            "text": "Two Shortsword or Shortbow attacks. Can replace one attack with a use of Spellcasting."
+          },
+          {
+            "name": "Shortsword",
+            "text": "Melee: +4 to hit, reach 5 ft. Hit: 5 (1d6+2) piercing."
+          },
+          {
+            "name": "Shortbow",
+            "text": "Ranged: +4 to hit, range 80/320 ft. Hit: 5 (1d6+2) piercing."
+          },
+          {
+            "name": "Cacophony (recharge 4-6)",
+            "text": "Each creature in a 15-ft cube makes a DC 12 Con save: 9 (2d8) thunder and pushed 10 ft on a fail; half and no push on a success."
+          },
+          {
+            "name": "Spellcasting",
+            "text": "Casts using Cha (save DC 12). At will: dancing lights, mage hand, prestidigitation. 1/day each: charm person, invisibility, sleep."
+          },
+          {
+            "name": "Taunt (2/day, bonus)",
+            "text": "One creature within 30 ft that can hear the bard makes a DC 12 Cha save or has disadvantage on ability checks, attack rolls, and saves until the start of the bard's next turn."
+          }
+        ]
+      }
+    },
+    "knight": {
+      "name": "Knight",
+      "type": "Medium/Small humanoid · CR 3 · 700 XP",
+      "ac": 18,
+      "hp": 52,
+      "speed": "30 ft",
+      "simple": {
+        "attacks": "Multiattack: 2 attacks (Greatsword or Heavy Crossbow). Greatsword +5, 2d6+3 slashing + 1d8 radiant. Heavy Crossbow +2, 2d10 piercing + 1d8 radiant (100/400).",
+        "resistances": "Immune to Frightened",
+        "vulnerabilities": "—",
+        "notes": "Parry (reaction): when hit by a melee attack while holding a weapon, +2 AC vs that attack (may cause a miss). Plate armor."
+      },
+      "full": {
+        "stats": {
+          "str": 16,
+          "dex": 11,
+          "con": 14,
+          "int": 11,
+          "wis": 11,
+          "cha": 15
+        },
+        "saves": "Con +4, Wis +2",
+        "skills": "—",
+        "senses": "passive Perception 10",
+        "languages": "Common plus one other language",
+        "traits": [
+          {
+            "name": "Immunities",
+            "text": "Immune to the Frightened condition."
+          }
+        ],
+        "actions": [
+          {
+            "name": "Multiattack",
+            "text": "Two attacks, using Greatsword or Heavy Crossbow in any combination."
+          },
+          {
+            "name": "Greatsword",
+            "text": "Melee: +5 to hit, reach 5 ft. Hit: 10 (2d6+3) slashing + 4 (1d8) radiant."
+          },
+          {
+            "name": "Heavy Crossbow",
+            "text": "Ranged: +2 to hit, range 100/400 ft. Hit: 11 (2d10) piercing + 4 (1d8) radiant."
+          },
+          {
+            "name": "Parry (reaction)",
+            "text": "When hit by a melee attack while holding a weapon, the knight adds 2 to its AC against that attack, possibly causing it to miss."
+          }
+        ]
+      }
+    },
+    "archer": {
+      "name": "Archer",
+      "type": "Medium humanoid · CR 3 · 700 XP",
+      "ac": 16,
+      "hp": 75,
+      "speed": "30 ft",
+      "simple": {
+        "attacks": "Multiattack: 2 attacks (Shortsword or Longbow). Shortsword +6, 1d6+4 piercing. Longbow +6, 1d8+4 piercing (150/600).",
+        "resistances": "—",
+        "vulnerabilities": "—",
+        "notes": "Archer's Eye (3/day, bonus): after a ranged attack or damage roll, add 1d10 to the total. Studded leather."
+      },
+      "full": {
+        "stats": {
+          "str": 11,
+          "dex": 18,
+          "con": 16,
+          "int": 11,
+          "wis": 13,
+          "cha": 10
+        },
+        "saves": "—",
+        "skills": "Acrobatics +6, Perception +5",
+        "senses": "passive Perception 15",
+        "languages": "Any one language (usually Common)",
+        "traits": [],
+        "actions": [
+          {
+            "name": "Multiattack",
+            "text": "Two Shortsword or Longbow attacks."
+          },
+          {
+            "name": "Shortsword",
+            "text": "Melee: +6 to hit, reach 5 ft. Hit: 7 (1d6+4) piercing."
+          },
+          {
+            "name": "Longbow",
+            "text": "Ranged: +6 to hit, range 150/600 ft. Hit: 8 (1d8+4) piercing."
+          },
+          {
+            "name": "Archer's Eye (3/day, bonus)",
+            "text": "Immediately after a ranged attack roll or damage roll, the archer rolls a d10 and adds it to the total."
+          }
+        ]
+      }
+    },
+    "bandit_captain": {
+      "name": "Bandit Captain",
+      "type": "Medium/Small humanoid · CR 2 · 450 XP",
+      "ac": 15,
+      "hp": 52,
+      "speed": "30 ft",
+      "simple": {
+        "attacks": "Multiattack: 2 attacks (Scimitar and/or Pistol). Scimitar +5, 1d6+3 slashing. Pistol +5, 1d10+3 piercing (30/90).",
+        "resistances": "—",
+        "vulnerabilities": "—",
+        "notes": "Parry (reaction): when hit by a melee attack while holding a weapon, +2 AC vs that attack (may cause a miss). Thieves' cant. Studded leather. (Cantoris: a good face for a Church 'bandit' cover story.)"
+      },
+      "full": {
+        "stats": {
+          "str": 15,
+          "dex": 16,
+          "con": 14,
+          "int": 14,
+          "wis": 11,
+          "cha": 14
+        },
+        "saves": "Str +4, Dex +5, Wis +2",
+        "skills": "Athletics +4, Deception +4",
+        "senses": "passive Perception 10",
+        "languages": "Common, Thieves' cant",
+        "traits": [],
+        "actions": [
+          {
+            "name": "Multiattack",
+            "text": "Two attacks, using Scimitar and Pistol in any combination."
+          },
+          {
+            "name": "Scimitar",
+            "text": "Melee: +5 to hit, reach 5 ft. Hit: 6 (1d6+3) slashing."
+          },
+          {
+            "name": "Pistol",
+            "text": "Ranged: +5 to hit, range 30/90 ft. Hit: 8 (1d10+3) piercing."
+          },
+          {
+            "name": "Parry (reaction)",
+            "text": "When hit by a melee attack while holding a weapon, the bandit adds 2 to its AC against that attack, possibly causing it to miss."
+          }
+        ]
+      }
+    },
+    "cultist_fanatic": {
+      "name": "Cultist Fanatic",
+      "type": "Medium/Small humanoid · CR 2 · 450 XP",
+      "ac": 13,
+      "hp": 44,
+      "speed": "30 ft",
+      "simple": {
+        "attacks": "Pact Blade +4, 1d8+2 slashing + 2d6 necrotic. Spellcasting (Wis, DC 12, +4 attack): at will Light, Thaumaturgy; 2/day Command; 1/day Hold Person.",
+        "resistances": "—",
+        "vulnerabilities": "—",
+        "notes": "Spiritual Weapon (2/day, bonus): casts the spell using its spellcasting ability. Holy symbol, leather armor. (Cantoris: reskins cleanly as a low-tier Confirmed or Order Absolute devotee — Wis-based divine casting fits the Church.)"
+      },
+      "full": {
+        "stats": {
+          "str": 11,
+          "dex": 14,
+          "con": 12,
+          "int": 10,
+          "wis": 14,
+          "cha": 13
+        },
+        "saves": "Wis +4",
+        "skills": "Deception +3, Persuasion +3, Religion +2",
+        "senses": "passive Perception 12",
+        "languages": "Common",
+        "traits": [],
+        "actions": [
+          {
+            "name": "Pact Blade",
+            "text": "Melee: +4 to hit, reach 5 ft. Hit: 6 (1d8+2) slashing + 7 (2d6) necrotic."
+          },
+          {
+            "name": "Spellcasting",
+            "text": "Casts using Wis (save DC 12, +4 to hit). At will: Light, Thaumaturgy. 2/day: Command. 1/day: Hold Person."
+          },
+          {
+            "name": "Spiritual Weapon (2/day, bonus)",
+            "text": "Casts the Spiritual Weapon spell using its spellcasting ability."
+          }
+        ]
+      }
+    }
+  }
+}

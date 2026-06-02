@@ -1,0 +1,2649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grand Chord — DM Screen</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&family=Inter+Tight:wght@400;500;600;700&display=swap');
+
+  :root {
+    --bg: #14110f;
+    --bg-elev: #1c1916;
+    --bg-panel: #221e1a;
+    --bg-input: #2a2520;
+    --ink: #e8dfd1;
+    --ink-dim: #a89a85;
+    --ink-mute: #6b6357;
+    --rule: #2e2823;
+    --accent: #c89d5a;
+    --accent-dim: #8a6c3e;
+    --warn: #c46a4a;
+    --done: #5a8a6e;
+    --hot: #d4956b;
+    --warm: #c89d5a;
+    --cold: #6b6357;
+    --display: 'Cormorant Garamond', serif;
+    --body: 'Inter Tight', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    background-image:
+      radial-gradient(ellipse at top left, rgba(200, 157, 90, 0.04), transparent 50%),
+      radial-gradient(ellipse at bottom right, rgba(196, 106, 74, 0.03), transparent 50%);
+    background-attachment: fixed;
+    min-height: 100vh;
+  }
+
+  /* ---------- Top bar ---------- */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(20, 17, 15, 0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--rule);
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+  .brand {
+    font-family: var(--display);
+    font-style: italic;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+  }
+  .brand .num { color: var(--accent); font-style: normal; margin-right: 6px; }
+  .session-loader {
+    display: flex; align-items: center; gap: 10px;
+    margin-left: auto;
+  }
+  .session-loader label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-mute);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .session-loader select,
+  .session-loader button {
+    background: var(--bg-input);
+    color: var(--ink);
+    border: 1px solid var(--rule);
+    padding: 6px 12px;
+    border-radius: 3px;
+    font-family: var(--mono);
+    font-size: 12px;
+    cursor: pointer;
+  }
+  .session-loader button:hover { border-color: var(--accent); }
+  .status-pill {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--ink-mute);
+    padding: 4px 10px;
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+  }
+  .status-pill.ok { color: var(--done); border-color: var(--done); }
+  .status-pill.warn { color: var(--warn); border-color: var(--warn); }
+
+  /* ---------- Tabs ---------- */
+  .tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--rule);
+    padding: 0 24px;
+    background: var(--bg);
+    position: sticky;
+    top: 53px;
+    z-index: 40;
+  }
+  .tab {
+    background: none;
+    border: none;
+    color: var(--ink-mute);
+    padding: 14px 20px;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .tab:hover { color: var(--ink-dim); }
+  .tab.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  /* ---------- Layout: main content (sidebar removed) ---------- */
+  .main-layout {
+    display: block;
+    min-height: calc(100vh - 100px);
+  }
+  .main-content {
+    padding: 28px 32px 80px;
+    max-width: 1100px;
+    margin: 0 auto;
+    overflow-x: hidden;
+  }
+  .sidebar {
+    border-left: 1px solid var(--rule);
+    background: rgba(28, 25, 22, 0.4);
+    padding: 20px 18px;
+    position: sticky;
+    top: 100px;
+    align-self: start;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+  }
+
+  /* ---------- Sidebar styling ---------- */
+  .sidebar h3 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 17px;
+    margin: 0 0 4px;
+    color: var(--ink);
+  }
+  .sidebar .sidebar-sub {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 12px;
+  }
+  .sidebar .filter-row {
+    display: flex; gap: 4px; margin-bottom: 14px; flex-wrap: wrap;
+  }
+  .sidebar .filter-chip {
+    background: var(--bg-panel);
+    border: 1px solid var(--rule);
+    color: var(--ink-mute);
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.12s;
+  }
+  .sidebar .filter-chip:hover { color: var(--ink-dim); }
+  .sidebar .filter-chip.active {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(200, 157, 90, 0.08);
+  }
+  .ws-item {
+    background: var(--bg-panel);
+    border: 1px solid var(--rule);
+    border-left: 2px solid var(--accent-dim);
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    border-radius: 0 3px 3px 0;
+    font-size: 12px;
+  }
+  .ws-item.public { border-left-color: var(--done); }
+  .ws-item.rumors { border-left-color: var(--warm); }
+  .ws-item.resonants_only { border-left-color: var(--hot); }
+  .ws-item.nobody { border-left-color: var(--ink-mute); opacity: 0.7; }
+  .ws-item .ws-title {
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 3px;
+    line-height: 1.3;
+  }
+  .ws-item .ws-detail {
+    color: var(--ink-dim);
+    font-size: 11px;
+    line-height: 1.4;
+  }
+  .ws-item .ws-known {
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-top: 4px;
+  }
+  .ws-item.public .ws-known { color: var(--done); }
+  .ws-item.rumors .ws-known { color: var(--warm); }
+  .ws-item.resonants_only .ws-known { color: var(--hot); }
+
+  /* Quick links in sidebar */
+  .quick-links {
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid var(--rule);
+  }
+  .quick-links a {
+    display: block;
+    padding: 8px 10px;
+    background: var(--bg-panel);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 12px;
+    margin-bottom: 6px;
+    cursor: pointer;
+    transition: all 0.12s;
+  }
+  .quick-links a:hover { border-color: var(--accent); background: var(--bg-elev); }
+  .quick-links a .ql-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    text-transform: uppercase;
+    display: block;
+  }
+
+  /* ---------- Generic section ---------- */
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin: 0 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .section-head h2 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 26px;
+    margin: 0;
+  }
+  .section-head .sub {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--ink-mute);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .section-head .actions { margin-left: auto; display: flex; gap: 6px; }
+  section { margin-bottom: 36px; }
+
+  /* Buttons */
+  .btn {
+    background: var(--bg-input);
+    color: var(--ink);
+    border: 1px solid var(--rule);
+    padding: 6px 12px;
+    border-radius: 3px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.12s;
+  }
+  .btn:hover { border-color: var(--accent); color: var(--accent); }
+  .btn.primary { border-color: var(--accent); color: var(--accent); }
+  .btn.primary:hover { background: var(--accent); color: var(--bg); }
+  .btn.warn { border-color: var(--warn); color: var(--warn); }
+  .btn.warn:hover { background: var(--warn); color: var(--bg); }
+  .btn.tiny { padding: 3px 8px; font-size: 9px; }
+
+  /* ---------- Driving banner ---------- */
+  .driving-banner {
+    background: linear-gradient(180deg, rgba(200, 157, 90, 0.06), rgba(200, 157, 90, 0.01));
+    border-left: 3px solid var(--accent);
+    padding: 16px 20px;
+    margin-bottom: 28px;
+    border-radius: 0 4px 4px 0;
+    position: relative;
+  }
+  .driving-banner .label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .driving-banner .text {
+    font-family: var(--display);
+    font-size: 17px;
+    line-height: 1.4;
+    color: var(--ink);
+  }
+  .driving-banner .edit-btn {
+    position: absolute; top: 12px; right: 12px;
+  }
+
+  /* ---------- Cold open ---------- */
+  .cold-open {
+    background: linear-gradient(180deg, rgba(212, 149, 107, 0.08), rgba(212, 149, 107, 0.02));
+    border-left: 3px solid var(--hot);
+    padding: 18px 22px;
+    margin-bottom: 28px;
+    border-radius: 0 4px 4px 0;
+    position: relative;
+  }
+  .cold-open .label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    color: var(--hot);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .cold-open .max {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--ink-mute);
+    margin-left: 8px;
+  }
+  .cold-open .text {
+    font-family: var(--display);
+    font-size: 18px;
+    line-height: 1.45;
+    color: var(--ink);
+    white-space: pre-wrap;
+  }
+
+  /* ---------- Must-deliver ---------- */
+  .must-deliver {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+  .deliver {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 14px;
+    background: var(--bg-panel);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.12s;
+    user-select: none;
+  }
+  .deliver:hover { border-color: var(--accent-dim); background: var(--bg-elev); }
+  .deliver.checked {
+    border-color: var(--done);
+    background: rgba(90, 138, 110, 0.08);
+  }
+  .deliver.checked .deliver-text { color: var(--ink-dim); text-decoration: line-through; text-decoration-color: var(--done); }
+  .deliver .box {
+    flex-shrink: 0;
+    width: 16px; height: 16px;
+    border: 1.5px solid var(--ink-mute);
+    border-radius: 2px; margin-top: 1px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .deliver.checked .box { background: var(--done); border-color: var(--done); }
+  .deliver.checked .box::after { content: '✓'; color: var(--bg); font-weight: 700; font-size: 11px; }
+  .deliver-text { font-size: 13px; line-height: 1.4; }
+
+  /* ---------- Prepared situation cards ---------- */
+  .situation-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 4px 4px 0;
+    padding: 18px 20px;
+    margin-bottom: 16px;
+  }
+  .situation-card h3 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 22px;
+    margin: 0 0 4px;
+  }
+  .situation-card .summary {
+    color: var(--ink-dim);
+    font-size: 13px;
+    margin-bottom: 14px;
+    font-style: italic;
+  }
+  .situation-card .who-row {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--ink-mute);
+    letter-spacing: 0.06em;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+  }
+  .situation-card .who { color: var(--ink-dim); font-family: var(--body); text-transform: none; font-size: 12px; letter-spacing: 0; }
+  .situation-card .agendas {
+    background: var(--bg-input);
+    padding: 10px 14px;
+    border-radius: 3px;
+    font-size: 13px;
+    color: var(--ink-dim);
+    margin: 12px 0;
+  }
+  .situation-card .agendas::before {
+    content: 'Agendas: ';
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .situation-card .moves-label,
+  .situation-card .watch-label,
+  .situation-card .if-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 12px 0 4px;
+  }
+  .situation-card .watch-label { color: var(--warn); }
+  .situation-card ul {
+    margin: 0; padding-left: 20px;
+    color: var(--ink-dim);
+    font-size: 13px;
+  }
+  .situation-card ul li { margin: 4px 0; line-height: 1.45; }
+  .situation-card .watch-text,
+  .situation-card .if-text {
+    font-size: 13px; color: var(--ink-dim); line-height: 1.45; margin: 0;
+  }
+  .situation-card .watch-text { color: #d4a890; }
+  .situation-card .props-used {
+    margin-top: 12px; padding-top: 10px;
+    border-top: 1px solid var(--rule);
+    display: flex; gap: 6px; flex-wrap: wrap;
+  }
+  .situation-card .prop-link {
+    background: var(--bg-input);
+    border: 1px solid var(--rule);
+    color: var(--accent);
+    padding: 3px 10px;
+    font-family: var(--mono);
+    font-size: 10px;
+    border-radius: 12px;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .situation-card .prop-link:hover { border-color: var(--accent); background: rgba(200, 157, 90, 0.08); }
+
+  /* ---------- Exit vectors ---------- */
+  .exits {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 10px;
+  }
+  .exit {
+    background: var(--bg-panel);
+    border: 1px solid var(--rule);
+    padding: 12px 14px;
+    border-radius: 3px;
+  }
+  .exit .exit-title {
+    font-family: var(--display);
+    font-size: 16px;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .exit .exit-detail { color: var(--ink-dim); font-size: 12px; }
+
+  /* ---------- Combat tracker ---------- */
+  .combat-grid {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 24px;
+  }
+  /* Active statblocks panel (below the tracker, in the Combat tab) */
+  .active-statblocks {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 12px;
+  }
+  .active-statblocks .monster-card .m-full { display: block; }
+  .empty-hint {
+    color: var(--ink-mute); font-size: 13px; font-style: italic;
+    padding: 16px 0; line-height: 1.5;
+  }
+  /* Bestiary tab grid */
+  .bestiary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 12px;
+    align-items: start;
+  }
+  .monster-card .m-section {
+    font-family: var(--display); font-size: 14px; margin: 10px 0 4px; color: var(--accent);
+  }
+  .tracker-table tr.pc-row td:first-child { border-left: 2px solid var(--accent-dim); }
+  .tracker-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--bg-panel);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .tracker-table th {
+    background: var(--bg-input);
+    padding: 10px 12px;
+    text-align: left;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--ink-mute);
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--rule);
+    cursor: pointer;
+    user-select: none;
+  }
+  .tracker-table th:hover { color: var(--accent); }
+  .tracker-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--rule);
+    font-size: 13px;
+    vertical-align: middle;
+  }
+  .tracker-table tr.active-turn { background: rgba(200, 157, 90, 0.06); }
+  .tracker-table tr.dead { opacity: 0.4; }
+  .tracker-table tr.dead .name-cell { text-decoration: line-through; }
+  .tracker-table input.tracker-input {
+    background: var(--bg-input);
+    color: var(--ink);
+    border: 1px solid var(--rule);
+    padding: 4px 8px;
+    border-radius: 3px;
+    font-family: var(--mono);
+    font-size: 12px;
+    width: 60px;
+  }
+  .tracker-table input.tracker-input.name { width: 140px; font-family: var(--body); }
+  .tracker-table .hp-cell {
+    display: flex; gap: 2px; align-items: center;
+  }
+  .tracker-table .hp-cell .slash { color: var(--ink-mute); }
+  .tracker-actions { display: flex; gap: 4px; }
+  .add-row {
+    margin-top: 12px;
+    display: flex; gap: 8px; flex-wrap: wrap; align-items: center;
+    padding: 12px;
+    background: var(--bg-panel);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+  }
+  .add-row input, .add-row select {
+    background: var(--bg-input);
+    color: var(--ink);
+    border: 1px solid var(--rule);
+    padding: 6px 10px;
+    border-radius: 3px;
+    font-family: var(--mono);
+    font-size: 12px;
+  }
+  .add-row input.name { width: 160px; font-family: var(--body); }
+  .add-row input.numeric { width: 60px; }
+
+  /* ---------- Stat block library ---------- */
+  .monster-list h4 {
+    font-family: var(--display);
+    font-size: 17px;
+    margin: 0 0 8px;
+    color: var(--ink);
+  }
+  .monster-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+  }
+  .monster-card .m-head {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 8px;
+    margin-bottom: 6px;
+  }
+  .monster-card .m-name {
+    font-family: var(--display);
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .monster-card .m-type {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--ink-mute);
+    letter-spacing: 0.06em;
+  }
+  .monster-card .m-vitals {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-dim);
+    margin-bottom: 6px;
+  }
+  .monster-card .m-vitals span {
+    display: inline-block;
+    margin-right: 14px;
+  }
+  .monster-card .m-vitals span strong { color: var(--accent); }
+  .monster-card .m-detail {
+    font-size: 12px;
+    color: var(--ink-dim);
+    margin: 4px 0;
+  }
+  .monster-card .m-detail strong { color: var(--ink); font-weight: 500; }
+  .monster-card .m-actions { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+  .monster-card .m-toggle {
+    cursor: pointer;
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 6px;
+  }
+  .monster-card .m-full {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--rule);
+    display: none;
+  }
+  .monster-card.expanded .m-full { display: block; }
+  .monster-card .m-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 6px;
+    margin: 8px 0;
+  }
+  .monster-card .stat-cell {
+    background: var(--bg-input);
+    text-align: center;
+    padding: 6px 4px;
+    border-radius: 3px;
+    font-family: var(--mono);
+    font-size: 12px;
+  }
+  .monster-card .stat-cell .label {
+    font-size: 9px; color: var(--ink-mute); letter-spacing: 0.1em;
+  }
+  .monster-card .m-trait {
+    margin: 6px 0; font-size: 12px; color: var(--ink-dim);
+  }
+  .monster-card .m-trait strong { color: var(--ink); }
+
+  /* ---------- Maps ---------- */
+  .maps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px;
+  }
+  .map-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--rule);
+    padding: 14px 16px;
+    border-radius: 3px;
+  }
+  .map-card h4 {
+    font-family: var(--display);
+    font-size: 17px;
+    margin: 0 0 4px;
+  }
+  .map-card .notes {
+    font-size: 12px;
+    color: var(--ink-dim);
+    margin: 6px 0;
+  }
+  .map-card .map-url {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--ink-mute);
+    word-break: break-all;
+    margin: 4px 0;
+  }
+  .map-card .actions { display: flex; gap: 6px; margin-top: 8px; }
+  .map-card .map-thumb {
+    width: 100%; height: 150px; border-radius: 3px; overflow: hidden;
+    background: var(--bg-input); margin-bottom: 10px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .map-card .map-thumb img {
+    width: 100%; height: 100%; object-fit: cover; transition: transform 0.2s;
+  }
+  .map-card .map-thumb:hover img { transform: scale(1.04); }
+  .map-status { color: var(--ink-dim); font-size: 13px; padding: 18px 0; line-height: 1.6; }
+  .map-status.warn-text { color: var(--warn); }
+  .map-status code { background: var(--bg-input); padding: 1px 5px; border-radius: 3px; font-size: 12px; }
+
+  /* ---------- Props tab ---------- */
+  .prop-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--accent);
+    padding: 14px 18px;
+    margin-bottom: 12px;
+    border-radius: 0 3px 3px 0;
+  }
+  .prop-card h4 {
+    font-family: var(--display);
+    font-size: 18px;
+    margin: 0 0 4px;
+  }
+  .prop-card .prop-type {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .prop-card .prop-delivery {
+    font-size: 12px;
+    color: var(--ink-dim);
+    font-style: italic;
+    margin-bottom: 8px;
+  }
+  .prop-card .actions { display: flex; gap: 6px; margin-top: 10px; }
+
+  /* Document props rendered fancy */
+  .doc-prop {
+    background: #2a2520;
+    border: 1px solid var(--rule);
+    padding: 14px 18px;
+    border-radius: 3px;
+    font-family: 'Cormorant Garamond', serif;
+    margin: 12px 0;
+    color: var(--ink);
+  }
+  .doc-prop .doc-h {
+    font-weight: 700; font-size: 14px;
+    letter-spacing: 0.05em; text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .doc-prop .doc-i {
+    font-style: italic; font-size: 12px;
+    color: var(--ink-dim); margin-bottom: 12px;
+  }
+  .doc-prop p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px; color: var(--ink);
+    margin: 6px 0; line-height: 1.5;
+  }
+  .doc-prop .seal {
+    font-size: 10px; color: var(--ink-mute);
+    font-style: italic; text-align: center; margin-top: 10px;
+  }
+
+  /* ---------- Random tables ---------- */
+  .tables-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 14px;
+  }
+  .rt-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--rule);
+    padding: 14px;
+    border-radius: 3px;
+  }
+  .rt-card h4 {
+    font-family: var(--display);
+    font-size: 16px;
+    margin: 0 0 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .rt-card h4 .roll {
+    font-family: var(--mono);
+    font-size: 10px;
+    background: var(--bg-input);
+    padding: 4px 10px;
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    cursor: pointer;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+  }
+  .rt-card h4 .roll:hover { background: var(--accent); color: var(--bg); }
+  .rt-result {
+    font-family: var(--display);
+    font-size: 22px;
+    color: var(--accent);
+    font-style: italic;
+    margin: 6px 0 10px;
+    min-height: 28px;
+  }
+  .rt-list {
+    font-size: 12px;
+    color: var(--ink-dim);
+    line-height: 1.6;
+    max-height: 140px;
+    overflow-y: auto;
+    padding-right: 6px;
+    border-top: 1px solid var(--rule);
+    padding-top: 8px;
+  }
+  .rt-list .rt-item { padding: 1px 0; }
+
+  /* ---------- NPC list (links section) ---------- */
+  .npc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 10px;
+  }
+  .npc-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--rule);
+    border-left: 2px solid var(--cold);
+    padding: 12px 14px;
+    border-radius: 0 3px 3px 0;
+    cursor: pointer;
+    transition: all 0.12s;
+  }
+  .npc-card.hot { border-left-color: var(--hot); }
+  .npc-card.warm { border-left-color: var(--warm); }
+  .npc-card.cold { border-left-color: var(--cold); opacity: 0.85; }
+  .npc-card:hover { background: var(--bg-elev); }
+  .npc-card h4 {
+    font-family: var(--display);
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0 0 2px;
+  }
+  .npc-card .role {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--ink-mute);
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+  }
+  .npc-card .voice, .npc-card .agenda {
+    font-size: 12px;
+    color: var(--ink-dim);
+    margin: 4px 0;
+    line-height: 1.4;
+  }
+  .npc-card .agenda::before {
+    content: 'Wants: ';
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ---------- Lore cards ---------- */
+  .lore-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 10px;
+  }
+  .lore-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--rule);
+    padding: 12px 14px;
+    border-radius: 3px;
+  }
+  .lore-card .topic {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 2px;
+  }
+  .lore-card .dc {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+  .lore-card .text {
+    font-size: 12px;
+    color: var(--ink-dim);
+    line-height: 1.5;
+  }
+
+  /* ---------- Modal ---------- */
+  .modal-bg {
+    position: fixed; inset: 0;
+    background: rgba(20, 17, 15, 0.85);
+    backdrop-filter: blur(4px);
+    display: none;
+    align-items: flex-start; justify-content: center;
+    padding: 40px 20px;
+    z-index: 200;
+    overflow-y: auto;
+  }
+  .modal-bg.open { display: flex; }
+  .modal {
+    background: var(--bg-elev);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    max-width: 760px; width: 100%;
+    padding: 28px 36px 32px;
+    position: relative;
+  }
+  .modal-close {
+    position: absolute; top: 14px; right: 14px;
+    background: none;
+    border: 1px solid var(--rule);
+    color: var(--ink-dim);
+    width: 30px; height: 30px;
+    border-radius: 3px; cursor: pointer;
+    font-size: 14px;
+  }
+  .modal-close:hover { border-color: var(--warn); color: var(--warn); }
+  .modal h3 {
+    font-family: var(--display);
+    font-size: 24px; font-weight: 600;
+    margin: 0 0 4px;
+  }
+  .modal h4 {
+    font-family: var(--display);
+    font-size: 17px; font-weight: 600;
+    margin: 14px 0 6px; color: var(--accent);
+  }
+  .modal p, .modal ul { font-size: 13px; line-height: 1.55; color: var(--ink-dim); }
+  .modal ul { padding-left: 20px; }
+  .modal .modal-sub {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  /* Form modals */
+  .form-row { margin: 12px 0; }
+  .form-row label {
+    display: block;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--ink-mute);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .form-row input, .form-row select, .form-row textarea {
+    width: 100%;
+    background: var(--bg-input);
+    color: var(--ink);
+    border: 1px solid var(--rule);
+    padding: 8px 12px;
+    border-radius: 3px;
+    font-family: var(--body);
+    font-size: 13px;
+  }
+  .form-row textarea { font-family: var(--body); resize: vertical; min-height: 80px; }
+  .form-row textarea.mono { font-family: var(--mono); font-size: 12px; min-height: 200px; }
+  .form-row .help {
+    font-size: 11px; color: var(--ink-mute); margin-top: 3px;
+  }
+  .form-actions {
+    display: flex; gap: 8px; margin-top: 16px;
+    padding-top: 14px; border-top: 1px solid var(--rule);
+  }
+
+  /* Tab content visibility */
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* ---------- Session Prep worksheet (ephemeral) ---------- */
+  .prep-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 16px;
+  }
+  .prep-box { display: flex; flex-direction: column; gap: 5px; }
+  .prep-box.wide { grid-column: 1 / -1; }
+  .prep-box label {
+    font-size: 11px; color: var(--ink-mute); text-transform: uppercase;
+    letter-spacing: 0.05em; font-weight: 600;
+  }
+  .prep-field {
+    width: 100%; background: var(--bg-panel); color: var(--ink);
+    border: 1px solid var(--bg-input); border-radius: 7px;
+    padding: 10px 12px; font-family: var(--body); font-size: 14px;
+    line-height: 1.55; resize: vertical; box-sizing: border-box;
+  }
+  .prep-field:focus { outline: none; border-color: var(--accent-dim); }
+  .prep-field::placeholder { color: var(--ink-mute); }
+  @media (max-width: 720px) { .prep-grid { grid-template-columns: 1fr; } }
+  .freetext-area {
+    width: 100%; min-height: 420px; margin-top: 14px;
+    background: var(--bg-panel); color: var(--ink);
+    border: 1px solid var(--bg-input); border-radius: 8px;
+    padding: 16px 18px; font-family: var(--body); font-size: 15px;
+    line-height: 1.65; resize: vertical; box-sizing: border-box;
+  }
+  .freetext-area.tall { min-height: 560px; }
+  .freetext-area:focus { outline: none; border-color: var(--accent-dim); }
+  .freetext-area::placeholder { color: var(--ink-mute); }
+  .save-hint { font-size: 11px; color: var(--ink-mute); font-style: italic; }
+  .save-hint.saved { color: var(--accent); }
+  .no-session-banner {
+    background: rgba(196,106,74,0.1); border: 1px solid var(--warn);
+    color: var(--ink-dim); border-radius: 8px; padding: 12px 16px;
+    margin: 14px 0; font-size: 13px; line-height: 1.5;
+  }
+  .no-session-banner code { background: var(--bg-input); padding: 1px 5px; border-radius: 3px; }
+
+  /* ---------- Skills & Spells tab ---------- */
+  .skills-layout { display: flex; flex-direction: column; gap: 28px; }
+  .block-title {
+    font-family: var(--display); font-size: 20px; color: var(--accent);
+    margin: 0 0 12px; font-weight: 600;
+  }
+  .section-head.compact { margin-bottom: 10px; }
+  .ref-table {
+    width: 100%; border-collapse: collapse; font-size: 13px;
+  }
+  .ref-table th {
+    text-align: left; padding: 8px 10px; color: var(--ink-mute);
+    font-family: var(--body); font-weight: 600; font-size: 11px;
+    text-transform: uppercase; letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--bg-input);
+  }
+  .ref-table td {
+    padding: 8px 10px; border-bottom: 1px solid rgba(42,37,32,0.5);
+    vertical-align: top;
+  }
+  .ref-table td.ability {
+    color: var(--accent); font-weight: 600; white-space: nowrap; width: 60px;
+  }
+  .ref-table td.skill-name { font-weight: 600; white-space: nowrap; width: 130px; }
+
+  #turnUndeadBlock {
+    background: var(--bg-panel); border: 1px solid var(--bg-input);
+    border-radius: 8px; padding: 16px; font-size: 13px; line-height: 1.55;
+  }
+  #turnUndeadBlock p { margin: 0 0 10px; }
+  #turnUndeadBlock .tu-label { color: var(--accent); font-weight: 600; }
+  .tu-table { width: auto; border-collapse: collapse; margin: 10px 0; font-size: 13px; }
+  .tu-table th, .tu-table td {
+    padding: 5px 16px 5px 0; text-align: left; border-bottom: 1px solid rgba(42,37,32,0.5);
+  }
+  .tu-table th { color: var(--ink-mute); font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; }
+  #turnUndeadBlock .tu-note {
+    margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--bg-input);
+    color: var(--ink-dim); font-style: italic; font-size: 12px;
+  }
+
+  .spell-filters { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+  .filter-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .filter-label { color: var(--ink-mute); font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; width: 48px; }
+  .spell-chip, .spell-lvl {
+    background: var(--bg-input); color: var(--ink-dim); border: 1px solid transparent;
+    border-radius: 14px; padding: 4px 12px; font-size: 12px; cursor: pointer;
+    font-family: var(--body);
+  }
+  .spell-chip:hover, .spell-lvl:hover { color: var(--ink); }
+  .spell-chip.active, .spell-lvl.active {
+    background: var(--accent-dim); color: var(--bg); border-color: var(--accent);
+  }
+  .spell-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 8px;
+  }
+  .spell-card {
+    background: var(--bg-panel); border: 1px solid var(--bg-input); border-radius: 8px;
+    padding: 10px 12px; cursor: pointer; transition: border-color 0.12s;
+  }
+  .spell-card:hover { border-color: var(--accent-dim); }
+  .spell-card .sc-name { font-weight: 600; font-size: 14px; margin-bottom: 3px; }
+  .spell-card .sc-meta { font-size: 11px; color: var(--ink-mute); }
+  .spell-card .sc-lvl {
+    display: inline-block; background: var(--bg-input); color: var(--accent);
+    border-radius: 4px; padding: 1px 6px; font-size: 10px; margin-right: 6px;
+    text-transform: uppercase; letter-spacing: 0.04em;
+  }
+  /* Spell modal body */
+  .spell-detail .sd-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 18px; margin: 14px 0; font-size: 13px; }
+  .spell-detail .sd-meta .lbl { color: var(--ink-mute); font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .spell-detail .sd-text { font-size: 14px; line-height: 1.6; }
+  .spell-detail .sd-classes { margin-top: 14px; font-size: 12px; color: var(--ink-dim); }
+
+  /* ---------- NPC Generator tab ---------- */
+  .npcgen-controls { display: flex; align-items: flex-end; gap: 14px; flex-wrap: wrap; margin-bottom: 22px; }
+  .npcgen-field { display: flex; flex-direction: column; gap: 5px; }
+  .npcgen-field label { font-size: 11px; color: var(--ink-mute); text-transform: uppercase; letter-spacing: 0.05em; }
+  .npcgen-field select {
+    background: var(--bg-input); color: var(--ink); border: 1px solid var(--bg-input);
+    border-radius: 6px; padding: 8px 10px; font-family: var(--body); font-size: 14px; min-width: 160px;
+  }
+  .btn.big { padding: 9px 18px; font-size: 14px; }
+  .npcgen-result { margin-bottom: 30px; }
+  .npcgen-empty { color: var(--ink-mute); font-style: italic; padding: 24px 0; }
+  .npc-card {
+    background: var(--bg-panel); border: 1px solid var(--accent-dim); border-radius: 10px;
+    padding: 20px 22px; max-width: 560px;
+  }
+  .npc-card .nc-name { font-family: var(--display); font-size: 28px; color: var(--accent); font-weight: 600; }
+  .npc-card .nc-sub { font-size: 13px; color: var(--ink-dim); margin-bottom: 16px; }
+  .npc-card .nc-line { margin: 12px 0; font-size: 14px; line-height: 1.5; }
+  .npc-card .nc-line .nc-lbl {
+    display: block; font-size: 11px; color: var(--ink-mute);
+    text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 2px;
+  }
+  .npc-card .nc-conn { color: var(--accent); font-weight: 600; }
+  .npcgen-history .npc-mini {
+    display: flex; gap: 12px; padding: 8px 10px; border-bottom: 1px solid rgba(42,37,32,0.5);
+    font-size: 13px; align-items: baseline;
+  }
+  .npc-mini .nm-name { font-weight: 600; min-width: 110px; }
+  .npc-mini .nm-rest { color: var(--ink-dim); }
+
+  /* Scrollbars */
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--accent-dim); }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .main-layout { grid-template-columns: 1fr; }
+    .sidebar { border-left: none; border-top: 1px solid var(--rule); position: static; max-height: none; }
+    .combat-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="brand"><span class="num">⌘</span>Grand Chord — DM Screen</div>
+  <div class="session-loader">
+    <span class="status-pill" id="loadStatus">LOADING…</span>
+    <button class="btn" onclick="reloadAll()">⟳ Reload</button>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab active" data-tab="overview">Session Prep</button>
+  <button class="tab" data-tab="combat">Combat</button>
+  <button class="tab" data-tab="bestiary">Bestiary</button>
+  <button class="tab" data-tab="skills">Skills &amp; Spells</button>
+  <button class="tab" data-tab="npcgen">NPC Generator</button>
+  <button class="tab" data-tab="maps">Maps</button>
+  <button class="tab" data-tab="narrative">Narrative</button>
+</div>
+
+<!-- LAYOUT -->
+<div class="main-layout">
+  <div class="main-content">
+
+    <!-- OVERVIEW TAB -->
+    <div class="tab-content active" id="tab-overview">
+
+      <div class="section-head">
+        <h2>Session Prep</h2>
+        <div class="sub">Scratch space — fill before play, read during. Nothing here is saved; close the window and it's gone.</div>
+        <div class="actions"><button class="btn tiny" onclick="clearPrep()">Clear all</button></div>
+      </div>
+
+      <div class="prep-grid">
+        <div class="prep-box wide">
+          <label>Cold open</label>
+          <textarea class="prep-field" data-prep="cold_open" rows="4"
+            placeholder="How the session opens. Paste it here ahead of time and read from it."></textarea>
+        </div>
+
+        <div class="prep-box wide">
+          <label>What's driving the party right now</label>
+          <textarea class="prep-field" data-prep="driving" rows="3"
+            placeholder="The pull. What the party is chasing into this session."></textarea>
+        </div>
+
+        <div class="prep-box">
+          <label>Something for Luke</label>
+          <textarea class="prep-field" data-prep="luke" rows="2" placeholder="A beat, a moment, a hook."></textarea>
+        </div>
+        <div class="prep-box">
+          <label>Something for Rick</label>
+          <textarea class="prep-field" data-prep="rick" rows="2" placeholder="A beat, a moment, a hook."></textarea>
+        </div>
+        <div class="prep-box">
+          <label>Something for Duane</label>
+          <textarea class="prep-field" data-prep="duane" rows="2" placeholder="A beat, a moment, a hook."></textarea>
+        </div>
+        <div class="prep-box">
+          <label>Something for AV</label>
+          <textarea class="prep-field" data-prep="av" rows="2" placeholder="A beat, a moment, a hook."></textarea>
+        </div>
+        <div class="prep-box">
+          <label>Something for Barakas</label>
+          <textarea class="prep-field" data-prep="barakas" rows="2" placeholder="A beat, a moment, a hook."></textarea>
+        </div>
+
+        <div class="prep-box wide">
+          <label>Combat?</label>
+          <textarea class="prep-field" data-prep="combat" rows="3"
+            placeholder="What might come to blows, and what you've got ready in the Combat tab."></textarea>
+        </div>
+
+        <div class="prep-box wide">
+          <label>What is happening in the world right now?</label>
+          <textarea class="prep-field" data-prep="world_now" rows="4"
+            placeholder="Offscreen motion. What the NPCs and clocks are doing whether or not the party notices."></textarea>
+        </div>
+
+        <div class="prep-box wide">
+          <label>Loose notes / paste space</label>
+          <textarea class="prep-field" data-prep="scratch" rows="8"
+            placeholder="Anything else. Paste ideas as they come."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- NARRATIVE TAB (persistent, world-level) -->
+    <div class="tab-content" id="tab-narrative">
+      <div class="section-head">
+        <h2>Campaign Narrative</h2>
+        <div class="sub">Overarching arcs, threads, foreshadowing · persists across all sessions · autosaves</div>
+        <div class="actions"><span class="save-hint" id="narrSaveHint"></span></div>
+      </div>
+      <textarea id="narrativeNotes" class="freetext-area tall"
+        placeholder="Your campaign brain. Arc throughlines, long-game threads, what each god is doing, where the Ourn's degradation stands, foreshadowing planted and paid off, anything you want to track across the whole campaign. Lives in world.json — survives session swaps."></textarea>
+    </div>
+
+    <!-- COMBAT TAB -->
+    <div class="tab-content" id="tab-combat">
+
+      <div class="section-head">
+        <h2>Initiative Tracker</h2>
+        <div class="sub">Click headers to sort · edit inline · statblocks for anything in the fight appear below</div>
+        <div class="actions">
+          <button class="btn tiny" onclick="addParty()">+ Add Party</button>
+          <button class="btn tiny" onclick="nextTurn()">▶ Next turn</button>
+          <button class="btn tiny" onclick="sortByInitiative()">Sort by init</button>
+          <button class="btn tiny warn" onclick="clearTracker()">Clear</button>
+        </div>
+      </div>
+
+      <table class="tracker-table" id="trackerTable">
+        <thead>
+          <tr>
+            <th onclick="sortTracker('initiative')">Init</th>
+            <th onclick="sortTracker('name')">Name</th>
+            <th>HP</th>
+            <th>AC</th>
+            <th>Notes</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="trackerBody"></tbody>
+      </table>
+
+      <div class="add-row">
+        <input class="name" id="addName" placeholder="Name" />
+        <input class="numeric" id="addInit" placeholder="Init" type="number" title="Leave blank to auto-roll" />
+        <input class="numeric" id="addInitMod" placeholder="±Mod" type="number" title="Dex modifier added to each rolled init" />
+        <input class="numeric" id="addHP" placeholder="HP" type="number" />
+        <input class="numeric" id="addAC" placeholder="AC" type="number" />
+        <input class="numeric" id="addQty" placeholder="Qty" type="number" min="1" value="1" title="How many to add" />
+        <button class="btn primary" onclick="addCombatant()">Add</button>
+        <select id="addFromMonster">
+          <option value="">Add monster…</option>
+        </select>
+      </div>
+      <div style="font-size: 11px; color: var(--ink-mute); margin-top: 6px; padding: 0 4px;">
+        Tip: leave Init blank to auto-roll d20+Mod for each. Qty &gt; 1 rolls init separately. "Add monster" pulls from the Bestiary and shows its statblock below.
+      </div>
+
+      <!-- Active statblocks: auto-shown for every monster type currently in the tracker -->
+      <div class="section-head" style="margin-top: 28px;">
+        <h2>In This Fight</h2>
+        <div class="sub">Statblocks for monsters currently in the tracker</div>
+      </div>
+      <div class="active-statblocks" id="activeStatblocks"></div>
+
+    </div>
+
+    <!-- BESTIARY TAB -->
+    <div class="tab-content" id="tab-bestiary">
+      <div class="section-head">
+        <h2>Bestiary</h2>
+        <div class="sub">Full monster manual · simple stats default, expand for full · "+ Tracker" drops one into combat</div>
+        <div class="actions"><button class="btn tiny" onclick="editMonsters()">Edit</button></div>
+      </div>
+      <div class="monster-list bestiary-grid" id="monsterList"></div>
+    </div>
+
+    <!-- SKILLS & SPELLS TAB -->
+    <div class="tab-content" id="tab-skills">
+      <div class="section-head">
+        <h2>Skills &amp; Spells</h2>
+        <div class="sub">Reference — click a spell for full text</div>
+      </div>
+
+      <div class="skills-layout">
+        <!-- Skills table -->
+        <div class="skills-block">
+          <h3 class="block-title">The 18 Skills</h3>
+          <table class="ref-table" id="skillsTable">
+            <thead><tr><th>Skill</th><th>Ability</th><th>Used for</th></tr></thead>
+            <tbody id="skillsBody"></tbody>
+          </table>
+        </div>
+
+        <!-- Turn Undead -->
+        <div class="skills-block">
+          <h3 class="block-title">Turn Undead</h3>
+          <div id="turnUndeadBlock"></div>
+        </div>
+
+        <!-- Spells -->
+        <div class="skills-block">
+          <h3 class="block-title">Spells</h3>
+          <div class="spell-filters">
+            <div class="filter-row">
+              <span class="filter-label">Class:</span>
+              <button class="spell-chip active" data-class="all">All</button>
+              <button class="spell-chip" data-class="cleric">Cleric</button>
+              <button class="spell-chip" data-class="sorcerer">Sorcerer</button>
+              <button class="spell-chip" data-class="warlock">Warlock</button>
+            </div>
+            <div class="filter-row">
+              <span class="filter-label">Level:</span>
+              <button class="spell-lvl active" data-level="all">All</button>
+              <button class="spell-lvl" data-level="0">Cantrip</button>
+              <button class="spell-lvl" data-level="1">1</button>
+              <button class="spell-lvl" data-level="2">2</button>
+              <button class="spell-lvl" data-level="3">3</button>
+            </div>
+          </div>
+          <div class="spell-grid" id="spellGrid"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NPC GENERATOR TAB -->
+    <div class="tab-content" id="tab-npcgen">
+      <div class="section-head">
+        <h2>NPC Generator</h2>
+        <div class="sub">Roll a stranger on the spot</div>
+      </div>
+
+      <div class="npcgen-controls">
+        <div class="npcgen-field">
+          <label>Race</label>
+          <select id="npcgenRace">
+            <option value="any">Any / unspecified</option>
+            <option value="Human">Human</option>
+            <option value="Elf">Elf</option>
+            <option value="Half-Elf">Half-Elf</option>
+            <option value="Dwarf">Dwarf</option>
+            <option value="Halfling">Halfling</option>
+            <option value="Gnome">Gnome</option>
+            <option value="Tiefling">Tiefling</option>
+            <option value="Goliath">Goliath</option>
+            <option value="Half-Orc">Half-Orc</option>
+            <option value="Dragonborn">Dragonborn</option>
+          </select>
+        </div>
+        <div class="npcgen-field">
+          <label>Gender</label>
+          <select id="npcgenGender">
+            <option value="any">Any</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="neutral">Neutral</option>
+          </select>
+        </div>
+        <button class="btn primary big" onclick="generateNPC()">⚄ Generate NPC</button>
+      </div>
+
+      <div class="npcgen-result" id="npcgenResult">
+        <div class="npcgen-empty">Set race and gender (or leave on Any), then roll.</div>
+      </div>
+
+      <div class="npcgen-history">
+        <div class="section-head compact">
+          <h3 class="block-title">Recent rolls</h3>
+          <div class="actions"><button class="btn tiny" onclick="clearNPCHistory()">Clear</button></div>
+        </div>
+        <div id="npcgenHistory"></div>
+      </div>
+    </div>
+
+    <!-- MAPS TAB -->
+    <div class="tab-content" id="tab-maps">
+      <div class="section-head">
+        <h2>Maps</h2>
+        <div class="sub">Auto-loaded from <code>Images/Maps/</code> · click to open for screen-share</div>
+        <div class="actions"><button class="btn tiny" onclick="renderMaps()">⟳ Rescan folder</button></div>
+      </div>
+      <div class="maps-grid" id="mapsGrid"></div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- MODAL -->
+<div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modalBody">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// STATE
+// ============================================================
+let world = {};
+let session = {};      // runtime scratch: holds combat tracker + props (browser-persisted, not a file)
+let trackerSort = { col: 'initiative', dir: 'desc' };
+let activeTurnIndex = -1;
+
+// ============================================================
+// LOADING
+// ============================================================
+async function loadAll() {
+  setLoadStatus('LOADING…', '');
+  const bust = '?t=' + Date.now();  // cache-buster so Chrome doesn't serve stale files
+
+  // The five data files. Each loads independently — one failing doesn't break the others.
+  // All merge into a single `world` object so existing render code (world.spells, world.monsters,
+  // world.skills, world.npc_generator, world.narrative…) keeps working unchanged.
+  const files = ['world.json', 'spells.json', 'reference.json', 'monsters.json', 'npcgen.json'];
+  world = {};
+  const failed = [];
+
+  await Promise.all(files.map(async (f) => {
+    try {
+      const res = await fetch(f + bust, { cache: 'no-store' });
+      if (!res.ok) throw new Error('status ' + res.status);
+      const data = await res.json();
+      Object.assign(world, data);  // merge keys into the shared world object
+    } catch (err) {
+      failed.push(f);
+      console.error(`Failed to load ${f}:`, err.message);
+    }
+  }));
+
+  if (failed.length === files.length) {
+    // Nothing loaded at all — almost certainly the server isn't running.
+    setLoadStatus('FAILED — RUN THE SERVER', 'warn');
+    return;
+  }
+
+  applyLocalOverrides();
+
+  if (failed.length > 0) {
+    setLoadStatus('LOADED (missing: ' + failed.join(', ') + ')', 'warn');
+  } else {
+    setLoadStatus('LOADED', 'ok');
+  }
+  renderAll();
+}
+
+function setLoadStatus(text, cls) {
+  const el = document.getElementById('loadStatus');
+  el.textContent = text;
+  el.className = 'status-pill ' + cls;
+}
+
+function reloadAll() {
+  if (confirm('Reload all data files from disk? In-app edits not yet exported will be lost (the files on disk persist).')) {
+    localStorage.removeItem('gc_narrative');
+    loadAll();
+  }
+}
+
+function exportState() { /* removed — edit JSON files directly */ }
+
+function download(filename, text) {
+  const blob = new Blob([text], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename; a.click();
+  URL.revokeObjectURL(url);
+}
+
+function applyLocalOverrides() {
+  // Only the narrative is editable in-app and worth restoring from localStorage.
+  // Scoping to narrative (not the whole merged world) means edits to spells.json /
+  // monsters.json / etc. on disk always take effect on reload — localStorage can't mask them.
+  const n = localStorage.getItem('gc_narrative');
+  if (n !== null) world.narrative = n;
+  // Combat tracker persists in-browser under a fixed key
+  session._tracker = JSON.parse(localStorage.getItem('gc_tracker') || '[]');
+  // Props (legacy; tab removed) — kept for any in-browser leftovers
+  session.props = JSON.parse(localStorage.getItem('gc_props') || 'null') || (world.props || []);
+}
+
+function persistWorld() {
+  // Only narrative is durably saved in-browser. Other in-app edits (e.g. monster
+  // editor) live in memory until you click Export, which writes the split files.
+  localStorage.setItem('gc_narrative', world.narrative || '');
+}
+function persistSession() {
+  localStorage.setItem('gc_props', JSON.stringify(session.props || []));
+}
+function persistChecked() { /* no-op: checklist removed */ }
+function persistTracker() {
+  localStorage.setItem('gc_tracker', JSON.stringify(session._tracker || []));
+}
+
+// ============================================================
+// RENDER ALL
+// ============================================================
+function renderAll() {
+  renderNarrative();
+  renderTracker();
+  renderMonsters();
+  renderSkills();
+  renderSpells();
+  renderMaps();
+  populateMonsterDropdown();
+  // Session Prep worksheet is static markup (ephemeral textareas) — nothing to render.
+}
+
+function clearPrep() {
+  if (!confirm('Clear all prep boxes? This wipes the worksheet (it was never saved anyway).')) return;
+  document.querySelectorAll('.prep-field').forEach(f => { f.value = ''; });
+}
+
+// ============================================================
+// OVERVIEW RENDER
+// ============================================================
+function renderDriving() {
+  document.getElementById('drivingText').textContent =
+    session.whats_driving_the_party || '(not set — click Edit)';
+}
+
+function renderColdOpen() {
+  const co = session.cold_open || {};
+  const txt = co.script || '(not set)';
+  const max = co.max_seconds ? `· max ${co.max_seconds}s` : '';
+  document.getElementById('coldOpenText').textContent = txt;
+  document.getElementById('coldOpenText2').textContent = txt;
+  document.getElementById('coldOpenMax').textContent = max;
+  document.getElementById('coldOpenMax2').textContent = max;
+}
+
+function renderMustDeliver() {
+  const grid = document.getElementById('mustDeliverGrid');
+  grid.innerHTML = '';
+  const checked = session._checked || [];
+  (session.must_deliver || []).forEach(d => {
+    const isChecked = checked.includes(d.id);
+    const div = document.createElement('div');
+    div.className = 'deliver' + (isChecked ? ' checked' : '');
+    div.innerHTML = `<div class="box"></div><div class="deliver-text">${escapeHTML(d.text)}</div>`;
+    div.onclick = () => {
+      if (!session._checked) session._checked = [];
+      const i = session._checked.indexOf(d.id);
+      if (i >= 0) session._checked.splice(i, 1);
+      else session._checked.push(d.id);
+      persistChecked();
+      renderMustDeliver();
+    };
+    grid.appendChild(div);
+  });
+}
+
+function renderChecklist() {
+  const grid = document.getElementById('checklistGrid');
+  grid.innerHTML = '';
+  const items = session.pre_session_checklist || [];
+  items.forEach((text, idx) => {
+    const checkedKey = `pre_${idx}`;
+    const isChecked = (session._checked || []).includes(checkedKey);
+    const div = document.createElement('div');
+    div.className = 'deliver' + (isChecked ? ' checked' : '');
+    div.innerHTML = `<div class="box"></div><div class="deliver-text">${escapeHTML(text)}</div>`;
+    div.onclick = () => {
+      if (!session._checked) session._checked = [];
+      const i = session._checked.indexOf(checkedKey);
+      if (i >= 0) session._checked.splice(i, 1);
+      else session._checked.push(checkedKey);
+      persistChecked();
+      renderChecklist();
+    };
+    grid.appendChild(div);
+  });
+}
+
+function renderExits() {
+  const grid = document.getElementById('exitsGrid');
+  grid.innerHTML = '';
+  (session.exit_vectors || []).forEach(e => {
+    const div = document.createElement('div');
+    div.className = 'exit';
+    div.innerHTML = `
+      <div class="exit-title">${escapeHTML(e.title)}</div>
+      <div class="exit-detail">${escapeHTML(e.detail)}</div>
+    `;
+    grid.appendChild(div);
+  });
+}
+
+function renderNPCs() {
+  const grid = document.getElementById('npcGrid');
+  grid.innerHTML = '';
+  const activeIds = session.active_npcs_session || Object.keys(world.npcs || {});
+  activeIds.forEach(id => {
+    const npc = world.npcs?.[id];
+    if (!npc) return;
+    const div = document.createElement('div');
+    div.className = 'npc-card ' + (npc.status || 'cold');
+    div.innerHTML = `
+      <h4>${escapeHTML(npc.name)}</h4>
+      <div class="role">${escapeHTML(npc.role || '')}</div>
+      <div class="voice">${escapeHTML(npc.voice || '')}</div>
+      <div class="agenda">${escapeHTML(npc.agenda || '')}</div>
+    `;
+    div.onclick = () => showNPCModal(id);
+    grid.appendChild(div);
+  });
+}
+
+function showNPCModal(id) {
+  const npc = world.npcs[id];
+  document.getElementById('modalContent').innerHTML = `
+    <h3>${escapeHTML(npc.name)}</h3>
+    <div class="modal-sub">${escapeHTML(npc.role || '')}</div>
+    <h4>Voice</h4><p>${escapeHTML(npc.voice || '')}</p>
+    <h4>Agenda</h4><p>${escapeHTML(npc.agenda || '')}</p>
+    <h4>Detail</h4><p>${escapeHTML(npc.full || '')}</p>
+    <div class="form-actions">
+      <button class="btn" onclick="editNPC('${id}')">Edit</button>
+    </div>
+  `;
+  openModal();
+}
+
+function renderLocations() {
+  const grid = document.getElementById('locationGrid');
+  grid.innerHTML = '';
+  const activeIds = session.active_locations_session || Object.keys(world.locations || {});
+  activeIds.forEach(id => {
+    const loc = world.locations?.[id];
+    if (!loc) return;
+    const div = document.createElement('div');
+    div.className = 'npc-card warm';
+    div.innerHTML = `
+      <h4>${escapeHTML(loc.name)}</h4>
+      <div class="role">${escapeHTML(loc.summary || '')}</div>
+      <div class="voice"><strong>Now:</strong> ${escapeHTML(loc.current_state || '')}</div>
+      <div class="voice"><strong>Notable:</strong> ${escapeHTML(loc.notable || '')}</div>
+    `;
+    grid.appendChild(div);
+  });
+}
+
+function renderLore() {
+  const grid = document.getElementById('loreGrid');
+  grid.innerHTML = '';
+  (world.lore || []).forEach(l => {
+    const div = document.createElement('div');
+    div.className = 'lore-card';
+    div.innerHTML = `
+      <div class="topic">${escapeHTML(l.topic)}</div>
+      <div class="dc">${escapeHTML(l.dc)}</div>
+      <div class="text">${escapeHTML(l.text)}</div>
+    `;
+    grid.appendChild(div);
+  });
+}
+
+function renderRandomTables() {
+  const grid = document.getElementById('randomTablesGrid');
+  grid.innerHTML = '';
+  const tables = world.random_tables || {};
+  const labels = {
+    names_male: 'Male names',
+    names_female: 'Female names',
+    personality: 'Personality',
+    professions: 'Professions'
+  };
+  Object.keys(tables).forEach(key => {
+    const items = tables[key];
+    const label = labels[key] || key;
+    const div = document.createElement('div');
+    div.className = 'rt-card';
+    div.innerHTML = `
+      <h4>${label} <span class="roll" onclick="rollTable('${key}')">Roll</span></h4>
+      <div class="rt-result" id="rt-result-${key}">—</div>
+      <div class="rt-list">
+        ${items.map(i => `<div class="rt-item">${escapeHTML(i)}</div>`).join('')}
+      </div>
+    `;
+    grid.appendChild(div);
+  });
+}
+
+function rollTable(key) {
+  const items = world.random_tables[key];
+  if (!items || !items.length) return;
+  const pick = items[Math.floor(Math.random() * items.length)];
+  document.getElementById(`rt-result-${key}`).textContent = pick;
+}
+
+// ============================================================
+// SITUATIONS
+// ============================================================
+function renderNarrative() {
+  const ta = document.getElementById('narrativeNotes');
+  if (!ta) return;
+  ta.value = (world.narrative || '');
+}
+
+// ============================================================
+// COMBAT
+// ============================================================
+function renderTracker() {
+  const tbody = document.getElementById('trackerBody');
+  tbody.innerHTML = '';
+  const list = session._tracker || [];
+  // Sort
+  list.sort((a, b) => {
+    if (trackerSort.col === 'initiative') {
+      return trackerSort.dir === 'desc' ? b.initiative - a.initiative : a.initiative - b.initiative;
+    }
+    if (trackerSort.col === 'name') {
+      return trackerSort.dir === 'desc' ? b.name.localeCompare(a.name) : a.name.localeCompare(b.name);
+    }
+    return 0;
+  });
+  list.forEach((c, i) => {
+    const tr = document.createElement('tr');
+    if (i === activeTurnIndex) tr.classList.add('active-turn');
+    // Only style as "dead" if it has a max HP and current HP dropped to 0 — not freshly-added PCs
+    if (c.maxHp > 0 && c.hp <= 0) tr.classList.add('dead');
+    if (c.isPC) tr.classList.add('pc-row');
+    const initVal = c.initiative ? c.initiative : '';
+    const hpVal = c.maxHp > 0 ? c.hp : '';
+    const maxHpVal = c.maxHp > 0 ? c.maxHp : '';
+    tr.innerHTML = `
+      <td><input class="tracker-input" type="number" value="${initVal}" placeholder="—" onchange="updateCombatant(${i},'initiative',this.value)" /></td>
+      <td class="name-cell"><input class="tracker-input name" type="text" value="${escapeHTML(c.name)}" onchange="updateCombatant(${i},'name',this.value)" /></td>
+      <td><div class="hp-cell">
+        <input class="tracker-input" type="number" value="${hpVal}" placeholder="—" onchange="updateCombatant(${i},'hp',this.value)" />
+        <span class="slash">/</span>
+        <input class="tracker-input" type="number" value="${maxHpVal}" placeholder="—" onchange="updateCombatant(${i},'maxHp',this.value)" />
+      </div></td>
+      <td><input class="tracker-input" type="number" value="${c.ac || ''}" placeholder="—" onchange="updateCombatant(${i},'ac',this.value)" /></td>
+      <td><input class="tracker-input name" type="text" value="${escapeHTML(c.notes || '')}" onchange="updateCombatant(${i},'notes',this.value)" /></td>
+      <td class="tracker-actions">
+        <button class="btn tiny warn" onclick="removeCombatant(${i})">×</button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+  renderActiveStatblocks();
+}
+
+function renderActiveStatblocks() {
+  const wrap = document.getElementById('activeStatblocks');
+  if (!wrap) return;
+  const list = session._tracker || [];
+  // Unique monster ids currently in the fight, in first-appearance order
+  const seen = [];
+  list.forEach(c => {
+    if (c.monsterId && world.monsters[c.monsterId] && !seen.includes(c.monsterId)) {
+      seen.push(c.monsterId);
+    }
+  });
+  if (seen.length === 0) {
+    wrap.innerHTML = '<div class="empty-hint">No monsters in the tracker yet. Add one with the “Add monster…” dropdown above and its statblock shows here.</div>';
+    return;
+  }
+  wrap.innerHTML = '';
+  seen.forEach(id => {
+    const card = document.createElement('div');
+    card.className = 'monster-card';
+    card.innerHTML = monsterCardHTML(id, world.monsters[id], { showAddButton: false, expandedFull: true });
+    wrap.appendChild(card);
+  });
+}
+
+function rollD20() {
+  return Math.floor(Math.random() * 20) + 1;
+}
+
+function dexMod(monster) {
+  const dex = monster?.full?.stats?.dex;
+  if (typeof dex !== 'number') return 0;
+  return Math.floor((dex - 10) / 2);
+}
+
+const PARTY_MEMBERS = ['Luke', 'Rick', 'AV', 'Barakas', 'Duane'];
+
+function addParty() {
+  if (!session._tracker) session._tracker = [];
+  PARTY_MEMBERS.forEach(name => {
+    // Skip if already present (avoid double-adding)
+    if (session._tracker.some(c => c.name === name)) return;
+    session._tracker.push({ name, initiative: 0, hp: 0, maxHp: 0, ac: 0, notes: 'PC', isPC: true });
+  });
+  persistTracker();
+  renderTracker();
+}
+
+function addCombatant() {
+  const name = document.getElementById('addName').value.trim();
+  const initRaw = document.getElementById('addInit').value;
+  const initMod = parseInt(document.getElementById('addInitMod').value) || 0;
+  const hp = parseInt(document.getElementById('addHP').value) || 1;
+  const ac = parseInt(document.getElementById('addAC').value) || 10;
+  const qty = Math.max(1, parseInt(document.getElementById('addQty').value) || 1);
+  if (!name) return;
+  if (!session._tracker) session._tracker = [];
+
+  // If init field is blank, auto-roll. If filled, use as-is for everyone
+  // (one shared init for the whole batch makes sense for "batch of identical things").
+  // For per-creature rolls, leave init blank and let qty trigger the loop.
+  for (let i = 0; i < qty; i++) {
+    let init;
+    if (initRaw === '' || initRaw === null) {
+      init = rollD20() + initMod;
+    } else {
+      init = parseInt(initRaw) || 0;
+    }
+    const displayName = qty > 1 ? `${name} ${i + 1}` : name;
+    session._tracker.push({ name: displayName, initiative: init, hp, maxHp: hp, ac, notes: '' });
+  }
+
+  persistTracker();
+  document.getElementById('addName').value = '';
+  document.getElementById('addInit').value = '';
+  document.getElementById('addInitMod').value = '';
+  document.getElementById('addHP').value = '';
+  document.getElementById('addAC').value = '';
+  document.getElementById('addQty').value = '1';
+  renderTracker();
+}
+
+function populateMonsterDropdown() {
+  const sel = document.getElementById('addFromMonster');
+  if (!sel) return;
+  sel.innerHTML = '<option value="">Add from monster manual…</option>';
+  Object.keys(world.monsters || {}).forEach(id => {
+    const m = world.monsters[id];
+    const opt = document.createElement('option');
+    opt.value = id;
+    opt.textContent = m.name;
+    sel.appendChild(opt);
+  });
+  sel.onchange = () => {
+    const id = sel.value;
+    if (!id) return;
+    addMonsterToTracker(id);
+    sel.value = '';
+  };
+}
+
+function updateCombatant(i, field, value) {
+  if (field === 'name' || field === 'notes') {
+    session._tracker[i][field] = value;
+  } else {
+    session._tracker[i][field] = parseInt(value) || 0;
+  }
+  persistTracker();
+  renderTracker();
+}
+
+function removeCombatant(i) {
+  session._tracker.splice(i, 1);
+  persistTracker();
+  renderTracker();
+}
+
+function clearTracker() {
+  if (!confirm('Clear the tracker?')) return;
+  session._tracker = [];
+  activeTurnIndex = -1;
+  persistTracker();
+  renderTracker();
+}
+
+function sortByInitiative() {
+  trackerSort = { col: 'initiative', dir: 'desc' };
+  renderTracker();
+}
+
+function sortTracker(col) {
+  if (trackerSort.col === col) {
+    trackerSort.dir = trackerSort.dir === 'desc' ? 'asc' : 'desc';
+  } else {
+    trackerSort = { col, dir: 'desc' };
+  }
+  renderTracker();
+}
+
+function nextTurn() {
+  const list = session._tracker || [];
+  if (!list.length) return;
+  activeTurnIndex = (activeTurnIndex + 1) % list.length;
+  renderTracker();
+}
+
+function monsterCardHTML(id, m, opts) {
+  opts = opts || {};
+  const showAddButton = opts.showAddButton !== false;  // default true
+  const expandedFull = opts.expandedFull === true;      // default false (collapsible)
+
+  let fullHTML = '';
+  if (m.full) {
+    const s = m.full.stats || {};
+    const grid = ['str','dex','con','int','wis','cha'].map(k => `
+      <div class="stat-cell">
+        <div class="label">${k.toUpperCase()}</div>
+        <div>${s[k] || 10} (${formatMod(s[k])})</div>
+      </div>
+    `).join('');
+    const traits = (m.full.traits || []).map(t =>
+      `<div class="m-trait"><strong>${escapeHTML(t.name)}.</strong> ${escapeHTML(t.text)}</div>`
+    ).join('');
+    const actions = (m.full.actions || []).map(a =>
+      `<div class="m-trait"><strong>${escapeHTML(a.name)}.</strong> ${escapeHTML(a.text)}</div>`
+    ).join('');
+    fullHTML = `
+      <div class="m-full"${expandedFull ? ' style="display:block"' : ''}>
+        <div class="m-stats-grid">${grid}</div>
+        ${m.full.saves ? `<div class="m-detail"><strong>Saves:</strong> ${escapeHTML(m.full.saves)}</div>` : ''}
+        ${m.full.skills ? `<div class="m-detail"><strong>Skills:</strong> ${escapeHTML(m.full.skills)}</div>` : ''}
+        ${m.full.senses ? `<div class="m-detail"><strong>Senses:</strong> ${escapeHTML(m.full.senses)}</div>` : ''}
+        ${m.full.languages ? `<div class="m-detail"><strong>Languages:</strong> ${escapeHTML(m.full.languages)}</div>` : ''}
+        ${traits ? `<h5 class="m-section">Traits</h5>${traits}` : ''}
+        ${actions ? `<h5 class="m-section">Actions</h5>${actions}` : ''}
+      </div>
+    `;
+  }
+  return `
+    <div class="m-head">
+      <div class="m-name">${escapeHTML(m.name)}</div>
+      <div class="m-type">${escapeHTML(m.type)}</div>
+    </div>
+    <div class="m-vitals">
+      <span><strong>AC</strong> ${m.ac}</span>
+      <span><strong>HP</strong> ${m.hp}</span>
+      <span><strong>Spd</strong> ${escapeHTML(m.speed || '—')}</span>
+    </div>
+    ${m.simple ? `
+      <div class="m-detail"><strong>Attacks:</strong> ${escapeHTML(m.simple.attacks)}</div>
+      ${m.simple.resistances ? `<div class="m-detail"><strong>Res:</strong> ${escapeHTML(m.simple.resistances)}</div>` : ''}
+      ${m.simple.vulnerabilities ? `<div class="m-detail"><strong>Vuln:</strong> ${escapeHTML(m.simple.vulnerabilities)}</div>` : ''}
+      ${m.simple.notes ? `<div class="m-detail">${escapeHTML(m.simple.notes)}</div>` : ''}
+    ` : ''}
+    ${(fullHTML && !expandedFull) ? `<div class="m-toggle" onclick="toggleMonster('${id}')">▾ Expand</div>` : ''}
+    ${fullHTML}
+    ${showAddButton ? `<div class="m-actions"><button class="btn tiny" onclick="addMonsterToTracker('${id}')">+ Tracker</button></div>` : ''}
+  `;
+}
+
+function renderMonsters() {
+  const list = document.getElementById('monsterList');
+  if (!list) return;
+  list.innerHTML = '';
+  Object.keys(world.monsters || {}).forEach(id => {
+    const m = world.monsters[id];
+    const div = document.createElement('div');
+    div.className = 'monster-card';
+    div.id = 'monster-' + id;
+    div.innerHTML = monsterCardHTML(id, m, { showAddButton: true, expandedFull: false });
+    list.appendChild(div);
+  });
+}
+
+function toggleMonster(id) {
+  document.getElementById('monster-' + id).classList.toggle('expanded');
+}
+
+function addMonsterToTracker(id, qty) {
+  const m = world.monsters[id];
+  if (!m) return;
+  if (qty == null) {
+    const input = prompt(`How many ${m.name}?`, '1');
+    if (input === null) return;
+    qty = Math.max(1, parseInt(input) || 1);
+  }
+  const mod = dexMod(m);
+  if (!session._tracker) session._tracker = [];
+  for (let i = 0; i < qty; i++) {
+    const init = rollD20() + mod;
+    const displayName = qty > 1 ? `${m.name} ${i + 1}` : m.name;
+    session._tracker.push({
+      name: displayName, initiative: init,
+      hp: m.hp, maxHp: m.hp, ac: m.ac, notes: m.type, monsterId: id
+    });
+  }
+  persistTracker();
+  renderTracker();
+  switchTab('combat');
+}
+
+function formatMod(stat) {
+  const mod = Math.floor(((stat || 10) - 10) / 2);
+  return mod >= 0 ? `+${mod}` : `${mod}`;
+}
+
+// ============================================================
+// SKILLS & SPELLS
+// ============================================================
+function renderSkills() {
+  const body = document.getElementById('skillsBody');
+  if (body) {
+    body.innerHTML = '';
+    (world.skills || []).forEach(s => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td class="skill-name">${escapeHTML(s.name)}</td>
+        <td class="ability">${escapeHTML(s.ability)}</td>
+        <td>${escapeHTML(s.use)}</td>`;
+      body.appendChild(tr);
+    });
+  }
+
+  // Turn Undead block
+  const tuWrap = document.getElementById('turnUndeadBlock');
+  const tu = (world.special_abilities || {}).turn_undead;
+  if (tuWrap && tu) {
+    const rows = (tu.destroy_table || []).map(r =>
+      `<tr><td>${escapeHTML(r.cleric_level)}</td><td>${escapeHTML(r.destroys_cr)}</td></tr>`
+    ).join('');
+    tuWrap.innerHTML = `
+      <p>${escapeHTML(tu.summary)}</p>
+      <p><span class="tu-label">Turned:</span> ${escapeHTML(tu.turned_effect)}</p>
+      <p><span class="tu-label">Destroy Undead (lvl 5+):</span> ${escapeHTML(tu.destroy_note)}</p>
+      <table class="tu-table">
+        <thead><tr><th>Cleric level</th><th>Destroys CR</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+      <p><span class="tu-label">Uses:</span> ${escapeHTML(tu.uses)}</p>
+      ${tu.campaign_note ? `<div class="tu-note">${escapeHTML(tu.campaign_note)}</div>` : ''}
+    `;
+  }
+}
+
+let spellFilterClass = 'all';
+let spellFilterLevel = 'all';
+
+function renderSpells() {
+  const grid = document.getElementById('spellGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  const spells = (world.spells || []).slice().sort((a, b) =>
+    a.level - b.level || a.name.localeCompare(b.name));
+  let shown = 0;
+  spells.forEach((sp, idx) => {
+    if (spellFilterClass !== 'all' && !(sp.classes || []).includes(spellFilterClass)) return;
+    if (spellFilterLevel !== 'all' && String(sp.level) !== spellFilterLevel) return;
+    shown++;
+    const lvlLabel = sp.level === 0 ? 'Cantrip' : 'Lvl ' + sp.level;
+    const div = document.createElement('div');
+    div.className = 'spell-card';
+    div.onclick = () => showSpell(idx);
+    div.innerHTML = `
+      <div class="sc-name">${escapeHTML(sp.name)}</div>
+      <div class="sc-meta"><span class="sc-lvl">${lvlLabel}</span>${escapeHTML(sp.school)}</div>
+    `;
+    grid.appendChild(div);
+  });
+  if (shown === 0) {
+    grid.innerHTML = '<div class="map-status">No spells match that filter.</div>';
+  }
+}
+
+function showSpell(idx) {
+  const spells = (world.spells || []).slice().sort((a, b) =>
+    a.level - b.level || a.name.localeCompare(b.name));
+  const sp = spells[idx];
+  if (!sp) return;
+  const lvlLabel = sp.level === 0 ? 'Cantrip' : 'Level ' + sp.level + ' ' + sp.school;
+  const classes = (sp.classes || []).map(c => c.charAt(0).toUpperCase() + c.slice(1)).join(', ');
+  document.getElementById('modalContent').innerHTML = `
+    <h3>${escapeHTML(sp.name)}</h3>
+    <div class="modal-sub">${escapeHTML(lvlLabel)}</div>
+    <div class="spell-detail">
+      <div class="sd-meta">
+        <div><span class="lbl">Casting time</span>${escapeHTML(sp.casting_time)}</div>
+        <div><span class="lbl">Range</span>${escapeHTML(sp.range)}</div>
+        <div><span class="lbl">Components</span>${escapeHTML(sp.components)}</div>
+        <div><span class="lbl">Duration</span>${escapeHTML(sp.duration)}</div>
+      </div>
+      <div class="sd-text">${escapeHTML(sp.text)}</div>
+      <div class="sd-classes"><strong>Classes:</strong> ${escapeHTML(classes)}</div>
+    </div>
+  `;
+  openModal();
+}
+
+// Spell filter chip wiring
+document.querySelectorAll('.spell-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('.spell-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    spellFilterClass = chip.dataset.class;
+    renderSpells();
+  });
+});
+document.querySelectorAll('.spell-lvl').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('.spell-lvl').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    spellFilterLevel = chip.dataset.level;
+    renderSpells();
+  });
+});
+
+// ============================================================
+// NPC GENERATOR
+// ============================================================
+let npcHistory = [];
+
+function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+function generateNPC() {
+  const gen = world.npc_generator || {};
+  const raceSel = document.getElementById('npcgenRace').value;
+  const genderSel = document.getElementById('npcgenGender').value;
+
+  // Resolve gender (Any -> random among the three name lists)
+  const genderKeys = Object.keys(gen.names || { male: [], female: [], neutral: [] });
+  const gender = genderSel === 'any' ? pick(genderKeys) : genderSel;
+  const nameList = (gen.names || {})[gender] || [];
+  const name = nameList.length ? pick(nameList) : 'Unnamed';
+
+  const race = raceSel === 'any' ? 'Unspecified race' : raceSel;
+  const trait = pick(gen.traits || ['—']);
+  const physical = pick(gen.physical || ['—']);
+  const connection = pick(gen.connections || ['—']);
+
+  const genderLabel = gender.charAt(0).toUpperCase() + gender.slice(1);
+  const npc = { name, race, gender: genderLabel, trait, physical, connection };
+
+  const result = document.getElementById('npcgenResult');
+  result.innerHTML = `
+    <div class="npc-card">
+      <div class="nc-name">${escapeHTML(name)}</div>
+      <div class="nc-sub">${escapeHTML(race)} · ${escapeHTML(genderLabel)}</div>
+      <div class="nc-line"><span class="nc-lbl">Personality</span>${escapeHTML(trait)}</div>
+      <div class="nc-line"><span class="nc-lbl">Physical</span>${escapeHTML(physical)}</div>
+      <div class="nc-line"><span class="nc-lbl">Connection</span><span class="nc-conn">${escapeHTML(connection)}</span></div>
+    </div>
+  `;
+
+  npcHistory.unshift(npc);
+  if (npcHistory.length > 12) npcHistory.pop();
+  renderNPCHistory();
+}
+
+function renderNPCHistory() {
+  const wrap = document.getElementById('npcgenHistory');
+  if (!wrap) return;
+  if (npcHistory.length === 0) { wrap.innerHTML = ''; return; }
+  wrap.innerHTML = npcHistory.map(n => `
+    <div class="npc-mini">
+      <span class="nm-name">${escapeHTML(n.name)}</span>
+      <span class="nm-rest">${escapeHTML(n.race)} · ${escapeHTML(n.trait.split(' — ')[0])} · ${escapeHTML(n.connection)}</span>
+    </div>
+  `).join('');
+}
+
+function clearNPCHistory() { npcHistory = []; renderNPCHistory(); }
+
+// ============================================================
+// MAPS
+// ============================================================
+function renderMaps() {
+  const grid = document.getElementById('mapsGrid');
+  grid.innerHTML = '<div class="map-status">Scanning for maps…</div>';
+  // Try common folder spellings so a casing slip doesn't silently fail.
+  const candidates = ['Images/Maps/', 'images/maps/', 'Images/maps/', 'images/Maps/', 'maps/', 'Maps/'];
+  const bust = '?t=' + Date.now();
+  const imgExt = /\.(png|jpe?g|webp|gif|svg|bmp)$/i;
+
+  (async () => {
+    let usedFolder = null, files = [], lastErr = null;
+    for (const folder of candidates) {
+      try {
+        const res = await fetch(folder + bust, { cache: 'no-store' });
+        if (!res.ok) { lastErr = 'status ' + res.status; continue; }
+        const html = await res.text();
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        const found = [];
+        doc.querySelectorAll('a[href]').forEach(a => {
+          let href = a.getAttribute('href');
+          if (!href || href === '../' || href.startsWith('?') || href.startsWith('/')) return;
+          const clean = href.split('?')[0];
+          if (imgExt.test(clean)) found.push(decodeURIComponent(clean));
+        });
+        if (found.length > 0) { usedFolder = folder; files = found; break; }
+        // folder reachable but empty — remember it and keep looking, but prefer it if nothing else hits
+        if (usedFolder === null) usedFolder = folder;
+      } catch (e) { lastErr = e.message; }
+    }
+
+    if (files.length === 0) {
+      if (usedFolder) {
+        grid.innerHTML = `<div class="map-status">
+          Found <code>${escapeHTML(usedFolder)}</code> but no image files in it.<br>
+          Supported types: <code>png</code>, <code>jpg</code>, <code>jpeg</code>, <code>webp</code>, <code>gif</code>, <code>svg</code>.<br>
+          Drop files in and click <strong>Rescan folder</strong>.
+        </div>`;
+      } else {
+        grid.innerHTML = `<div class="map-status warn-text">
+          Couldn't find a maps folder${lastErr ? ' (' + escapeHTML(lastErr) + ')' : ''}.<br><br>
+          Checklist:<br>
+          1. A folder named <code>Images/Maps/</code> sits in the same folder as <code>session_prep.html</code>.<br>
+          2. You're loading via the server — <code>http://localhost:8000/session_prep.html</code> — not double-clicking the file.<br>
+          3. The folder has at least one image in it.
+        </div>`;
+      }
+      return;
+    }
+
+    files.sort((a, b) => a.localeCompare(b));
+    grid.innerHTML = '';
+    files.forEach(fname => {
+      const url = usedFolder + encodeURIComponent(fname);
+      const title = fname.replace(imgExt, '').replace(/[_-]+/g, ' ');
+      const div = document.createElement('div');
+      div.className = 'map-card';
+      div.innerHTML = `
+        <div class="map-thumb" onclick="openMap('${escapeAttr(url)}','${escapeAttr(title)}')">
+          <img src="${escapeAttr(url)}" alt="${escapeHTML(title)}" loading="lazy" />
+        </div>
+        <h4>${escapeHTML(title)}</h4>
+        <div class="map-url">${escapeHTML(fname)}</div>
+        <div class="actions">
+          <button class="btn primary" onclick="openMap('${escapeAttr(url)}','${escapeAttr(title)}')">↗ Open in window</button>
+        </div>
+      `;
+      grid.appendChild(div);
+    });
+  })();
+}
+
+function openMap(url, name) {
+  const w = window.open(url, name, 'width=1280,height=800,resizable=yes,scrollbars=yes');
+  if (!w) alert('Pop-up blocked. Allow pop-ups for this site to open maps in new windows.');
+}
+
+// ============================================================
+// PROPS
+// ============================================================
+function renderProps() {
+  const list = document.getElementById('propsList');
+  if (!list) return;  // Props tab removed; safe no-op
+  list.innerHTML = '';
+  (session.props || []).forEach(p => {
+    const div = document.createElement('div');
+    div.className = 'prop-card';
+    div.innerHTML = `
+      <div class="prop-type">${escapeHTML(p.type || 'reference')}</div>
+      <h4>${escapeHTML(p.name)}</h4>
+      <div class="prop-delivery">${escapeHTML(p.delivery || '')}</div>
+      <div class="actions">
+        <button class="btn primary" onclick="showProp('${p.id}')">Open</button>
+        <button class="btn tiny" onclick="editProp('${p.id}')">Edit</button>
+        <button class="btn tiny warn" onclick="deleteProp('${p.id}')">Delete</button>
+      </div>
+    `;
+    list.appendChild(div);
+  });
+}
+
+function showProp(id) {
+  const p = (session.props || []).find(x => x.id === id);
+  if (!p) return;
+  document.getElementById('modalContent').innerHTML = `
+    <h3>${escapeHTML(p.name)}</h3>
+    <div class="modal-sub">${escapeHTML(p.type || '')} · ${escapeHTML(p.delivery || '')}</div>
+    ${p.content_html || '<p><em>No content yet — click Edit on the prop to add it.</em></p>'}
+  `;
+  openModal();
+}
+
+function deleteProp(id) {
+  if (!confirm('Delete this prop?')) return;
+  session.props = (session.props || []).filter(p => p.id !== id);
+  persistSession();
+  renderProps();
+}
+
+function addProp() {
+  editProp(null);
+}
+
+// ============================================================
+// WORLD STATE SIDEBAR
+// ============================================================
+let wsFilter = 'all';
+function renderWorldState() {
+  const list = document.getElementById('worldStateList');
+  if (!list) return;  // section removed; safe no-op
+  list.innerHTML = '';
+  let items = world.world_state || [];
+  if (wsFilter !== 'all') items = items.filter(i => i.known_to === wsFilter);
+  items.forEach(i => {
+    const div = document.createElement('div');
+    div.className = 'ws-item ' + (i.known_to || 'public');
+    div.innerHTML = `
+      <div class="ws-title">${escapeHTML(i.title)}</div>
+      <div class="ws-detail">${escapeHTML(i.detail)}</div>
+      <div class="ws-known">${i.known_to.replace('_', ' ')}</div>
+    `;
+    list.appendChild(div);
+  });
+}
+
+document.querySelectorAll('.filter-chip').forEach(chip => {
+  chip.onclick = () => {
+    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    wsFilter = chip.dataset.filter;
+    renderWorldState();
+  };
+});
+
+// ============================================================
+// EDIT MODALS
+// ============================================================
+function editDriving() {
+  document.getElementById('modalContent').innerHTML = `
+    <h3>Edit: What's Driving the Party</h3>
+    <div class="modal-sub">Top-of-doc reference for the DM</div>
+    <div class="form-row">
+      <label>Driving statement</label>
+      <textarea id="ed-driving">${escapeHTML(session.whats_driving_the_party || '')}</textarea>
+    </div>
+    <div class="form-actions">
+      <button class="btn primary" onclick="saveDriving()">Save</button>
+      <button class="btn" onclick="closeModal()">Cancel</button>
+    </div>
+  `;
+  openModal();
+}
+function saveDriving() {
+  session.whats_driving_the_party = document.getElementById('ed-driving').value;
+  persistSession(); renderDriving(); closeModal();
+}
+
+function editSituations() {
+  document.getElementById('modalContent').innerHTML = `
+    <h3>Edit: Prepared Situations</h3>
+    <div class="modal-sub">Raw JSON · careful with structure</div>
+    <div class="form-row">
+      <label>JSON array of situations</label>
+      <textarea class="mono" id="ed-sit">${escapeHTML(JSON.stringify(session.prepared_situations || [], null, 2))}</textarea>
+      <div class="help">Each situation: id, title, summary, who[], agendas, moves[], watch, props_used[]</div>
+    </div>
+    <div class="form-actions">
+      <button class="btn primary" onclick="saveSituations()">Save</button>
+      <button class="btn" onclick="closeModal()">Cancel</button>
+    </div>
+  `;
+  openModal();
+}
+function saveSituations() {
+  try {
+    session.prepared_situations = JSON.parse(document.getElementById('ed-sit').value);
+    persistSession(); renderSituations(); closeModal();
+  } catch (e) { alert('Invalid JSON: ' + e.message); }
+}
+
+function editProp(id) {
+  const isNew = !id;
+  const p = isNew ? { id: 'prop_' + Date.now(), name: '', type: 'handout', delivery: '', content_html: '' } :
+    (session.props || []).find(x => x.id === id) || {};
+  document.getElementById('modalContent').innerHTML = `
+    <h3>${isNew ? 'Add' : 'Edit'} Prop</h3>
+    <div class="form-row"><label>ID</label><input id="ed-prop-id" value="${escapeAttr(p.id || '')}" ${isNew ? '' : 'readonly'}></div>
+    <div class="form-row"><label>Name</label><input id="ed-prop-name" value="${escapeAttr(p.name || '')}"></div>
+    <div class="form-row"><label>Type</label>
+      <select id="ed-prop-type">
+        <option value="handout"${p.type==='handout'?' selected':''}>handout</option>
+        <option value="reference"${p.type==='reference'?' selected':''}>reference</option>
+        <option value="image"${p.type==='image'?' selected':''}>image</option>
+      </select>
+    </div>
+    <div class="form-row"><label>Delivery</label><input id="ed-prop-delivery" value="${escapeAttr(p.delivery || '')}"></div>
+    <div class="form-row">
+      <label>Content (HTML)</label>
+      <textarea class="mono" id="ed-prop-content">${escapeHTML(p.content_html || '')}</textarea>
+      <div class="help">Use &lt;h4&gt;, &lt;p&gt;, &lt;ul&gt;, and &lt;div class="doc-prop"&gt; for documents.</div>
+    </div>
+    <div class="form-actions">
+      <button class="btn primary" onclick="saveProp(${isNew})">Save</button>
+      <button class="btn" onclick="closeModal()">Cancel</button>
+    </div>
+  `;
+  openModal();
+}
+function saveProp(isNew) {
+  const data = {
+    id: document.getElementById('ed-prop-id').value,
+    name: document.getElementById('ed-prop-name').value,
+    type: document.getElementById('ed-prop-type').value,
+    delivery: document.getElementById('ed-prop-delivery').value,
+    content_html: document.getElementById('ed-prop-content').value
+  };
+  if (!session.props) session.props = [];
+  if (isNew) {
+    session.props.push(data);
+  } else {
+    const i = session.props.findIndex(p => p.id === data.id);
+    if (i >= 0) session.props[i] = data;
+  }
+  persistSession(); renderProps(); closeModal();
+}
+
+function editMonsters() {
+  document.getElementById('modalContent').innerHTML = `
+    <h3>Edit: Monster Manual</h3>
+    <div class="modal-sub">Raw JSON · simple + full structure</div>
+    <div class="form-row">
+      <label>Monsters JSON</label>
+      <textarea class="mono" id="ed-monsters" style="min-height: 360px">${escapeHTML(JSON.stringify(world.monsters || {}, null, 2))}</textarea>
+      <div class="help">Format: { id: { name, type, ac, hp, speed, simple: {...}, full: { stats, saves, skills, senses, languages, traits[], actions[] } } }</div>
+    </div>
+    <div class="form-actions">
+      <button class="btn primary" onclick="saveMonsters()">Save</button>
+      <button class="btn" onclick="closeModal()">Cancel</button>
+    </div>
+  `;
+  openModal();
+}
+function saveMonsters() {
+  try {
+    world.monsters = JSON.parse(document.getElementById('ed-monsters').value);
+    persistWorld(); renderMonsters(); populateMonsterDropdown(); closeModal();
+  } catch (e) { alert('Invalid JSON: ' + e.message); }
+}
+
+function editMaps() {
+  document.getElementById('modalContent').innerHTML = `
+    <h3>Edit: Maps</h3>
+    <div class="modal-sub">Add image URLs (or local paths) for each map</div>
+    <div class="form-row">
+      <label>Maps JSON</label>
+      <textarea class="mono" id="ed-maps">${escapeHTML(JSON.stringify(session.maps || [], null, 2))}</textarea>
+      <div class="help">Each map: { id, name, url, notes }. URL can be a remote image, a local file path served by the server (e.g. "maps/thornwall.png"), or any URL.</div>
+    </div>
+    <div class="form-actions">
+      <button class="btn primary" onclick="saveMaps()">Save</button>
+      <button class="btn" onclick="closeModal()">Cancel</button>
+    </div>
+  `;
+  openModal();
+}
+function saveMaps() {
+  try {
+    session.maps = JSON.parse(document.getElementById('ed-maps').value);
+    persistSession(); renderMaps(); closeModal();
+  } catch (e) { alert('Invalid JSON: ' + e.message); }
+}
+
+function editMap(id) { editMaps(); }
+
+
+function editWorldState() {
+  document.getElementById('modalContent').innerHTML = `
+    <h3>Edit: World State</h3>
+    <div class="modal-sub">Things happening in the world right now</div>
+    <div class="form-row">
+      <label>World state JSON</label>
+      <textarea class="mono" id="ed-ws" style="min-height: 320px">${escapeHTML(JSON.stringify(world.world_state || [], null, 2))}</textarea>
+      <div class="help">Each item: { id, title, detail, known_to: "public"|"rumors"|"resonants_only"|"nobody", tags: [] }</div>
+    </div>
+    <div class="form-actions">
+      <button class="btn primary" onclick="saveWS()">Save</button>
+      <button class="btn" onclick="closeModal()">Cancel</button>
+    </div>
+  `;
+  openModal();
+}
+function saveWS() {
+  try {
+    world.world_state = JSON.parse(document.getElementById('ed-ws').value);
+    persistWorld(); renderWorldState(); closeModal();
+  } catch (e) { alert('Invalid JSON: ' + e.message); }
+}
+
+function editNPC(id) {
+  const npc = world.npcs[id];
+  document.getElementById('modalContent').innerHTML = `
+    <h3>Edit NPC: ${escapeHTML(npc.name)}</h3>
+    <div class="form-row"><label>Name</label><input id="ed-npc-name" value="${escapeAttr(npc.name)}"></div>
+    <div class="form-row"><label>Role</label><input id="ed-npc-role" value="${escapeAttr(npc.role || '')}"></div>
+    <div class="form-row"><label>Status</label>
+      <select id="ed-npc-status">
+        <option value="hot"${npc.status==='hot'?' selected':''}>hot</option>
+        <option value="warm"${npc.status==='warm'?' selected':''}>warm</option>
+        <option value="cold"${npc.status==='cold'?' selected':''}>cold</option>
+      </select>
+    </div>
+    <div class="form-row"><label>Voice</label><textarea id="ed-npc-voice">${escapeHTML(npc.voice || '')}</textarea></div>
+    <div class="form-row"><label>Agenda</label><textarea id="ed-npc-agenda">${escapeHTML(npc.agenda || '')}</textarea></div>
+    <div class="form-row"><label>Detail</label><textarea id="ed-npc-full">${escapeHTML(npc.full || '')}</textarea></div>
+    <div class="form-actions">
+      <button class="btn primary" onclick="saveNPC('${id}')">Save</button>
+      <button class="btn" onclick="closeModal()">Cancel</button>
+    </div>
+  `;
+  openModal();
+}
+function saveNPC(id) {
+  const npc = world.npcs[id];
+  npc.name = document.getElementById('ed-npc-name').value;
+  npc.role = document.getElementById('ed-npc-role').value;
+  npc.status = document.getElementById('ed-npc-status').value;
+  npc.voice = document.getElementById('ed-npc-voice').value;
+  npc.agenda = document.getElementById('ed-npc-agenda').value;
+  npc.full = document.getElementById('ed-npc-full').value;
+  persistWorld(); renderNPCs(); closeModal();
+}
+
+function editRandomTables() {
+  document.getElementById('modalContent').innerHTML = `
+    <h3>Edit: Random Tables</h3>
+    <div class="modal-sub">Names, personalities, professions</div>
+    <div class="form-row">
+      <label>Tables JSON</label>
+      <textarea class="mono" id="ed-rt" style="min-height: 280px">${escapeHTML(JSON.stringify(world.random_tables || {}, null, 2))}</textarea>
+    </div>
+    <div class="form-actions">
+      <button class="btn primary" onclick="saveRT()">Save</button>
+      <button class="btn" onclick="closeModal()">Cancel</button>
+    </div>
+  `;
+  openModal();
+}
+function saveRT() {
+  try {
+    world.random_tables = JSON.parse(document.getElementById('ed-rt').value);
+    persistWorld(); renderRandomTables(); closeModal();
+  } catch (e) { alert('Invalid JSON: ' + e.message); }
+}
+
+// ============================================================
+// TABS
+// ============================================================
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === name));
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.toggle('active', t.id === 'tab-' + name));
+}
+document.querySelectorAll('.tab').forEach(t => {
+  t.onclick = () => switchTab(t.dataset.tab);
+});
+
+// ============================================================
+// MODAL
+// ============================================================
+function openModal() {
+  document.getElementById('modalBg').classList.add('open');
+  document.getElementById('modalBody').scrollTop = 0;
+}
+function closeModal() {
+  document.getElementById('modalBg').classList.remove('open');
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// ============================================================
+// HELPERS
+// ============================================================
+function escapeHTML(s) {
+  if (s == null) return '';
+  return String(s).replace(/[&<>"']/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[c]));
+}
+function escapeAttr(s) {
+  return escapeHTML(s).replace(/'/g, "\\'");
+}
+
+// ============================================================
+// FREE-TEXT AUTOSAVE (Session Notes + Narrative)
+// ============================================================
+function debounce(fn, ms) {
+  let t;
+  return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
+}
+
+function flashSaved(hintId) {
+  const h = document.getElementById(hintId);
+  if (!h) return;
+  h.textContent = 'saved';
+  h.classList.add('saved');
+  clearTimeout(h._t);
+  h._t = setTimeout(() => { h.textContent = ''; h.classList.remove('saved'); }, 1400);
+}
+
+(function wireFreeText() {
+  const narrTA = document.getElementById('narrativeNotes');
+  if (narrTA) {
+    const save = debounce(() => {
+      world.narrative = narrTA.value;
+      persistWorld();
+      flashSaved('narrSaveHint');
+    }, 500);
+    narrTA.addEventListener('input', save);
+  }
+})();
+
+// ============================================================
+// INIT
+// ============================================================
+loadAll();
+</script>
+</body>
+</html>

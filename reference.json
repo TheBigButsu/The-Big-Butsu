@@ -1,0 +1,133 @@
+{
+  "skills": [
+    {
+      "name": "Athletics",
+      "ability": "STR",
+      "use": "Climbing, jumping, swimming, grappling, shoving."
+    },
+    {
+      "name": "Acrobatics",
+      "ability": "DEX",
+      "use": "Balance, tumbling, staying on your feet, escaping a grapple by slipping free."
+    },
+    {
+      "name": "Sleight of Hand",
+      "ability": "DEX",
+      "use": "Pickpocketing, palming objects, planting items, manual trickery."
+    },
+    {
+      "name": "Stealth",
+      "ability": "DEX",
+      "use": "Hiding, moving silently, slipping past notice."
+    },
+    {
+      "name": "Arcana",
+      "ability": "INT",
+      "use": "Spells, magic items, eldritch symbols, planes, magical lore."
+    },
+    {
+      "name": "History",
+      "ability": "INT",
+      "use": "Past events, legends, kingdoms, wars, lost civilizations."
+    },
+    {
+      "name": "Investigation",
+      "ability": "INT",
+      "use": "Deduce from clues, find hidden things, work out how something functions."
+    },
+    {
+      "name": "Nature",
+      "ability": "INT",
+      "use": "Terrain, plants, animals, weather, natural cycles."
+    },
+    {
+      "name": "Religion",
+      "ability": "INT",
+      "use": "Deities, rites, holy symbols, religious hierarchies and practices."
+    },
+    {
+      "name": "Animal Handling",
+      "ability": "WIS",
+      "use": "Calm or read an animal, control a mount in a tough spot."
+    },
+    {
+      "name": "Insight",
+      "ability": "WIS",
+      "use": "Read intentions, detect lies, sense a creature's true feelings."
+    },
+    {
+      "name": "Medicine",
+      "ability": "WIS",
+      "use": "Stabilize the dying, diagnose illness, treat wounds without magic."
+    },
+    {
+      "name": "Perception",
+      "ability": "WIS",
+      "use": "Spot, hear, or otherwise notice something. The most-used skill."
+    },
+    {
+      "name": "Survival",
+      "ability": "WIS",
+      "use": "Track, forage, navigate wilderness, predict weather, follow trails."
+    },
+    {
+      "name": "Deception",
+      "ability": "CHA",
+      "use": "Lie convincingly, disguise intent, mislead through words or action."
+    },
+    {
+      "name": "Intimidation",
+      "ability": "CHA",
+      "use": "Threats, hostile pressure, coercion through fear."
+    },
+    {
+      "name": "Performance",
+      "ability": "CHA",
+      "use": "Music, dance, acting, oratory — entertaining an audience."
+    },
+    {
+      "name": "Persuasion",
+      "ability": "CHA",
+      "use": "Influence with tact, social grace, good-faith argument."
+    }
+  ],
+  "special_abilities": {
+    "turn_undead": {
+      "name": "Turn Undead (Channel Divinity)",
+      "summary": "As an action, present your holy symbol. Each undead within 30 ft that can see or hear you must make a Wisdom save (DC = your spell save DC). On a fail, it is turned for 1 minute or until it takes damage.",
+      "turned_effect": "A turned creature must spend its turns trying to move as far from you as it can, can't willingly end its move within 30 ft of you, can't take reactions, and may only Dash or attempt to escape an effect that prevents movement. With nowhere to flee, it may use the Dodge action.",
+      "destroy_table": [
+        {
+          "cleric_level": "1–4",
+          "destroys_cr": "1/2 or lower"
+        },
+        {
+          "cleric_level": "5–7",
+          "destroys_cr": "1 or lower"
+        },
+        {
+          "cleric_level": "8–10",
+          "destroys_cr": "2 or lower"
+        },
+        {
+          "cleric_level": "11–13",
+          "destroys_cr": "3 or lower"
+        },
+        {
+          "cleric_level": "14–16",
+          "destroys_cr": "4 or lower"
+        },
+        {
+          "cleric_level": "17+",
+          "destroys_cr": "5 or lower"
+        }
+      ],
+      "destroy_note": "Destroy Undead (a feature gained at level 5): when an undead of the listed CR or lower fails its save against your Turn Undead, it is instantly destroyed instead of merely turned.",
+      "uses": "A cleric has one Channel Divinity use at levels 2–5, two at 6–17, three at 18+. Recharge on a short or long rest.",
+      "campaign_note": "Site Skeletons are CR 1/4 and Thornwall Shades are ~CR 1/2 — both turnable, and destroyable outright once a cleric hits level 5. Worth flagging to Rick/Luke that this is a live tool against the Hollow."
+    }
+  },
+  "class_features": [],
+  "feats": [],
+  "racial_traits": []
+}
