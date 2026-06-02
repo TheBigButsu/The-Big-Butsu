@@ -682,45 +682,58 @@
   }
   .monster-card .m-trait strong { color: var(--ink); }
 
-  /* ---------- Maps ---------- */
+  /* ---------- Maps tab ---------- */
+  .maps-filter-row {
+    display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px;
+  }
   .maps-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 12px;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 14px;
   }
   .map-card {
     background: var(--bg-panel);
     border: 1px solid var(--rule);
-    padding: 14px 16px;
-    border-radius: 3px;
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.15s;
   }
-  .map-card h4 {
-    font-family: var(--display);
-    font-size: 17px;
-    margin: 0 0 4px;
-  }
-  .map-card .notes {
-    font-size: 12px;
-    color: var(--ink-dim);
-    margin: 6px 0;
-  }
-  .map-card .map-url {
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--ink-mute);
-    word-break: break-all;
-    margin: 4px 0;
-  }
-  .map-card .actions { display: flex; gap: 6px; margin-top: 8px; }
+  .map-card:hover { border-color: var(--accent); }
   .map-card .map-thumb {
-    width: 100%; height: 150px; border-radius: 3px; overflow: hidden;
-    background: var(--bg-input); margin-bottom: 10px; cursor: pointer;
+    width: 100%; height: 140px;
+    background: var(--bg-input);
     display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
   }
   .map-card .map-thumb img {
-    width: 100%; height: 100%; object-fit: cover; transition: transform 0.2s;
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.2s;
   }
-  .map-card .map-thumb:hover img { transform: scale(1.04); }
+  .map-card:hover .map-thumb img { transform: scale(1.05); }
+  .map-card .map-info {
+    padding: 10px 12px;
+  }
+  .map-card .map-name {
+    font-family: var(--display); font-size: 15px; font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .map-card .map-tags {
+    display: flex; gap: 4px; flex-wrap: wrap; margin-top: 6px;
+  }
+  .map-card .map-tag {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--accent);
+    background: rgba(200,157,90,0.08); border: 1px solid var(--accent-dim);
+    padding: 2px 6px; border-radius: 10px;
+  }
+  .map-empty {
+    color: var(--ink-mute); font-size: 13px; line-height: 1.7;
+    padding: 20px 0;
+  }
+  .map-empty code {
+    background: var(--bg-input); padding: 1px 5px; border-radius: 3px; font-size: 12px;
+  }
   .map-status { color: var(--ink-dim); font-size: 13px; padding: 18px 0; line-height: 1.6; }
   .map-status.warn-text { color: var(--warn); }
   .map-status code { background: var(--bg-input); padding: 1px 5px; border-radius: 3px; font-size: 12px; }
@@ -1043,6 +1056,12 @@
 
   /* ---------- Skills & Spells tab ---------- */
   .skills-layout { display: flex; flex-direction: column; gap: 28px; }
+  .skills-two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 32px;
+  }
+  @media (max-width: 720px) { .skills-two-col { grid-template-columns: 1fr; } }
   .block-title {
     font-family: var(--display); font-size: 20px; color: var(--accent);
     margin: 0 0 12px; font-weight: 600;
@@ -1241,9 +1260,8 @@
   <button class="tab" data-tab="combat">Combat</button>
   <button class="tab" data-tab="bestiary">Bestiary</button>
   <button class="tab" data-tab="skills">Skills &amp; Spells</button>
-  <button class="tab" data-tab="npcgen">NPC Generator</button>
   <button class="tab" data-tab="rumors">Rumors</button>
-  <button class="tab" data-tab="narrative">Narrative</button>
+  <button class="tab" data-tab="maps">Maps</button>
 </div>
 
 <!-- LAYOUT -->
@@ -1310,18 +1328,14 @@
           <textarea class="prep-field" data-prep="scratch" rows="8"
             placeholder="Anything else. Paste ideas as they come."></textarea>
         </div>
-      </div>
-    </div>
 
-    <!-- NARRATIVE TAB (persistent, world-level) -->
-    <div class="tab-content" id="tab-narrative">
-      <div class="section-head">
-        <h2>Campaign Narrative</h2>
-        <div class="sub">Overarching arcs, threads, foreshadowing · persists across all sessions · autosaves</div>
-        <div class="actions"><span class="save-hint" id="narrSaveHint"></span></div>
+        <div class="prep-box wide" style="margin-top: 8px;">
+          <label>Campaign Narrative <span style="font-weight:400;color:var(--ink-mute);font-size:10px;">· autosaves</span></label>
+          <textarea id="narrativeNotes" class="prep-field" rows="12"
+            placeholder="Arc throughlines, long-game threads, foreshadowing planted and paid off — anything you want to track across the whole campaign."></textarea>
+          <span class="save-hint" id="narrSaveHint"></span>
+        </div>
       </div>
-      <textarea id="narrativeNotes" class="freetext-area tall"
-        placeholder="Your campaign brain. Arc throughlines, long-game threads, what each god is doing, where the Ourn's degradation stands, foreshadowing planted and paid off, anything you want to track across the whole campaign. Lives in world.json — survives session swaps."></textarea>
     </div>
 
     <!-- COMBAT TAB -->
@@ -1386,9 +1400,10 @@
     <div class="tab-content" id="tab-bestiary">
       <div class="section-head">
         <h2>Bestiary</h2>
-        <div class="sub">Full monster manual · simple stats default, expand for full · "+ Tracker" drops one into combat</div>
+        <div class="sub">Filter by CR · expand for full statblock · "+ Tracker" drops one into combat</div>
         <div class="actions"><button class="btn tiny" onclick="editMonsters()">Edit</button></div>
       </div>
+      <div class="filter-row" style="margin-bottom:16px;" id="bestiaryFilterRow"></div>
       <div class="monster-list bestiary-grid" id="monsterList"></div>
     </div>
 
@@ -1403,10 +1418,10 @@
         <!-- Skills table -->
         <div class="skills-block">
           <h3 class="block-title">The 18 Skills</h3>
-          <table class="ref-table" id="skillsTable">
-            <thead><tr><th>Skill</th><th>Ability</th><th>Used for</th></tr></thead>
-            <tbody id="skillsBody"></tbody>
-          </table>
+          <div class="skills-two-col" id="skillsTable">
+            <table class="ref-table"><thead><tr><th>Skill</th><th>Ability</th><th>Used for</th></tr></thead><tbody id="skillsBodyA"></tbody></table>
+            <table class="ref-table"><thead><tr><th>Skill</th><th>Ability</th><th>Used for</th></tr></thead><tbody id="skillsBodyB"></tbody></table>
+          </div>
         </div>
 
         <!-- Turn Undead -->
@@ -1440,55 +1455,6 @@
       </div>
     </div>
 
-    <!-- NPC GENERATOR TAB -->
-    <div class="tab-content" id="tab-npcgen">
-      <div class="section-head">
-        <h2>NPC Generator</h2>
-        <div class="sub">Roll a stranger on the spot</div>
-      </div>
-
-      <div class="npcgen-controls">
-        <div class="npcgen-field">
-          <label>Race</label>
-          <select id="npcgenRace">
-            <option value="any">Any / unspecified</option>
-            <option value="Human">Human</option>
-            <option value="Elf">Elf</option>
-            <option value="Half-Elf">Half-Elf</option>
-            <option value="Dwarf">Dwarf</option>
-            <option value="Halfling">Halfling</option>
-            <option value="Gnome">Gnome</option>
-            <option value="Tiefling">Tiefling</option>
-            <option value="Goliath">Goliath</option>
-            <option value="Half-Orc">Half-Orc</option>
-            <option value="Dragonborn">Dragonborn</option>
-          </select>
-        </div>
-        <div class="npcgen-field">
-          <label>Gender</label>
-          <select id="npcgenGender">
-            <option value="any">Any</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-            <option value="neutral">Neutral</option>
-          </select>
-        </div>
-        <button class="btn primary big" onclick="generateNPC()">⚄ Generate NPC</button>
-      </div>
-
-      <div class="npcgen-result" id="npcgenResult">
-        <div class="npcgen-empty">Set race and gender (or leave on Any), then roll.</div>
-      </div>
-
-      <div class="npcgen-history">
-        <div class="section-head compact">
-          <h3 class="block-title">Recent rolls</h3>
-          <div class="actions"><button class="btn tiny" onclick="clearNPCHistory()">Clear</button></div>
-        </div>
-        <div id="npcgenHistory"></div>
-      </div>
-    </div>
-
     <!-- RUMORS TAB -->
     <div class="tab-content" id="tab-rumors">
       <div class="section-head">
@@ -1510,6 +1476,15 @@
     </div>
 
     <!-- MAPS TAB -->
+    <div class="tab-content" id="tab-maps">
+      <div class="section-head">
+        <h2>Maps</h2>
+        <div class="sub">Click a map to open it in a new tab for screen-share · tag and folder support</div>
+      </div>
+
+      <div class="maps-filter-row" id="mapsFilterRow"></div>
+      <div class="maps-grid" id="mapsGrid"></div>
+    </div>
 
   </div>
 
@@ -1542,7 +1517,7 @@ async function loadAll() {
   // The five data files. Each loads independently — one failing doesn't break the others.
   // All merge into a single `world` object so existing render code (world.spells, world.monsters,
   // world.skills, world.npc_generator, world.narrative…) keeps working unchanged.
-  const files = ['world.json', 'spells.json', 'reference.json', 'monsters.json', 'npcgen.json', 'rumors.json'];
+  const files = ['world.json', 'spells.json', 'reference.json', 'monsters.json', 'npcgen.json', 'rumors.json', 'maps.json'];
   world = {};
   const failed = [];
 
@@ -1581,10 +1556,8 @@ function setLoadStatus(text, cls) {
 }
 
 function reloadAll() {
-  if (confirm('Reload all data files from disk? In-app edits not yet exported will be lost (the files on disk persist).')) {
-    localStorage.removeItem('gc_narrative');
-    loadAll();
-  }
+  localStorage.removeItem('gc_narrative');
+  loadAll();
 }
 
 function exportState() { /* removed — edit JSON files directly */ }
@@ -2129,16 +2102,20 @@ function formatMod(stat) {
 // SKILLS & SPELLS
 // ============================================================
 function renderSkills() {
-  const body = document.getElementById('skillsBody');
-  if (body) {
-    body.innerHTML = '';
-    (world.skills || []).forEach(s => {
+  const bodyA = document.getElementById('skillsBodyA');
+  const bodyB = document.getElementById('skillsBodyB');
+  if (bodyA && bodyB) {
+    bodyA.innerHTML = '';
+    bodyB.innerHTML = '';
+    const skills = world.skills || [];
+    const half = Math.ceil(skills.length / 2);
+    skills.forEach((s, i) => {
       const tr = document.createElement('tr');
       tr.innerHTML = `
         <td class="skill-name">${escapeHTML(s.name)}</td>
         <td class="ability">${escapeHTML(s.ability)}</td>
         <td>${escapeHTML(s.use)}</td>`;
-      body.appendChild(tr);
+      (i < half ? bodyA : bodyB).appendChild(tr);
     });
   }
 
