@@ -2056,8 +2056,13 @@ function renderMonsters() {
   const list = document.getElementById('monsterList');
   if (!list) return;
   list.innerHTML = '';
+  renderBestiaryFilters();
   Object.keys(world.monsters || {}).forEach(id => {
     const m = world.monsters[id];
+    if (bestiaryCRFilter !== 'all') {
+      const match = (m.type || '').match(/CR\s*([\d/]+)/i);
+      if (!match || match[1] !== bestiaryCRFilter) return;
+    }
     const div = document.createElement('div');
     div.className = 'monster-card';
     div.id = 'monster-' + id;
@@ -2138,6 +2143,32 @@ function renderSkills() {
       ${tu.campaign_note ? `<div class="tu-note">${escapeHTML(tu.campaign_note)}</div>` : ''}
     `;
   }
+}
+
+let bestiaryCRFilter = 'all';
+
+function renderBestiaryFilters() {
+  const row = document.getElementById('bestiaryFilterRow');
+  if (!row) return;
+  const monsters = world.monsters || {};
+  const crs = new Set();
+  Object.values(monsters).forEach(m => {
+    const match = (m.type || '').match(/CR\s*([\d/]+)/i);
+    if (match) crs.add(match[1]);
+  });
+  const sorted = ['all', ...Array.from(crs).sort((a, b) => {
+    const val = s => s.includes('/') ? eval(s) : parseFloat(s);
+    return val(a) - val(b);
+  })];
+  row.innerHTML = sorted.map(cr => `
+    <button class="spell-chip${bestiaryCRFilter === cr ? ' active' : ''}"
+      onclick="setBestiaryFilter('${escapeAttr(cr)}')">${cr === 'all' ? 'All CR' : 'CR ' + escapeHTML(cr)}</button>
+  `).join('');
+}
+
+function setBestiaryFilter(cr) {
+  bestiaryCRFilter = cr;
+  renderMonsters();
 }
 
 let spellFilterClass = 'all';
@@ -2276,79 +2307,71 @@ function clearNPCHistory() { npcHistory = []; renderNPCHistory(); }
 // ============================================================
 // MAPS
 // ============================================================
+let mapsTagFilter = 'all';
+
 function renderMaps() {
   const grid = document.getElementById('mapsGrid');
-  grid.innerHTML = '<div class="map-status">Scanning for maps…</div>';
-  // Try common folder spellings so a casing slip doesn't silently fail.
-  const candidates = ['Images/Maps/', 'images/maps/', 'Images/maps/', 'images/Maps/', 'maps/', 'Maps/'];
-  const bust = '?t=' + Date.now();
-  const imgExt = /\.(png|jpe?g|webp|gif|svg|bmp)$/i;
+  const filterRow = document.getElementById('mapsFilterRow');
+  if (!grid) return;
 
-  (async () => {
-    let usedFolder = null, files = [], lastErr = null;
-    for (const folder of candidates) {
-      try {
-        const res = await fetch(folder + bust, { cache: 'no-store' });
-        if (!res.ok) { lastErr = 'status ' + res.status; continue; }
-        const html = await res.text();
-        const doc = new DOMParser().parseFromString(html, 'text/html');
-        const found = [];
-        doc.querySelectorAll('a[href]').forEach(a => {
-          let href = a.getAttribute('href');
-          if (!href || href === '../' || href.startsWith('?') || href.startsWith('/')) return;
-          const clean = href.split('?')[0];
-          if (imgExt.test(clean)) found.push(decodeURIComponent(clean));
-        });
-        if (found.length > 0) { usedFolder = folder; files = found; break; }
-        // folder reachable but empty — remember it and keep looking, but prefer it if nothing else hits
-        if (usedFolder === null) usedFolder = folder;
-      } catch (e) { lastErr = e.message; }
-    }
+  const maps = world.maps || [];
 
-    if (files.length === 0) {
-      if (usedFolder) {
-        grid.innerHTML = `<div class="map-status">
-          Found <code>${escapeHTML(usedFolder)}</code> but no image files in it.<br>
-          Supported types: <code>png</code>, <code>jpg</code>, <code>jpeg</code>, <code>webp</code>, <code>gif</code>, <code>svg</code>.<br>
-          Drop files in and click <strong>Rescan folder</strong>.
-        </div>`;
-      } else {
-        grid.innerHTML = `<div class="map-status warn-text">
-          Couldn't find a maps folder${lastErr ? ' (' + escapeHTML(lastErr) + ')' : ''}.<br><br>
-          Checklist:<br>
-          1. A folder named <code>Images/Maps/</code> sits in the same folder as <code>session_prep.html</code>.<br>
-          2. You're loading via the server — <code>http://localhost:8000/session_prep.html</code> — not double-clicking the file.<br>
-          3. The folder has at least one image in it.
-        </div>`;
-      }
-      return;
-    }
+  if (maps.length === 0) {
+    if (filterRow) filterRow.innerHTML = '';
+    grid.innerHTML = `<div class="map-empty">
+      No maps yet. Add entries to <code>maps.json</code> like:<br><br>
+      <code>{ "name": "Thornwall", "url": "https://...", "folder": "Act 1", "tags": ["town","battle"] }</code>
+    </div>`;
+    return;
+  }
 
-    files.sort((a, b) => a.localeCompare(b));
-    grid.innerHTML = '';
-    files.forEach(fname => {
-      const url = usedFolder + encodeURIComponent(fname);
-      const title = fname.replace(imgExt, '').replace(/[_-]+/g, ' ');
-      const div = document.createElement('div');
-      div.className = 'map-card';
-      div.innerHTML = `
-        <div class="map-thumb" onclick="openMap('${escapeAttr(url)}','${escapeAttr(title)}')">
-          <img src="${escapeAttr(url)}" alt="${escapeHTML(title)}" loading="lazy" />
-        </div>
-        <h4>${escapeHTML(title)}</h4>
-        <div class="map-url">${escapeHTML(fname)}</div>
-        <div class="actions">
-          <button class="btn primary" onclick="openMap('${escapeAttr(url)}','${escapeAttr(title)}')">↗ Open in window</button>
-        </div>
-      `;
-      grid.appendChild(div);
-    });
-  })();
+  // Build tag list
+  const allTags = new Set(['all']);
+  maps.forEach(m => {
+    if (m.folder) allTags.add(m.folder);
+    (m.tags || []).forEach(t => allTags.add(t));
+  });
+
+  if (filterRow) {
+    filterRow.innerHTML = [...allTags].map(tag => `
+      <button class="spell-chip${mapsTagFilter === tag ? ' active' : ''}"
+        onclick="setMapsFilter('${escapeAttr(tag)}')">${escapeHTML(tag === 'all' ? 'All' : tag)}</button>
+    `).join('');
+  }
+
+  const filtered = mapsTagFilter === 'all' ? maps : maps.filter(m =>
+    m.folder === mapsTagFilter || (m.tags || []).includes(mapsTagFilter)
+  );
+
+  if (filtered.length === 0) {
+    grid.innerHTML = '<div class="map-empty">No maps match that filter.</div>';
+    return;
+  }
+
+  grid.innerHTML = '';
+  filtered.forEach(m => {
+    const tags = [m.folder, ...(m.tags || [])].filter(Boolean);
+    const div = document.createElement('div');
+    div.className = 'map-card';
+    div.onclick = () => window.open(m.url, '_blank');
+    div.innerHTML = `
+      <div class="map-thumb">
+        <img src="${escapeAttr(m.url)}" alt="${escapeHTML(m.name)}" loading="lazy"
+          onerror="this.parentElement.innerHTML='<span style=\\'color:var(--ink-mute);font-size:12px;\\'>No preview</span>'" />
+      </div>
+      <div class="map-info">
+        <div class="map-name">${escapeHTML(m.name)}</div>
+        ${m.notes ? `<div style="font-size:12px;color:var(--ink-dim);margin-top:2px;">${escapeHTML(m.notes)}</div>` : ''}
+        ${tags.length ? `<div class="map-tags">${tags.map(t => `<span class="map-tag">${escapeHTML(t)}</span>`).join('')}</div>` : ''}
+      </div>
+    `;
+    grid.appendChild(div);
+  });
 }
 
-function openMap(url, name) {
-  const w = window.open(url, name, 'width=1280,height=800,resizable=yes,scrollbars=yes');
-  if (!w) alert('Pop-up blocked. Allow pop-ups for this site to open maps in new windows.');
+function setMapsFilter(tag) {
+  mapsTagFilter = tag;
+  renderMaps();
 }
 
 // ============================================================
