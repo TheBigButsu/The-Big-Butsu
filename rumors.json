@@ -1,0 +1,237 @@
+{
+  "rumors": {
+    "absolute_crystals": {
+      "label": "The Absolute — Keening Crystals / Growing Hollows",
+      "tavern": [
+        "The mine foreman in [town] won't let anyone past the third level anymore. Says it's structural. Doesn't look structural.",
+        "My cousin works supply for the community center in Duren's Fold. Says they get twice the rations they hand out. Where's the rest going?",
+        "Something killed three goats on the Harlen farm. Not wolves. Whatever it was didn't eat them — just... stopped them.",
+        "There's a sound coming from under the old chapel at night. Low. Steady. Like something breathing that shouldn't be.",
+        "The Wardens cordoned off the Greymoss caves last month. Ecological survey, they said. Since when do Wardens care about ecology?",
+        "A merchant came through selling crystals he said he found near [site]. Beautiful things. His hands were shaking the whole time.",
+        "You know the sink hole on the east road? It's bigger. And it hums.",
+        "The community center in [town] has a new basement. Didn't used to have a basement.",
+        "They've been hiring construction crews from out of town. Local crews get turned away. Why?",
+        "Sister Aldine at the center says they're expanding the root cellar. Root cellar doesn't need reinforced stone walls.",
+        "The dogs won't go near the old resonance site anymore. Haven't for weeks.",
+        "Two kids went into the caves on a dare. One came back. Couldn't remember what happened to the other one. The other one came home an hour later, fine, but... flat. Like the light behind his eyes went out.",
+        "Something's wrong with the water near [site]. Tastes like metal. Tastes like sound, if that makes any sense."
+      ],
+      "notices": [
+        "A community center with more security than it needs",
+        "Supply deliveries that don't match the output",
+        "Sounds at resonance sites that shouldn't be there — low, persistent, growing",
+        "Echo Sick symptoms in people living near sites (flat affect, repetitive speech, loss of interest)",
+        "Church personnel rotating through small towns who have no obvious reason to be there",
+        "Construction that doesn't match the stated purpose",
+        "Animals avoiding an area",
+        "Luke's beauty-sense registering wrongness at a site — things look uglier than they should"
+      ]
+    },
+    "absolute_daggers": {
+      "label": "The Absolute — Boosting the Velvet Daggers / Glimpse",
+      "tavern": [
+        "The Velvet Daggers got the Bellanthorpe residency. They're good, but they're not *that* good. Someone's spending money.",
+        "Did you hear? The Daggers have a new patron. Anonymous. Covering their travel, their lodging, everything.",
+        "Pip's been meeting with people who aren't in the music business. Suits. Church-adjacent types.",
+        "The Daggers played [town] last week. Full house. Half the audience was comped. Who pays for five hundred free tickets?",
+        "Blaid's been wearing new gear. Enchanted strings, if I had to guess. That's ten years' salary for a touring musician.",
+        "There's a rumor the Daggers are being lined up for a command performance in Valenmoor. For the High Conservator himself.",
+        "I saw the Daggers' rider for [venue]. They need a specific crystal array behind the stage. Not standard equipment. Nobody I asked had seen one like it.",
+        "Someone bought every copy of the Daggers' recording in [town]. Every single one. Who does that?",
+        "A friend of mine tunes instruments for touring acts. Says the Daggers' gear has been modified — not better, exactly, but different. Tuned to something he didn't recognize.",
+        "The Daggers used to play the small circuit. Same as everyone. Now they're headlining festivals they didn't apply to.",
+        "Pip dropped three names at the after-party. All Conservatory board. Since when does a band manager know Conservatory board members?",
+        "Tod — the drummer — looked uncomfortable after the show. Like he wanted to say something. Didn't."
+      ],
+      "notices": [
+        "The Daggers appearing at every major venue the party plays, always slightly ahead",
+        "Production quality that exceeds what a touring band should afford",
+        "Pip's network expanding visibly — new contacts, new access, new confidence",
+        "Tod's discomfort growing (he's the honest one; he can feel something is off)",
+        "Equipment the Daggers are using that Barakas or AV would recognize as unusual or expensive",
+        "Audiences at Daggers shows that feel... managed. Too uniform in their response. Not fake, but curated.",
+        "Blayde playing differently — technically perfect but reaching for something beyond technique, as if being pushed toward transcendence she didn't choose"
+      ]
+    },
+    "absolute_sera": {
+      "label": "The Absolute — Hunting Sera and ToneTum / Heartgifts",
+      "tavern": [
+        "A woman matching Sera's description was seen in [town] three days ago. Two Church officers arrived asking about her the next day.",
+        "Someone's been asking about Greywood survivors in the old taverns. Offering coin for information. Not saying who they work for.",
+        "A halfling monk in the Eastern Highlands had visitors last month. Unusual — he doesn't get visitors.",
+        "The Church has started keeping records of bards over level 8. Performance licenses now require a full background filing.",
+        "An old elf woman played the Broken Drum in [town]. Packed house. She was gone by morning. Two days later, Wardens came asking for a description.",
+        "There's a bounty board in [town] that doesn't list crimes. Just names and 'wanted for questioning.' Sera Voss is on it.",
+        "A merchant on the eastern road says Church scouts are mapping hermitage sites in the Highlands. Every monastery, every retreat, every cave with a door on it.",
+        "Someone broke into the Thornwick municipal archive. Nothing taken — but the Greywood section was thoroughly read. Pages left out of order.",
+        "I heard the Church is offering pensions to retired adventurers who served at Greywood. Generous ones. All they have to do is come in for an interview.",
+        "Sera Voss hasn't played a public show in months. For a bard of her reputation, that's not retirement. That's hiding.",
+        "A friend in [town] says someone approached him about his sister — she used to travel with a Resonant cell. They wanted to know who her friends were. Specifically, who she'd die for.",
+        "There are new postings at the Warden stations: 'Persons of cultural significance — report sightings.' No names. Just descriptions."
+      ],
+      "notices": [
+        "Warden interest in bards and musicians that goes beyond licensing",
+        "Questions about Greywood that feel pointed — not historical curiosity, but operational intelligence gathering",
+        "Church officers in places they wouldn't normally be, asking about people who match Sera's or ToneTum's descriptions",
+        "Rick's Sera connection (\"find me in Valenmoor\") becoming a thread someone else is also pulling",
+        "If the party mentions Sera by name in the wrong place, increased attention follows",
+        "Background checks on the party themselves — someone is mapping their relationships"
+      ]
+    },
+    "absolute_antires": {
+      "label": "The Absolute — Anti-Resonant Operations",
+      "tavern": [
+        "Resonants bombed a grain store in [town]. Thirty families lost their winter supply.",
+        "The Wardens found Resonant pamphlets in a dead man's house. He was a schoolteacher.",
+        "I used to think the Resonants had a point. Then they burned the [building]. Lost my sympathy.",
+        "A Resonant cell got caught in [town]. The Wardens had their names, their meeting place, their schedule. Someone talked.",
+        "The Church is offering amnesty to anyone who turns in Resonant contacts. No questions asked. Full pardon.",
+        "Supply caravans to the western reaches are being hit. The Church says it's Resonants. The drivers say the attackers wore Church boots.",
+        "My neighbor reported a Resonant. Got a month's rations as a reward. We don't talk anymore.",
+        "The Wardens arrested a Pale Hand priest last week. Called him a Resonant sympathizer. He was eighty years old.",
+        "A broadsheet in [town] is running stories about Resonant violence. Three stories this week. All sourced to 'Church security officials.' No witnesses named.",
+        "Someone painted the broken string on the town hall. Next morning, three shops had their windows smashed. The broadsheet blamed the Resonants. The shopkeepers said it was men in uniform.",
+        "There's a new Resonant pamphlet going around — except it's calling for armed uprising. The real Resonants say it's not theirs.",
+        "The Church announced a 'Community Safety Fund.' Volunteers get a stipend, a badge, and a list of names to watch.",
+        "A Resonant safe house in [town] was raided. The family hiding them was publicly named. They've been shunned.",
+        "I heard the Resonants poisoned a well in [town]."
+      ],
+      "notices": [
+        "Stories about Resonant violence that don't add up when you ask follow-up questions",
+        "Evidence at \"Resonant attack\" sites that looks staged (Church equipment, too-clean operational patterns)",
+        "Genuine Resonant cells going quieter — harder to find, more paranoid, less willing to trust new contacts",
+        "Marta's exposure risk increasing as Breck's capture is exploited for intelligence",
+        "Public opinion shifting against the Resonants in towns the party revisits",
+        "Resonant contacts the party has met being harder to reach or having gone dark",
+        "The gap between what the broadsheets say and what the party has seen with their own eyes"
+      ]
+    },
+    "absolute_maelon": {
+      "label": "The Absolute — Attacking the Church of Maelon",
+      "tavern": [
+        "The Conservatory opened a hospice in [town]. Nice place, actually. The Pale Hand priest looked... lost.",
+        "My mother died last week. The Kethara priest did the rites. Felt wrong, but the Pale Hand priest was gone. Nobody knew where.",
+        "The Pale Hand temple in [town] lost its funding. Operating on donations now. The Conservatory temple across the street just got a new roof.",
+        "A Conservatory broadsheet says Maelon's followers have 'failed to meet the spiritual needs of the bereaved.' Harsh.",
+        "The Pale Hand hospice I used to volunteer at closed. The new Kethara one opened the same week. Same building.",
+        "A Pale Hand priest was refused entry to the dying ward at [town] hospital. New policy. Conservatory clergy only.",
+        "My grandfather wants a Maelon funeral. The family is arguing about whether it's worth the paperwork.",
+        "There's a Conservatory pamphlet going around: 'In your hour of need, trust the proven faith.' It's got Kethara's seal. No mention of Maelon.",
+        "The old death-singer in [town] was told to apply for a Conservatory license if she wants to keep practicing. She's been singing the dead home for forty years.",
+        "I heard Maelon's temples are losing their tax exemptions. Something about 'failure to meet community standards.'",
+        "A Pale Hand priest in [town] was arrested for performing unauthorized funeral rites. Unauthorized. For a funeral.",
+        "The Conservatory is training its own end-of-life clergy. Six-week course. The Pale Hand apprenticeship takes twelve years."
+      ],
+      "notices": [
+        "Pale Hand clergy being displaced from their traditional roles — visibly confused, hurt, compliant",
+        "Kethara hospices that are competent but missing something — the rites feel hollow, procedural",
+        "Rick recognizing old Pale Hand equipment in Conservatory hands, rebranded",
+        "Frederick's world shrinking — his institutional support eroding",
+        "Gnomebare and other Pale Hand contacts becoming more isolated, more desperate",
+        "The emotional texture of death changing in towns — grief without release, funerals without rest",
+        "Towns where the party played earlier feeling different on return — something intangible gone from the death rites"
+      ]
+    },
+    "chadwick": {
+      "label": "Chadwick's Withdrawal",
+      "tavern": [
+        "The High Conservator cancelled his appearance at the [festival/ceremony]. Third time this season.",
+        "I heard Chadwick is ill. No — I heard he's fine and just busy. No — I heard he hasn't been seen in weeks.",
+        "A friend at the Conservatory says the inner circle is tighter than ever. Nobody gets in without three levels of clearance.",
+        "There was supposed to be a public blessing at [event]. A deputy showed up instead. Read from a script.",
+        "Chadwick's last public address was... strange. He repeated a phrase. Then corrected himself. Then repeated it again.",
+        "The Church says he's focused on 'deep spiritual work.' That's what they said about the last Grand Chancellor before he died.",
+        "Someone tried to get an audience with the High Conservator through the official channels. Got a letter back. Signed by someone they'd never heard of.",
+        "Security around the Solmara compound has tripled. The Church says it's because of Resonant threats.",
+        "I saw a painting of Chadwick from ten years ago. He looked like a different person. Not older — different.",
+        "A Conservatory officer I know says Chadwick's orders have been... inconsistent. One day hawkish, the next almost gentle. Then hawkish again, harder.",
+        "The deputies are running things now. Everyone knows it. Nobody says it."
+      ],
+      "notices": [
+        "Official Church communications that feel like they come from a committee, not a person",
+        "Deputies and intermediaries where there should be direct contact",
+        "If the party gets close to Chadwick: moments of lucidity that are startling and brief — a different person behind the eyes",
+        "Security escalation framed as protection that functions as containment",
+        "Other high-status musicians and cultural figures also noting the difficulty of access"
+      ]
+    },
+    "resonants": {
+      "label": "Resonant Activity",
+      "tavern": [
+        "Someone played a banned song in the market square in [town]. Full crowd. Wardens showed up but the player was gone. People were humming it for days.",
+        "A measurement station on the north road was smashed overnight. Clean job. No guards hurt.",
+        "The Pale Hand priest in [town] was supposed to be evicted. Someone hid him. Nobody's talking about who.",
+        "A Resonant pamphlet turned up in my bread delivery. Wrapped around the loaf. It had numbers — site readings that don't match what the Church says.",
+        "There was a sit-in at the Warden office in [town]. Twelve people. Wouldn't leave until they got answers about the crop failures. The Wardens waited them out.",
+        "A supply caravan carrying Conservatory measurement devices was hit on the [road]. Devices smashed. Drivers untouched. Left them water and an apology note.",
+        "My daughter found a broken-string symbol carved into a tree on the east road. Fresh.",
+        "Someone smuggled a pre-Silence measurement device into [town]. A merchant was offering readings for a copper. The Church shut him down in hours.",
+        "The Resonants are getting bolder. Or more desperate. Hard to tell which.",
+        "An old woman in [town] played Maelon's rest-hymn at a funeral. Out loud. In public. Nobody stopped her. Nobody reported her, either.",
+        "I heard the Resonants have a printing press somewhere in the western reaches. Pamphlets showing up faster than the Church can burn them."
+      ],
+      "notices": [
+        "Broken-string symbols in unexpected places — carved into furniture, scratched on walls, tattooed on wrists",
+        "Music that shouldn't be playing — old songs, banned songs, songs that feel like they come from before",
+        "Ordinary people doing small acts of resistance without knowing they're part of anything",
+        "The Resonant network being harder to access as the Absolute's operations tighten",
+        "Mave and Oisin's cell being more cautious after Thornwall",
+        "Marta's anxiety increasing — Breck's capture is an ongoing threat to her entire network"
+      ]
+    },
+    "the_label": {
+      "label": "The Label",
+      "tavern": [
+        "A bard in [town] signed a contract with a patron nobody's met. Career took off overnight. She doesn't talk about the terms.",
+        "There's a manager working the festival circuit who always seems to know which acts will break through. Like he's already seen it.",
+        "A recording crystal from a show in [town] sold for a hundred gold. The performance wasn't that good. But something about it...",
+        "My friend played the best show of his life last month. Said it felt like something was listening. Not the audience — something behind the audience.",
+        "There are new contracts circulating for touring musicians. Standard terms, nothing unusual on paper. But the musicians who sign them play... differently. More driven. Less happy.",
+        "A patron in [town] is buying up performance venues. Cash. No negotiation. Doesn't seem to care about profit.",
+        "Barakas got an offer he didn't tell the band about.",
+        "The Label isn't a person. It's not a company. It's a... feeling. Like the room is watching you and deciding whether you're worth its time."
+      ],
+      "notices": [
+        "Barakas receiving nudges, opportunities, or information he shouldn't have — and not always questioning where it comes from",
+        "Performances that feel observed by something beyond the audience",
+        "Other musicians on the circuit with similar \"too-fast\" career trajectories and similar unnamed patrons",
+        "The sense that the music industry has an invisible hand that isn't the Church",
+        "Contracts and deals that benefit the party arriving at suspiciously convenient moments",
+        "A feeling after transcendent performance moments — something taken, not just given"
+      ]
+    },
+    "general": {
+      "label": "General World Deterioration",
+      "tavern": [
+        "The harvest in [region] came in at half. Second year running.",
+        "The fish aren't running in [river]. First time in living memory.",
+        "A whole field of wheat grew in silence. No birdsong, no wind noise, nothing. Farmer says it grew twice as fast and tasted like nothing.",
+        "The mine in [town] hit a vein that sings. Not metaphorically. The ore hums. Miners won't go back.",
+        "Weather's wrong. It shouldn't be this warm / cold / dry / wet for the season.",
+        "The stars looked different last night. My grandmother says they've shifted. Probably just her eyes.",
+        "There are more beggars on the road this year. Towns that used to be generous are closing their gates.",
+        "A caravan from [town] arrived with half its goods spoiled. Not rotted — just... empty. Like the substance went out of them.",
+        "The old songs don't work as well. My mother used to sing to the garden and everything grew. I sing the same songs. Nothing.",
+        "A resonance site near [town] has been humming louder. You can hear it from the road now. Used to be you had to press your ear to the stone.",
+        "Three towns on the [road] have posted guards at their granaries. Never used to need them.",
+        "The river's running slower. Not lower — slower. Like it's tired.",
+        "An instrument maker in [town] says her wood is different. Same supplier, same forest. But the tone is wrong. Flat. Dead.",
+        "People are angrier. I don't mean politics. I mean — the baker yelled at a child yesterday. He's never yelled at anyone.",
+        "The Church says the program is working. The fields say otherwise.",
+        "Something's wrong with the silence between notes. It used to feel like rest. Now it feels like something holding its breath."
+      ],
+      "notices": [
+        "Music that felt vibrant in early sessions feeling slightly harder to play, slightly less responsive",
+        "NPCs they met earlier showing subtle changes — shorter tempers, flatter affect, less joy",
+        "Prices rising in towns they revisit",
+        "Roads less maintained, fewer travelers, more tension at checkpoints",
+        "Resonance sites the party has visited feeling different — louder, more pressured, harder to be near",
+        "Duane feeling the overfullness in his bones before anyone else names it",
+        "Luke seeing increasing ugliness — not dramatic, just a steady erosion of beauty in the world",
+        "AV's technical knowledge registering that instruments and acoustic equipment are behaving differently",
+        "Rick recognizing Maelon's absence in the quality of death — funerals that don't release, grief that doesn't process"
+      ]
+    }
+  }
+}

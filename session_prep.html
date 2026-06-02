@@ -1157,6 +1157,71 @@
     .sidebar { border-left: none; border-top: 1px solid var(--rule); position: static; max-height: none; }
     .combat-grid { grid-template-columns: 1fr; }
   }
+
+  /* ---------- Rumors tab ---------- */
+  .rumors-layout { display: flex; flex-direction: column; gap: 20px; }
+  .rumor-front {
+    background: var(--bg-panel);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--accent-dim);
+    border-radius: 0 4px 4px 0;
+    padding: 14px 18px;
+  }
+  .rumor-front-head {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 12px;
+    cursor: pointer; user-select: none;
+  }
+  .rumor-front-head h3 {
+    font-family: var(--display); font-size: 18px; font-weight: 600; margin: 0;
+    flex: 1;
+  }
+  .rumor-front-head .front-roll {
+    font-family: var(--mono); font-size: 10px; color: var(--accent);
+    background: var(--bg-input); border: 1px solid var(--rule);
+    padding: 4px 10px; border-radius: 3px; cursor: pointer;
+    text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .rumor-front-head .front-roll:hover { background: var(--accent); color: var(--bg); }
+  .rumor-front-head .front-chevron {
+    font-family: var(--mono); font-size: 12px; color: var(--ink-mute);
+  }
+  .rumor-front-body { display: none; }
+  .rumor-front.open .rumor-front-body { display: block; }
+  .rumor-section-label {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--accent); margin: 10px 0 6px;
+  }
+  .rumor-section-label.notices-label { color: var(--warn); }
+  .rumor-item {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 6px 8px; border-radius: 3px; cursor: pointer;
+    transition: background 0.1s; font-size: 13px; line-height: 1.45;
+    color: var(--ink-dim);
+  }
+  .rumor-item:hover { background: var(--bg-input); }
+  .rumor-item.used { opacity: 0.4; text-decoration: line-through; text-decoration-color: var(--ink-mute); }
+  .rumor-item .ri-dot {
+    flex-shrink: 0; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent-dim); margin-top: 6px;
+  }
+  .rumor-item.used .ri-dot { background: var(--ink-mute); }
+  .rumor-result {
+    background: linear-gradient(180deg, rgba(200,157,90,0.08), rgba(200,157,90,0.02));
+    border-left: 3px solid var(--accent);
+    padding: 14px 18px; margin-bottom: 20px; border-radius: 0 4px 4px 0;
+    display: none;
+  }
+  .rumor-result.visible { display: block; }
+  .rumor-result .rr-label {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 6px;
+  }
+  .rumor-result .rr-front {
+    font-family: var(--mono); font-size: 10px; color: var(--ink-mute); margin-bottom: 4px;
+  }
+  .rumor-result .rr-text {
+    font-family: var(--display); font-size: 17px; line-height: 1.45; color: var(--ink);
+  }
 </style>
 </head>
 <body>
@@ -1178,6 +1243,7 @@
   <button class="tab" data-tab="skills">Skills &amp; Spells</button>
   <button class="tab" data-tab="npcgen">NPC Generator</button>
   <button class="tab" data-tab="maps">Maps</button>
+  <button class="tab" data-tab="rumors">Rumors</button>
   <button class="tab" data-tab="narrative">Narrative</button>
 </div>
 
@@ -1419,6 +1485,20 @@
       </div>
     </div>
 
+    <!-- RUMORS TAB -->
+    <div class="tab-content" id="tab-rumors">
+      <div class="section-head">
+        <h2>Rumors &amp; World Signs</h2>
+        <div class="sub">Roll tavern talk or DM prompts by front · used rumors are crossed off</div>
+        <div class="actions">
+          <button class="btn tiny" onclick="rollAnyRumor()">⚄ Any rumor</button>
+          <button class="btn tiny warn" onclick="clearUsedRumors()">Clear used</button>
+        </div>
+      </div>
+
+      <div class="rumors-layout" id="rumorsLayout"></div>
+    </div>
+
     <!-- MAPS TAB -->
     <div class="tab-content" id="tab-maps">
       <div class="section-head">
@@ -1460,7 +1540,7 @@ async function loadAll() {
   // The five data files. Each loads independently — one failing doesn't break the others.
   // All merge into a single `world` object so existing render code (world.spells, world.monsters,
   // world.skills, world.npc_generator, world.narrative…) keeps working unchanged.
-  const files = ['world.json', 'spells.json', 'reference.json', 'monsters.json', 'npcgen.json'];
+  const files = ['world.json', 'spells.json', 'reference.json', 'monsters.json', 'npcgen.json', 'rumors.json'];
   world = {};
   const failed = [];
 
@@ -1550,6 +1630,7 @@ function renderAll() {
   renderSkills();
   renderSpells();
   renderMaps();
+  renderRumors();
   populateMonsterDropdown();
   // Session Prep worksheet is static markup (ephemeral textareas) — nothing to render.
 }
@@ -2170,6 +2251,11 @@ function generateNPC() {
   const genderLabel = gender.charAt(0).toUpperCase() + gender.slice(1);
   const npc = { name, race, gender: genderLabel, trait, physical, connection };
 
+  // pick a random tavern rumor to optionally attach
+  const allTavernRumors = [];
+  Object.values(world.rumors || {}).forEach(f => (f.tavern || []).forEach(t => allTavernRumors.push(t)));
+  const rumorForNPC = allTavernRumors.length ? pick(allTavernRumors) : null;
+
   const result = document.getElementById('npcgenResult');
   result.innerHTML = `
     <div class="npc-card">
@@ -2178,6 +2264,7 @@ function generateNPC() {
       <div class="nc-line"><span class="nc-lbl">Personality</span>${escapeHTML(trait)}</div>
       <div class="nc-line"><span class="nc-lbl">Physical</span>${escapeHTML(physical)}</div>
       <div class="nc-line"><span class="nc-lbl">Connection</span><span class="nc-conn">${escapeHTML(connection)}</span></div>
+      ${rumorForNPC ? `<div class="nc-line"><span class="nc-lbl">Rumour heard</span>${escapeHTML(rumorForNPC)}</div>` : ''}
     </div>
   `;
 
@@ -2639,6 +2726,152 @@ function flashSaved(hintId) {
     narrTA.addEventListener('input', save);
   }
 })();
+
+// ============================================================
+// RUMORS
+// ============================================================
+let usedRumors = JSON.parse(localStorage.getItem('gc_used_rumors') || '[]');
+
+function persistUsedRumors() {
+  localStorage.setItem('gc_used_rumors', JSON.stringify(usedRumors));
+}
+
+function rumorKey(frontId, type, idx) {
+  return `${frontId}:${type}:${idx}`;
+}
+
+function isUsed(key) { return usedRumors.includes(key); }
+
+function toggleRumor(key) {
+  const i = usedRumors.indexOf(key);
+  if (i >= 0) usedRumors.splice(i, 1);
+  else usedRumors.push(key);
+  persistUsedRumors();
+  renderRumors();
+}
+
+function clearUsedRumors() {
+  if (!confirm('Clear all used rumor marks?')) return;
+  usedRumors = [];
+  persistUsedRumors();
+  renderRumors();
+}
+
+function rollFrontRumor(frontId, event) {
+  if (event) event.stopPropagation();
+  const fronts = world.rumors || {};
+  const front = fronts[frontId];
+  if (!front) return;
+  const all = [];
+  (front.tavern || []).forEach((t, i) => all.push({ key: rumorKey(frontId, 'tavern', i), text: t, frontLabel: front.label }));
+  const unused = all.filter(r => !isUsed(r.key));
+  const pool = unused.length > 0 ? unused : all;
+  const pick = pool[Math.floor(Math.random() * pool.length)];
+  showRumorResult(pick.frontLabel, pick.text, pick.key);
+}
+
+function rollAnyRumor() {
+  const fronts = world.rumors || {};
+  const all = [];
+  Object.keys(fronts).forEach(frontId => {
+    const front = fronts[frontId];
+    (front.tavern || []).forEach((t, i) => all.push({ key: rumorKey(frontId, 'tavern', i), text: t, frontLabel: front.label }));
+  });
+  if (!all.length) return;
+  const unused = all.filter(r => !isUsed(r.key));
+  const pool = unused.length > 0 ? unused : all;
+  const pick = pool[Math.floor(Math.random() * pool.length)];
+  showRumorResult(pick.frontLabel, pick.text, pick.key);
+}
+
+function showRumorResult(frontLabel, text, key) {
+  const box = document.getElementById('rumorResultBox');
+  if (!box) return;
+  box.classList.add('visible');
+  box.querySelector('.rr-front').textContent = frontLabel;
+  box.querySelector('.rr-text').textContent = text;
+  box.dataset.key = key;
+  // mark as used
+  if (!isUsed(key)) {
+    usedRumors.push(key);
+    persistUsedRumors();
+    renderRumors();
+  }
+}
+
+function toggleFront(frontId) {
+  const el = document.getElementById('front-' + frontId);
+  if (el) el.classList.toggle('open');
+}
+
+function renderRumors() {
+  const layout = document.getElementById('rumorsLayout');
+  if (!layout) return;
+  const fronts = world.rumors || {};
+
+  // Preserve which fronts are open
+  const openFronts = {};
+  Object.keys(fronts).forEach(id => {
+    const el = document.getElementById('front-' + id);
+    if (el) openFronts[id] = el.classList.contains('open');
+  });
+
+  layout.innerHTML = '';
+
+  // Result box at top
+  const resultBox = document.createElement('div');
+  resultBox.className = 'rumor-result';
+  resultBox.id = 'rumorResultBox';
+  resultBox.innerHTML = `
+    <div class="rr-label">Rolled rumor</div>
+    <div class="rr-front"></div>
+    <div class="rr-text"></div>
+  `;
+  layout.appendChild(resultBox);
+
+  Object.keys(fronts).forEach(frontId => {
+    const front = fronts[frontId];
+    const isOpen = openFronts[frontId] || false;
+    const tavernTotal = (front.tavern || []).length;
+    const tavernUsed = (front.tavern || []).filter((_, i) => isUsed(rumorKey(frontId, 'tavern', i))).length;
+
+    const div = document.createElement('div');
+    div.className = 'rumor-front' + (isOpen ? ' open' : '');
+    div.id = 'front-' + frontId;
+
+    const tavernItems = (front.tavern || []).map((text, i) => {
+      const key = rumorKey(frontId, 'tavern', i);
+      const used = isUsed(key);
+      return `<div class="rumor-item${used ? ' used' : ''}" onclick="toggleRumor('${key}')">
+        <div class="ri-dot"></div>
+        <div>${escapeHTML(text)}</div>
+      </div>`;
+    }).join('');
+
+    const noticeItems = (front.notices || []).map((text, i) => {
+      const key = rumorKey(frontId, 'notice', i);
+      const used = isUsed(key);
+      return `<div class="rumor-item${used ? ' used' : ''}" onclick="toggleRumor('${key}')">
+        <div class="ri-dot"></div>
+        <div>${escapeHTML(text)}</div>
+      </div>`;
+    }).join('');
+
+    div.innerHTML = `
+      <div class="rumor-front-head" onclick="toggleFront('${frontId}')">
+        <h3>${escapeHTML(front.label)}</h3>
+        <span class="front-roll" onclick="rollFrontRumor('${frontId}', event)">⚄ Roll</span>
+        <span class="front-chevron">${isOpen ? '▴' : '▾'}</span>
+      </div>
+      <div class="rumor-front-body">
+        <div class="rumor-section-label">Tavern talk &amp; rumors · ${tavernUsed}/${tavernTotal} used</div>
+        ${tavernItems}
+        ${noticeItems ? `<div class="rumor-section-label notices-label">What the party might notice</div>${noticeItems}` : ''}
+      </div>
+    `;
+    layout.appendChild(div);
+  });
+}
 
 // ============================================================
 // INIT
