@@ -1012,6 +1012,40 @@
           }
         ]
       }
+    },
+    "yuan_ti_mind_whisperer": {
+      "name": "Yuan-ti Mind Whisperer",
+      "type": "Medium monstrosity (warlock) · CR 4 · 1,100 XP",
+      "ac": 14,
+      "hp": 71,
+      "speed": "30 ft",
+      "simple": {
+        "attacks": "Multiattack: 2 Bite + 1 Scimitar, or 2 Spectral Fangs. Bite +5, 1d4+3 piercing + 2d6 poison. Scimitar +5, 1d6+3 slashing. Spectral Fangs +5, 3d8+3 psychic (120 ft).",
+        "resistances": "Immune poison, poisoned condition",
+        "vulnerabilities": "—",
+        "notes": "Magic Resistance: advantage on saves vs spells. Devil's Sight: magical darkness doesn't impede darkvision. Sseth's Blessing: gains 9 temp HP on kill. Spellcasting (Cha, DC 13): at will animal friendship (snakes), message, minor illusion, prestidigitation; 3/day suggestion; 2/day detect thoughts, hypnotic pattern. Bonus: Change Shape (snake ↔ true form)."
+      },
+      "full": {
+        "stats": { "str": 16, "dex": 14, "con": 13, "int": 14, "wis": 14, "cha": 16 },
+        "saves": "Wis +4, Cha +5",
+        "skills": "Deception +5, Stealth +4",
+        "senses": "Darkvision 120 ft., passive Perception 12",
+        "languages": "Abyssal, Common, Draconic",
+        "traits": [
+          { "name": "Devil's Sight", "text": "Magical darkness doesn't impede the yuan-ti's darkvision." },
+          { "name": "Magic Resistance", "text": "The yuan-ti has advantage on saving throws against spells and other magical effects." },
+          { "name": "Sseth's Blessing", "text": "When the yuan-ti reduces an enemy to 0 hit points, it gains 9 temporary hit points." }
+        ],
+        "actions": [
+          { "name": "Multiattack", "text": "Two Bite attacks and one Scimitar attack, or two Spectral Fangs attacks." },
+          { "name": "Bite", "text": "Melee: +5 to hit, reach 5 ft. Hit: 5 (1d4+3) piercing + 7 (2d6) poison." },
+          { "name": "Scimitar (Yuan-ti Form Only)", "text": "Melee: +5 to hit, reach 5 ft. Hit: 6 (1d6+3) slashing." },
+          { "name": "Spectral Fangs", "text": "Ranged spell attack: +5 to hit, range 120 ft. Hit: 16 (3d8+3) psychic." },
+          { "name": "Spellcasting (Yuan-ti Form Only)", "text": "Cha-based (save DC 13). At will: animal friendship (snakes only), message, minor illusion, prestidigitation. 3/day: suggestion. 2/day each: detect thoughts, hypnotic pattern." },
+          { "name": "Change Shape (Bonus Action)", "text": "Transforms into a Medium snake or back into true form. Statistics unchanged. Equipment not transformed." }
+        ],
+        "dndbeyond": "https://www.dndbeyond.com/monsters/2560972-yuan-ti-mind-whisperer"
+      }
     }
   }
 }

@@ -2027,6 +2027,7 @@ function monsterCardHTML(id, m, opts) {
         ${m.full.languages ? `<div class="m-detail"><strong>Languages:</strong> ${escapeHTML(m.full.languages)}</div>` : ''}
         ${traits ? `<h5 class="m-section">Traits</h5>${traits}` : ''}
         ${actions ? `<h5 class="m-section">Actions</h5>${actions}` : ''}
+        ${m.full.dndbeyond ? `<div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--rule);"><a href="${escapeAttr(m.full.dndbeyond)}" target="_blank" style="font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:0.06em;text-decoration:none;">↗ D&amp;D Beyond</a></div>` : ''}
       </div>
     `;
   }
