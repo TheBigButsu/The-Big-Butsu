@@ -1224,6 +1224,13 @@
     background: var(--accent-dim); margin-top: 6px;
   }
   .rumor-item.used .ri-dot { background: var(--ink-mute); }
+.ri-delete {
+  flex-shrink: 0; color: var(--ink-mute); font-size: 14px; width: 20px;
+  text-align: center; cursor: pointer; opacity: 0; transition: opacity 0.15s;
+  line-height: 1;
+}
+.rumor-item:hover .ri-delete { opacity: 1; }
+.ri-delete:hover { color: var(--warn); }
   .rumor-result {
     background: linear-gradient(180deg, rgba(200,157,90,0.08), rgba(200,157,90,0.02));
     border-left: 3px solid var(--accent);
@@ -2319,10 +2326,10 @@ function generateNPC() {
   const genderLabel = gender.charAt(0).toUpperCase() + gender.slice(1);
   const npc = { name, race, gender: genderLabel, trait, physical, connection };
 
-  // pick a random tavern rumor to optionally attach
+  // pick a random tavern rumor to optionally attach (track which front it came from)
   const allTavernRumors = [];
-  Object.values(world.rumors || {}).forEach(f => (f.tavern || []).forEach(t => allTavernRumors.push(t)));
-  const rumorForNPC = allTavernRumors.length ? pick(allTavernRumors) : null;
+  Object.entries(world.rumors || {}).forEach(([fid, f]) => (f.tavern || []).forEach(t => allTavernRumors.push({ text: t, frontId: fid, frontLabel: f.label })));
+  const rumorPick = allTavernRumors.length ? pick(allTavernRumors) : null;
 
   const result = document.getElementById('npcgenResult');
   result.innerHTML = `
@@ -2332,7 +2339,7 @@ function generateNPC() {
       <div class="nc-line"><span class="nc-lbl">Personality</span>${escapeHTML(trait)}</div>
       <div class="nc-line"><span class="nc-lbl">Physical</span>${escapeHTML(physical)}</div>
       <div class="nc-line"><span class="nc-lbl">Connection</span><span class="nc-conn">${escapeHTML(connection)}</span></div>
-      ${rumorForNPC ? `<div class="nc-line"><span class="nc-lbl">Rumour heard</span>${escapeHTML(rumorForNPC)}</div>` : ''}
+      ${rumorPick ? `<div class="nc-line nc-rumor" onclick="jumpToRumorFront('${rumorPick.frontId}')" style="cursor:pointer;"><span class="nc-lbl">Rumour heard <span style="font-size:9px;color:var(--accent);">· ${escapeHTML(rumorPick.frontLabel)} ↗</span></span>${escapeHTML(rumorPick.text)}</div>` : ''}
     </div>
   `;
 
@@ -2864,6 +2871,27 @@ function toggleFront(frontId) {
   if (el) el.classList.toggle('open');
 }
 
+function jumpToRumorFront(frontId) {
+  switchTab('rumors');
+  setTimeout(() => {
+    const el = document.getElementById('front-' + frontId);
+    if (el) {
+      el.classList.add('open');
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, 50);
+}
+
+function deleteRumor(frontId, type, idx, event) {
+  event.stopPropagation();
+  const front = (world.rumors || {})[frontId];
+  if (!front) return;
+  const arr = type === 'tavern' ? front.tavern : front.notices;
+  if (!arr || idx >= arr.length) return;
+  arr.splice(idx, 1);
+  renderRumors();
+}
+
 function renderRumors() {
   const layout = document.getElementById('rumorsLayout');
   if (!layout) return;
@@ -2893,7 +2921,8 @@ function renderRumors() {
       const used = isUsed(key);
       return `<div class="rumor-item${used ? ' used' : ''}" onclick="toggleRumor('${key}')">
         <div class="ri-dot"></div>
-        <div>${escapeHTML(text)}</div>
+        <div style="flex:1;">${escapeHTML(text)}</div>
+        <span class="ri-delete" onclick="deleteRumor('${frontId}','tavern',${i},event)" title="Remove">×</span>
       </div>`;
     }).join('');
 
@@ -2902,7 +2931,8 @@ function renderRumors() {
       const used = isUsed(key);
       return `<div class="rumor-item${used ? ' used' : ''}" onclick="toggleRumor('${key}')">
         <div class="ri-dot"></div>
-        <div>${escapeHTML(text)}</div>
+        <div style="flex:1;">${escapeHTML(text)}</div>
+        <span class="ri-delete" onclick="deleteRumor('${frontId}','notice',${i},event)" title="Remove">×</span>
       </div>`;
     }).join('');
 
