@@ -1260,6 +1260,7 @@
   <button class="tab" data-tab="combat">Combat</button>
   <button class="tab" data-tab="bestiary">Bestiary</button>
   <button class="tab" data-tab="skills">Skills &amp; Spells</button>
+  <button class="tab" data-tab="npcgen">NPC Generator</button>
   <button class="tab" data-tab="rumors">Rumors</button>
   <button class="tab" data-tab="maps">Maps</button>
 </div>
@@ -1452,6 +1453,55 @@
           </div>
           <div class="spell-grid" id="spellGrid"></div>
         </div>
+      </div>
+    </div>
+
+    <!-- NPC GENERATOR TAB -->
+    <div class="tab-content" id="tab-npcgen">
+      <div class="section-head">
+        <h2>NPC Generator</h2>
+        <div class="sub">Roll a stranger on the spot</div>
+      </div>
+
+      <div class="npcgen-controls">
+        <div class="npcgen-field">
+          <label>Race</label>
+          <select id="npcgenRace">
+            <option value="any">Any / unspecified</option>
+            <option value="Human">Human</option>
+            <option value="Elf">Elf</option>
+            <option value="Half-Elf">Half-Elf</option>
+            <option value="Dwarf">Dwarf</option>
+            <option value="Halfling">Halfling</option>
+            <option value="Gnome">Gnome</option>
+            <option value="Tiefling">Tiefling</option>
+            <option value="Goliath">Goliath</option>
+            <option value="Half-Orc">Half-Orc</option>
+            <option value="Dragonborn">Dragonborn</option>
+          </select>
+        </div>
+        <div class="npcgen-field">
+          <label>Gender</label>
+          <select id="npcgenGender">
+            <option value="any">Any</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="neutral">Neutral</option>
+          </select>
+        </div>
+        <button class="btn primary big" onclick="generateNPC()">⚄ Generate NPC</button>
+      </div>
+
+      <div class="npcgen-result" id="npcgenResult">
+        <div class="npcgen-empty">Set race and gender (or leave on Any), then roll.</div>
+      </div>
+
+      <div class="npcgen-history">
+        <div class="section-head compact">
+          <h3 class="block-title">Recent rolls</h3>
+          <div class="actions"><button class="btn tiny" onclick="clearNPCHistory()">Clear</button></div>
+        </div>
+        <div id="npcgenHistory"></div>
       </div>
     </div>
 
