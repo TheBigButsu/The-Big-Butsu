@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grand Chord — Initiative</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter+Tight:wght@400;500;600;700&display=swap');
+
+  :root {
+    --bg: #14110f;
+    --bg-panel: #221e1a;
+    --ink: #e8dfd1;
+    --ink-dim: #a89a85;
+    --rule: #2e2823;
+    --accent: #c89d5a;
+    --warn: #c46a4a;
+    --done: #5a8a6e;
+    --display: 'Cormorant Garamond', serif;
+    --body: 'Inter Tight', system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 18px;
+    line-height: 1.5;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 1rem;
+  }
+
+  h1 {
+    font-family: var(--display);
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  .empty {
+    color: var(--ink-dim);
+    font-style: italic;
+    margin-top: 3rem;
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 700px;
+  }
+
+  th {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-dim);
+    text-align: left;
+    padding: 0.5rem 1rem;
+    border-bottom: 2px solid var(--rule);
+  }
+
+  td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--rule);
+    font-size: 1.1rem;
+  }
+
+  tr.active-turn {
+    background: rgba(200, 157, 90, 0.12);
+    border-left: 3px solid var(--accent);
+  }
+
+  tr.active-turn td:first-child { padding-left: calc(1rem - 3px); }
+
+  tr.dead td { opacity: 0.35; text-decoration: line-through; }
+
+  tr.pc-row .name { font-weight: 600; }
+
+  .turn-marker { color: var(--accent); font-weight: 700; margin-right: 0.3rem; }
+
+  .hp-bar {
+    display: inline-block;
+    width: 80px;
+    height: 8px;
+    background: var(--rule);
+    border-radius: 4px;
+    overflow: hidden;
+    vertical-align: middle;
+  }
+  .hp-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.3s;
+  }
+
+  .status { font-size: 0.8rem; color: var(--ink-dim); }
+</style>
+</head>
+<body>
+
+<h1>Initiative Order</h1>
+<div id="content"><p class="empty">No combat in progress.</p></div>
+
+<script>
+function render() {
+  const raw = localStorage.getItem('gc_tracker');
+  if (!raw) { return; }
+  let list;
+  try { list = JSON.parse(raw); } catch { return; }
+  if (!Array.isArray(list) || list.length === 0) {
+    document.getElementById('content').innerHTML = '<p class="empty">No combat in progress.</p>';
+    return;
+  }
+
+  const visible = list.filter(c => !c.hidden);
+  visible.sort((a, b) => (b.initiative || 0) - (a.initiative || 0));
+
+  if (visible.length === 0) {
+    document.getElementById('content').innerHTML = '<p class="empty">Waiting for combat to begin...</p>';
+    return;
+  }
+
+  const activeName = list.find((_, i) => {
+    const sorted = [...list].sort((a, b) => (b.initiative || 0) - (a.initiative || 0));
+    const activeIdx = parseInt(localStorage.getItem('gc_activeTurn') || '0');
+    return i === activeIdx;
+  });
+
+  const activeIdx = parseInt(localStorage.getItem('gc_activeTurn') || '0');
+  const sortedFull = [...list].sort((a, b) => (b.initiative || 0) - (a.initiative || 0));
+  const activeEntry = sortedFull[activeIdx];
+
+  let html = '<table><thead><tr><th>Init</th><th>Name</th><th>AC</th><th>Status</th></tr></thead><tbody>';
+
+  visible.forEach(c => {
+    const classes = [];
+    if (activeEntry && c.name === activeEntry.name && c.initiative === activeEntry.initiative) classes.push('active-turn');
+    if (c.maxHp > 0 && c.hp <= 0) classes.push('dead');
+    if (c.isPC) classes.push('pc-row');
+
+    const marker = classes.includes('active-turn') ? '<span class="turn-marker">▶</span>' : '';
+    const init = c.initiative || '—';
+
+    let status = '';
+    if (c.isPC && c.maxHp > 0) {
+      const pct = Math.max(0, Math.min(100, (c.hp / c.maxHp) * 100));
+      const color = pct > 50 ? 'var(--done)' : pct > 25 ? 'var(--accent)' : 'var(--warn)';
+      status = `<div class="hp-bar"><div class="hp-bar-fill" style="width:${pct}%;background:${color}"></div></div> <span class="status">${c.hp}/${c.maxHp}</span>`;
+    } else if (!c.isPC && c.maxHp > 0 && c.hp <= 0) {
+      status = '<span class="status">Defeated</span>';
+    } else if (!c.isPC && c.maxHp > 0) {
+      const pct = (c.hp / c.maxHp) * 100;
+      if (pct <= 25) status = '<span class="status">Bloodied</span>';
+      else if (pct <= 50) status = '<span class="status">Wounded</span>';
+      else if (pct < 100) status = '<span class="status">Hurt</span>';
+    }
+
+    html += `<tr class="${classes.join(' ')}">
+      <td>${init}</td>
+      <td class="name">${marker}${esc(c.name)}</td>
+      <td>${c.ac || '—'}</td>
+      <td>${status}</td>
+    </tr>`;
+  });
+
+  html += '</tbody></table>';
+  document.getElementById('content').innerHTML = html;
+}
+
+function esc(s) {
+  const d = document.createElement('div');
+  d.textContent = s || '';
+  return d.innerHTML;
+}
+
+render();
+setInterval(render, 2000);
+</script>
+</body>
+</html>

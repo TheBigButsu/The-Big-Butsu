@@ -560,6 +560,7 @@
   }
   .tracker-table tr.active-turn { background: rgba(200, 157, 90, 0.06); }
   .tracker-table tr.dead { opacity: 0.4; }
+  .tracker-table tr.hidden-row { background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(107,99,87,0.06) 10px, rgba(107,99,87,0.06) 20px); }
   .tracker-table tr.dead .name-cell { text-decoration: line-through; }
   .tracker-table input.tracker-input {
     background: var(--bg-input);
@@ -1362,6 +1363,7 @@
           <button class="btn tiny" onclick="nextTurn()">▶ Next turn</button>
           <button class="btn tiny" onclick="sortByInitiative()">Sort by init</button>
           <button class="btn tiny warn" onclick="clearTracker()">Clear</button>
+          <button class="btn primary" onclick="window.open('player.html','_blank')">↗ Player View</button>
         </div>
       </div>
 
@@ -1373,6 +1375,7 @@
             <th>HP</th>
             <th>AC</th>
             <th>Notes</th>
+            <th title="Hidden from player view">👁</th>
             <th></th>
           </tr>
         </thead>
@@ -1878,9 +1881,9 @@ function renderTracker() {
   list.forEach((c, i) => {
     const tr = document.createElement('tr');
     if (i === activeTurnIndex) tr.classList.add('active-turn');
-    // Only style as "dead" if it has a max HP and current HP dropped to 0 — not freshly-added PCs
     if (c.maxHp > 0 && c.hp <= 0) tr.classList.add('dead');
     if (c.isPC) tr.classList.add('pc-row');
+    if (c.hidden) tr.classList.add('hidden-row');
     const initVal = c.initiative ? c.initiative : '';
     const hpVal = c.maxHp > 0 ? c.hp : '';
     const maxHpVal = c.maxHp > 0 ? c.maxHp : '';
@@ -1894,6 +1897,7 @@ function renderTracker() {
       </div></td>
       <td><input class="tracker-input" type="number" value="${c.ac || ''}" placeholder="—" onchange="updateCombatant(${i},'ac',this.value)" /></td>
       <td><input class="tracker-input name" type="text" value="${escapeHTML(c.notes || '')}" onchange="updateCombatant(${i},'notes',this.value)" /></td>
+      <td style="text-align:center;"><input type="checkbox" ${c.hidden ? 'checked' : ''} onchange="updateCombatant(${i},'hidden',this.checked)" title="${c.hidden ? 'Hidden from players' : 'Visible to players'}" /></td>
       <td class="tracker-actions">
         <button class="btn tiny warn" onclick="removeCombatant(${i})">×</button>
       </td>
@@ -2011,7 +2015,9 @@ function populateMonsterDropdown() {
 }
 
 function updateCombatant(i, field, value) {
-  if (field === 'name' || field === 'notes') {
+  if (field === 'hidden') {
+    session._tracker[i][field] = !!value;
+  } else if (field === 'name' || field === 'notes') {
     session._tracker[i][field] = value;
   } else {
     session._tracker[i][field] = parseInt(value) || 0;
@@ -2052,6 +2058,7 @@ function nextTurn() {
   const list = session._tracker || [];
   if (!list.length) return;
   activeTurnIndex = (activeTurnIndex + 1) % list.length;
+  localStorage.setItem('gc_activeTurn', activeTurnIndex);
   renderTracker();
 }
 
