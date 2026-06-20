@@ -1270,6 +1270,7 @@
   <button class="tab" data-tab="skills">Skills &amp; Spells</button>
   <button class="tab" data-tab="npcgen">NPC Generator</button>
   <button class="tab" data-tab="rumors">Rumors</button>
+  <button class="tab" data-tab="travel">Travel</button>
   <button class="tab" data-tab="maps">Maps</button>
 </div>
 
@@ -1535,6 +1536,26 @@
       <div class="rumors-layout" id="rumorsLayout"></div>
     </div>
 
+    <!-- TRAVEL TAB -->
+    <div class="tab-content" id="tab-travel">
+      <div class="section-head">
+        <h2>Travel Encounters</h2>
+        <div class="sub">Roll a random road encounter · weighted by category range</div>
+        <div class="actions">
+          <button class="btn primary" onclick="rollTravelEncounter()">⚄ Random Encounter</button>
+          <button class="btn tiny" onclick="rollTravelCategory()">⚄ By Category</button>
+        </div>
+      </div>
+
+      <div class="rumor-result" id="travelResultTop">
+        <div class="rr-label">Encounter</div>
+        <div class="rr-front"></div>
+        <div class="rr-text"></div>
+      </div>
+
+      <div class="rumors-layout" id="travelLayout"></div>
+    </div>
+
     <!-- MAPS TAB -->
     <div class="tab-content" id="tab-maps">
       <div class="section-head">
@@ -1577,7 +1598,7 @@ async function loadAll() {
   // The five data files. Each loads independently — one failing doesn't break the others.
   // All merge into a single `world` object so existing render code (world.spells, world.monsters,
   // world.skills, world.npc_generator, world.narrative…) keeps working unchanged.
-  const files = ['world.json', 'spells.json', 'reference.json', 'monsters.json', 'npcgen.json', 'rumors.json', 'maps.json'];
+  const files = ['world.json', 'spells.json', 'reference.json', 'monsters.json', 'npcgen.json', 'rumors.json', 'maps.json', 'travel.json'];
   world = {};
   const failed = [];
 
@@ -1666,6 +1687,7 @@ function renderAll() {
   renderSpells();
   renderMaps();
   renderRumors();
+  renderTravel();
   populateMonsterDropdown();
   // Session Prep worksheet is static markup (ephemeral textareas) — nothing to render.
 }
@@ -2373,6 +2395,74 @@ function clearNPCHistory() { npcHistory = []; renderNPCHistory(); }
 // MAPS
 // ============================================================
 let mapsTagFilter = 'all';
+
+// ============================================================
+// TRAVEL ENCOUNTERS
+// ============================================================
+const TRAVEL_WEIGHTS = {
+  church_wardens: 20,
+  resonant_activity: 10,
+  echo_silence: 10,
+  the_road: 20,
+  threats: 15,
+  people_opportunities: 20,
+  scrying_surveillance: 5
+};
+
+function renderTravel() {
+  const wrap = document.getElementById('travelLayout');
+  if (!wrap) return;
+  const cats = world.travel?.categories;
+  if (!cats || !cats.length) { wrap.innerHTML = '<div class="empty-hint">No travel data loaded.</div>'; return; }
+  wrap.innerHTML = '';
+  cats.forEach(cat => {
+    const sec = document.createElement('div');
+    sec.className = 'front-block';
+    let items = cat.encounters.map((e, i) => `<div class="rumor-item"><span class="rumor-text">${escapeHTML(e)}</span></div>`).join('');
+    sec.innerHTML = `
+      <div class="front-header" onclick="this.parentElement.classList.toggle('open')">
+        <span class="front-toggle">▸</span>
+        <span class="front-label">${escapeHTML(cat.label)}</span>
+        <span class="front-range">${cat.range}</span>
+        <span class="front-count">${cat.encounters.length} encounters</span>
+      </div>
+      <div class="front-body">${items}</div>
+    `;
+    wrap.appendChild(sec);
+  });
+}
+
+function rollTravelEncounter() {
+  const cats = world.travel?.categories;
+  if (!cats || !cats.length) return;
+  const totalWeight = Object.values(TRAVEL_WEIGHTS).reduce((a, b) => a + b, 0);
+  let roll = Math.random() * totalWeight;
+  let picked = cats[0];
+  for (const cat of cats) {
+    const w = TRAVEL_WEIGHTS[cat.id] || 10;
+    roll -= w;
+    if (roll <= 0) { picked = cat; break; }
+  }
+  const enc = picked.encounters[Math.floor(Math.random() * picked.encounters.length)];
+  showTravelResult(picked.label, enc);
+}
+
+function rollTravelCategory() {
+  const cats = world.travel?.categories;
+  if (!cats || !cats.length) return;
+  const idx = Math.floor(Math.random() * cats.length);
+  const cat = cats[idx];
+  const enc = cat.encounters[Math.floor(Math.random() * cat.encounters.length)];
+  showTravelResult(cat.label, enc);
+}
+
+function showTravelResult(catLabel, text) {
+  const box = document.getElementById('travelResultTop');
+  if (!box) return;
+  box.querySelector('.rr-front').textContent = catLabel;
+  box.querySelector('.rr-text').textContent = text;
+  box.classList.add('visible');
+}
 
 function renderMaps() {
   const grid = document.getElementById('mapsGrid');
