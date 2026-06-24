@@ -1271,7 +1271,6 @@
   <button class="tab" data-tab="npcgen">NPC Generator</button>
   <button class="tab" data-tab="rumors">Rumors</button>
   <button class="tab" data-tab="travel">Travel</button>
-  <button class="tab" data-tab="maps">Maps</button>
 </div>
 
 <!-- LAYOUT -->
@@ -1556,16 +1555,6 @@
       <div class="rumors-layout" id="travelLayout"></div>
     </div>
 
-    <!-- MAPS TAB -->
-    <div class="tab-content" id="tab-maps">
-      <div class="section-head">
-        <h2>Maps</h2>
-        <div class="sub">Click a map to open it in a new tab for screen-share · tag and folder support</div>
-      </div>
-
-      <div class="maps-filter-row" id="mapsFilterRow"></div>
-      <div class="maps-grid" id="mapsGrid"></div>
-    </div>
 
   </div>
 
@@ -1598,7 +1587,7 @@ async function loadAll() {
   // The five data files. Each loads independently — one failing doesn't break the others.
   // All merge into a single `world` object so existing render code (world.spells, world.monsters,
   // world.skills, world.npc_generator, world.narrative…) keeps working unchanged.
-  const files = ['world.json', 'spells.json', 'reference.json', 'monsters.json', 'npcgen.json', 'rumors.json', 'maps.json', 'travel.json'];
+  const files = ['world.json', 'spells.json', 'reference.json', 'monsters.json', 'npcgen.json', 'rumors.json', 'travel.json'];
   world = {};
   const failed = [];
 
@@ -1685,7 +1674,6 @@ function renderAll() {
   renderMonsters();
   renderSkills();
   renderSpells();
-  renderMaps();
   renderRumors();
   renderTravel();
   populateMonsterDropdown();
@@ -2401,11 +2389,6 @@ function renderNPCHistory() {
 function clearNPCHistory() { npcHistory = []; renderNPCHistory(); }
 
 // ============================================================
-// MAPS
-// ============================================================
-let mapsTagFilter = 'all';
-
-// ============================================================
 // TRAVEL ENCOUNTERS
 // ============================================================
 const TRAVEL_WEIGHTS = {
@@ -2473,70 +2456,6 @@ function showTravelResult(catLabel, text) {
   box.classList.add('visible');
 }
 
-function renderMaps() {
-  const grid = document.getElementById('mapsGrid');
-  const filterRow = document.getElementById('mapsFilterRow');
-  if (!grid) return;
-
-  const maps = world.maps || [];
-
-  if (maps.length === 0) {
-    if (filterRow) filterRow.innerHTML = '';
-    grid.innerHTML = `<div class="map-empty">
-      No maps yet. Add entries to <code>maps.json</code> like:<br><br>
-      <code>{ "name": "Thornwall", "url": "https://...", "folder": "Act 1", "tags": ["town","battle"] }</code>
-    </div>`;
-    return;
-  }
-
-  // Build tag list
-  const allTags = new Set(['all']);
-  maps.forEach(m => {
-    if (m.folder) allTags.add(m.folder);
-    (m.tags || []).forEach(t => allTags.add(t));
-  });
-
-  if (filterRow) {
-    filterRow.innerHTML = [...allTags].map(tag => `
-      <button class="spell-chip${mapsTagFilter === tag ? ' active' : ''}"
-        onclick="setMapsFilter('${escapeAttr(tag)}')">${escapeHTML(tag === 'all' ? 'All' : tag)}</button>
-    `).join('');
-  }
-
-  const filtered = mapsTagFilter === 'all' ? maps : maps.filter(m =>
-    m.folder === mapsTagFilter || (m.tags || []).includes(mapsTagFilter)
-  );
-
-  if (filtered.length === 0) {
-    grid.innerHTML = '<div class="map-empty">No maps match that filter.</div>';
-    return;
-  }
-
-  grid.innerHTML = '';
-  filtered.forEach(m => {
-    const tags = [m.folder, ...(m.tags || [])].filter(Boolean);
-    const div = document.createElement('div');
-    div.className = 'map-card';
-    div.onclick = () => window.open(m.url, '_blank');
-    div.innerHTML = `
-      <div class="map-thumb">
-        <img src="${escapeAttr(m.url)}" alt="${escapeHTML(m.name)}" loading="lazy"
-          onerror="this.parentElement.innerHTML='<span style=\\'color:var(--ink-mute);font-size:12px;\\'>No preview</span>'" />
-      </div>
-      <div class="map-info">
-        <div class="map-name">${escapeHTML(m.name)}</div>
-        ${m.notes ? `<div style="font-size:12px;color:var(--ink-dim);margin-top:2px;">${escapeHTML(m.notes)}</div>` : ''}
-        ${tags.length ? `<div class="map-tags">${tags.map(t => `<span class="map-tag">${escapeHTML(t)}</span>`).join('')}</div>` : ''}
-      </div>
-    `;
-    grid.appendChild(div);
-  });
-}
-
-function setMapsFilter(tag) {
-  mapsTagFilter = tag;
-  renderMaps();
-}
 
 // ============================================================
 // PROPS
