@@ -2079,7 +2079,16 @@ function sortTracker(col) {
 function nextTurn() {
   const list = session._tracker || [];
   if (!list.length) return;
-  activeTurnIndex = (activeTurnIndex + 1) % list.length;
+  list.sort((a, b) => {
+    if (trackerSort.col === 'initiative') return trackerSort.dir === 'desc' ? b.initiative - a.initiative : a.initiative - b.initiative;
+    if (trackerSort.col === 'name') return trackerSort.dir === 'desc' ? b.name.localeCompare(a.name) : a.name.localeCompare(b.name);
+    return 0;
+  });
+  const hasVisible = list.some(c => !c.hidden);
+  if (!hasVisible) return;
+  do {
+    activeTurnIndex = (activeTurnIndex + 1) % list.length;
+  } while (list[activeTurnIndex].hidden);
   localStorage.setItem('gc_activeTurn', activeTurnIndex);
   renderTracker();
 }
