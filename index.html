@@ -1676,6 +1676,7 @@ function renderAll() {
   renderSpells();
   renderRumors();
   renderTravel();
+  renderNPCHistory();
   populateMonsterDropdown();
   // Session Prep worksheet is static markup (ephemeral textareas) — nothing to render.
 }
@@ -2329,7 +2330,7 @@ document.querySelectorAll('.spell-lvl').forEach(chip => {
 // ============================================================
 // NPC GENERATOR
 // ============================================================
-let npcHistory = [];
+let npcHistory = JSON.parse(localStorage.getItem('gc_npc_history') || '[]');
 
 function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
 
@@ -2354,7 +2355,7 @@ function generateNPC() {
 
   // pick a random tavern rumor to optionally attach (track which front it came from)
   const allTavernRumors = [];
-  Object.entries(world.rumors || {}).forEach(([fid, f]) => (f.tavern || []).forEach(t => allTavernRumors.push({ text: t, frontId: fid, frontLabel: f.label })));
+  Object.entries(world.rumors || {}).forEach(([fid, f]) => (f.tavern || []).forEach((t, i) => { if (!deletedRumors.includes(rumorKey(fid, 'tavern', i))) allTavernRumors.push({ text: t, frontId: fid, frontLabel: f.label }); }));
   const rumorPick = allTavernRumors.length ? pick(allTavernRumors) : null;
 
   const result = document.getElementById('npcgenResult');
@@ -2371,6 +2372,7 @@ function generateNPC() {
 
   npcHistory.unshift(npc);
   if (npcHistory.length > 12) npcHistory.pop();
+  localStorage.setItem('gc_npc_history', JSON.stringify(npcHistory));
   renderNPCHistory();
 }
 
@@ -2386,7 +2388,7 @@ function renderNPCHistory() {
   `).join('');
 }
 
-function clearNPCHistory() { npcHistory = []; renderNPCHistory(); }
+function clearNPCHistory() { npcHistory = []; localStorage.setItem('gc_npc_history', '[]'); renderNPCHistory(); }
 
 // ============================================================
 // TRAVEL ENCOUNTERS
@@ -2823,6 +2825,11 @@ function flashSaved(hintId) {
 // RUMORS
 // ============================================================
 let usedRumors = JSON.parse(localStorage.getItem('gc_used_rumors') || '[]');
+let deletedRumors = JSON.parse(localStorage.getItem('gc_deleted_rumors') || '[]');
+
+function persistDeletedRumors() {
+  localStorage.setItem('gc_deleted_rumors', JSON.stringify(deletedRumors));
+}
 
 function persistUsedRumors() {
   localStorage.setItem('gc_used_rumors', JSON.stringify(usedRumors));
@@ -2843,9 +2850,11 @@ function toggleRumor(key) {
 }
 
 function clearUsedRumors() {
-  if (!confirm('Clear all used rumor marks?')) return;
+  if (!confirm('Clear all used rumor marks and restore deleted rumors?')) return;
   usedRumors = [];
+  deletedRumors = [];
   persistUsedRumors();
+  persistDeletedRumors();
   renderRumors();
 }
 
@@ -2855,7 +2864,7 @@ function rollFrontRumor(frontId, event) {
   const front = fronts[frontId];
   if (!front) return;
   const all = [];
-  (front.tavern || []).forEach((t, i) => all.push({ key: rumorKey(frontId, 'tavern', i), text: t, frontLabel: front.label }));
+  (front.tavern || []).forEach((t, i) => { const k = rumorKey(frontId, 'tavern', i); if (!deletedRumors.includes(k)) all.push({ key: k, text: t, frontLabel: front.label }); });
   const unused = all.filter(r => !isUsed(r.key));
   const pool = unused.length > 0 ? unused : all;
   const pick = pool[Math.floor(Math.random() * pool.length)];
@@ -2867,7 +2876,7 @@ function rollAnyRumor() {
   const all = [];
   Object.keys(fronts).forEach(frontId => {
     const front = fronts[frontId];
-    (front.tavern || []).forEach((t, i) => all.push({ key: rumorKey(frontId, 'tavern', i), text: t, frontLabel: front.label }));
+    (front.tavern || []).forEach((t, i) => { const k = rumorKey(frontId, 'tavern', i); if (!deletedRumors.includes(k)) all.push({ key: k, text: t, frontLabel: front.label }); });
   });
   if (!all.length) return;
   const unused = all.filter(r => !isUsed(r.key));
@@ -2909,11 +2918,11 @@ function jumpToRumorFront(frontId) {
 
 function deleteRumor(frontId, type, idx, event) {
   event.stopPropagation();
-  const front = (world.rumors || {})[frontId];
-  if (!front) return;
-  const arr = type === 'tavern' ? front.tavern : front.notices;
-  if (!arr || idx >= arr.length) return;
-  arr.splice(idx, 1);
+  const key = rumorKey(frontId, type, idx);
+  if (!deletedRumors.includes(key)) {
+    deletedRumors.push(key);
+    persistDeletedRumors();
+  }
   renderRumors();
 }
 
@@ -2943,6 +2952,7 @@ function renderRumors() {
 
     const tavernItems = (front.tavern || []).map((text, i) => {
       const key = rumorKey(frontId, 'tavern', i);
+      if (deletedRumors.includes(key)) return '';
       const used = isUsed(key);
       return `<div class="rumor-item${used ? ' used' : ''}" onclick="toggleRumor('${key}')">
         <div class="ri-dot"></div>
@@ -2953,6 +2963,7 @@ function renderRumors() {
 
     const noticeItems = (front.notices || []).map((text, i) => {
       const key = rumorKey(frontId, 'notice', i);
+      if (deletedRumors.includes(key)) return '';
       const used = isUsed(key);
       return `<div class="rumor-item${used ? ' used' : ''}" onclick="toggleRumor('${key}')">
         <div class="ri-dot"></div>
