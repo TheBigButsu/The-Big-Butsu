@@ -1046,6 +1046,43 @@
         ],
         "dndbeyond": "https://www.dndbeyond.com/monsters/2560972-yuan-ti-mind-whisperer"
       }
+    },
+    "priest_of_osybus": {
+      "name": "Priest of Osybus",
+      "type": "Medium Humanoid · CR 6",
+      "ac": 14,
+      "hp": 60,
+      "speed": "30 ft.",
+      "simple": {
+        "attacks": "Multiattack ×2 | Soul Blade +5, 2d4+2 piercing — paralyzed until start of priest's next turn; if reduced to 0 HP dies and soul trapped | Necrotic Bolt +7 ranged 120 ft, 3d8+4 necrotic — can't regain HP until start of priest's next turn",
+        "resistances": "Immune: Frightened",
+        "notes": "Tattoo of Osybus: on dropping to 0 HP, roll d6 Boon of Undeath — revives at half HP as Undead unless tattoo is destroyed first (AC 15, 15 HP, regains all HP end of each turn). Soul Tattoo bonus action (Recharge 5–6): release trapped soul as a Shadow."
+      },
+      "full": {
+        "stats": { "str": 10, "dex": 14, "con": 16, "int": 18, "wis": 17, "cha": 11 },
+        "saves": { "int": 7, "wis": 6, "cha": 3 },
+        "senses": "Darkvision 120 ft., Passive Perception 13",
+        "languages": "Any three languages",
+        "immunities": "Frightened",
+        "traits": [
+          {
+            "name": "Tattoo of Osybus",
+            "text": "If the priest drops to 0 hit points, roll on the Boons of Undeath table. The priest dies if it already has that boon; otherwise it revives at the start of its next turn with half its HP restored and becomes Undead. To prevent revival, the Tattoo (AC 15, 15 HP, immune to poison and psychic, regains all HP at end of every turn) must be destroyed while the priest is at 0 HP."
+          }
+        ],
+        "actions": [
+          { "name": "Multiattack", "text": "The priest attacks twice." },
+          { "name": "Soul Blade", "text": "Melee Weapon Attack: +5 to hit, reach 5 ft., one target. Hit: 7 (2d4+2) piercing damage. The target is paralyzed until the start of the priest's next turn. If this reduces a Medium or smaller creature to 0 HP, the creature dies and its soul is trapped in the priest as a Soul Tattoo. The soul is freed if the priest dies." },
+          { "name": "Necrotic Bolt", "text": "Ranged Spell Attack: +7 to hit, range 120 ft., one target. Hit: 17 (3d8+4) necrotic damage. The target can't regain hit points until the start of the priest's next turn." }
+        ],
+        "bonus_actions": [
+          { "name": "Soul Tattoo (Recharge 5–6)", "text": "The priest touches a Soul Tattoo on its body. The tattoo vanishes and the trapped soul manifests as a Shadow in an unoccupied space within 30 ft. the priest can see. The Shadow obeys the priest's mental commands and takes its turn immediately after the priest. While within 5 ft., the Shadow can use its action to return to the priest's skin, regaining all HP." }
+        ],
+        "special": [
+          { "name": "Boons of Undeath (d6)", "text": "1 Dread — DC 15 Wis save or frightened (30 ft. aura, start of turn). 2 Ectoplasmic — reduce speed by 10 ft. for creatures starting turn within 10 ft.; can polymorph appearance 8 hrs. 3 Vampiric — gain temp HP = half necrotic dealt; speed +10 ft. 4 Blazing — replaced by flameskull stat block (retains Tattoo; fire → necrotic). 5 Spectral — CR +1; resistance to all except force/radiant/psychic; vulnerable to radiant; move through objects. 6 Deathly — CR +1; animate dead + create undead 1/day (Int); Circle of Death recharge 5–6 (DC 15 Con, 8d6 necrotic, 60-ft. sphere at 150 ft.)." }
+        ],
+        "dndbeyond": "https://www.dndbeyond.com/monsters/4775832-priest-of-osybus"
+      }
     }
   }
 }
