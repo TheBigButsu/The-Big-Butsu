@@ -1,0 +1,1661 @@
+{
+  "spells": [
+    {
+      "name": "Sacred Flame",
+      "level": 0,
+      "school": "Evocation",
+      "casting_time": "1 action",
+      "range": "60 ft",
+      "components": "V, S",
+      "duration": "Instant",
+      "classes": [
+        "cleric"
+      ],
+      "text": "Flame-like radiance descends on a creature you can see. Dex save or 1d8 radiant; no benefit from cover. Scales 2d8/3d8/4d8 at 5/11/17."
+    },
+    {
+      "name": "Guidance",
+      "level": 0,
+      "school": "Divination",
+      "casting_time": "1 action",
+      "range": "Touch",
+      "components": "V, S",
+      "duration": "Conc. 1 min",
+      "classes": [
+        "cleric"
+      ],
+      "text": "Touch a willing creature. Once before the spell ends it adds 1d4 to one ability check of its choice."
+    },
+    {
+      "name": "Thaumaturgy",
+      "level": 0,
+      "school": "Transmutation",
+      "casting_time": "1 action",
+      "range": "30 ft",
+      "components": "V",
+      "duration": "Up to 1 min",
+      "classes": [
+        "cleric"
+      ],
+      "text": "A minor wonder: booming voice, flickering flames, tremors, a sudden sound, a door flung open/shut, or changed eye color. Up to three effects at once."
+    },
+    {
+      "name": "Spare the Dying",
+      "level": 0,
+      "school": "Necromancy",
+      "casting_time": "1 action",
+      "range": "Touch",
+      "components": "V, S",
+      "duration": "Instant",
+      "classes": [
+        "cleric"
+      ],
+      "text": "Touch a living creature at 0 HP; it becomes stable. No effect on undead or constructs."
+    },
+    {
+      "name": "Light",
+      "level": 0,
+      "school": "Evocation",
+      "casting_time": "1 action",
+      "range": "Touch",
+      "components": "V, M",
+      "duration": "1 hour",
+      "classes": [
+        "cleric",
+        "sorcerer"
+      ],
+      "text": "Touch an object ≤10 ft; it sheds 20-ft bright light + 20-ft dim. A held hostile object's bearer makes a Dex save to avoid."
+    },
+    {
+      "name": "Resistance",
+      "level": 0,
+      "school": "Abjuration",
+      "casting_time": "1 action",
+      "range": "Touch",
+      "components": "V, S, M",
+      "duration": "Conc. 1 min",
+      "classes": [
+        "cleric"
+      ],
+      "text": "Touch a willing creature. Once before the spell ends it adds 1d4 to one saving throw of its choice."
+    },
+    {
+      "name": "Mending",
+      "level": 0,
+      "school": "Transmutation",
+      "casting_time": "1 minute",
+      "range": "Touch",
+      "components": "V, S, M",
+      "duration": "Instant",
+      "classes": [
+        "cleric",
+        "sorcerer",
+        "warlock"
+      ],
+      "text": "Repair a single break or tear ≤1 ft in an object. Doesn't restore magical properties."
+    },
+    {
+      "name": "Fire Bolt",
+      "level": 0,
+      "school": "Evocation",
+      "casting_time": "1 action",
+      "range": "120 ft",
+      "components": "V, S",
+      "duration": "Instant",
+      "classes": [
+        "sorcerer"
+      ],
+      "text": "Ranged spell attack; 1d10 fire. Unattended flammables ignite. Scales 2d10/3d10/4d10."
+    },
+    {
+      "name": "Ray of Frost",
+      "level": 0,
+      "school": "Evocation",
+      "casting_time": "1 action",
+      "range": "60 ft",
+      "components": "V, S",
+      "duration": "Instant",
+      "classes": [
+        "sorcerer"
+      ],
+      "text": "Ranged spell attack; 1d8 cold and target's speed −10 ft until your next turn. Scales 2d8/3d8/4d8."
+    },
+    {
+      "name": "Prestidigitation",
+      "level": 0,
+      "school": "Transmutation",
+      "casting_time": "1 action",
+      "range": "10 ft",
+      "components": "V, S",
+      "duration": "Up to 1 hour",
+      "classes": [
+        "sorcerer",
+        "warlock"
+      ],
+      "text": "A harmless sensory effect, light/snuff a flame, clean/soil, chill/warm/flavor food, a mark for 1 hr, or a trinket in your hand."
+    },
+    {
+      "name": "Mage Hand",
+      "level": 0,
+      "school": "Conjuration",
+      "casting_time": "1 action",
+      "range": "30 ft",
+      "components": "V, S",
+      "duration": "1 min",
+      "classes": [
+        "sorcerer",
+        "warlock"
+      ],
+      "text": "A spectral hand manipulates objects, opens doors, pours, carries ≤10 lb, moves ≤30 ft per use. Can't attack or use magic items."
+    },
+    {
+      "name": "Minor Illusion",
+      "level": 0,
+      "school": "Illusion",
+      "casting_time": "1 action",
+      "range": "30 ft",
+      "components": "S, M",
+      "duration": "1 min",
+      "classes": [
+        "sorcerer",
+        "warlock"
+      ],
+      "text": "Create a sound or a still image of an object. Investigation vs your save DC to discern."
+    },
+    {
+      "name": "Eldritch Blast",
+      "level": 0,
+      "school": "Evocation",
+      "casting_time": "1 action",
+      "range": "120 ft",
+      "components": "V, S",
+      "duration": "Instant",
+      "classes": [
+        "warlock"
+      ],
+      "text": "Ranged spell attack; 1d10 force. One beam, +1 beam at 5/11/17; aim each separately."
+    },
+    {
+      "name": "Chill Touch",
+      "level": 0,
+      "school": "Necromancy",
+      "casting_time": "1 action",
+      "range": "120 ft",
+      "components": "V, S",
+      "duration": "1 round",
+      "classes": [
+        "sorcerer",
+        "warlock"
+      ],
+      "text": "Ranged spell attack; 1d8 necrotic and target can't regain HP until your next turn. Undead also have disadvantage attacking you. Scales 2d8/3d8/4d8."
+    },
+    {
+      "name": "Poison Spray",
+      "level": 0,
+      "school": "Conjuration",
+      "casting_time": "1 action",
+      "range": "10 ft",
+      "components": "V, S",
+      "duration": "Instant",
+      "classes": [
+        "sorcerer",
+        "warlock"
+      ],
+      "text": "Con save or 1d12 poison. Scales 2d12/3d12/4d12."
+    },
+    {
+      "name": "Dancing Lights",
+      "level": 0,
+      "school": "Evocation",
+      "casting_time": "1 action",
+      "range": "120 ft",
+      "components": "V, S, M",
+      "duration": "Conc. 1 min",
+      "classes": [
+        "sorcerer"
+      ],
+      "text": "Up to four torch-lights (or one glowing humanoid form) hover. Move them ≤60 ft as a bonus action, each within 20 ft of another."
+    },
+    {
+      "name": "True Strike",
+      "level": 0,
+      "school": "Divination",
+      "casting_time": "1 action",
+      "range": "30 ft",
+      "components": "S",
+      "duration": "Conc. 1 round",
+      "classes": [
+        "sorcerer",
+        "warlock"
+      ],
+      "text": "Your next attack against the target before the end of your next turn has advantage."
+    },
+    {
+      "name": "Message",
+      "level": 0,
+      "school": "Transmutation",
+      "casting_time": "1 action",
+      "range": "120 ft",
+      "components": "V, S, M",
+      "duration": "1 round",
+      "classes": [
+        "sorcerer"
+      ],
+      "text": "Whisper a message to one creature; only it hears, and it can whisper back. Passes through solids if you know the target is there."
+    },
+    {
+      "name": "Acid Splash",
+      "level": 0,
+      "school": "Conjuration",
+      "casting_time": "1 action",
+      "range": "60 ft",
+      "components": "V, S",
+      "duration": "Instant",
+      "classes": [
+        "sorcerer"
+      ],
+      "text": "One or two creatures within 5 ft of each other make a Dex save or take 1d6 acid. Scales 2d6/3d6/4d6."
+    },
+    {
+      "name": "Shocking Grasp",
+      "level": 0,
+      "school": "Evocation",
+      "casting_time": "1 action",
+      "range": "Touch",
+      "components": "V, S",
+      "duration": "Instant",
+      "classes": [
+        "sorcerer"
+      ],
+      "text": "Melee spell attack (advantage vs metal-armored targets); 1d8 lightning and target can't take reactions until its next turn. Scales 2d8/3d8/4d8."
+    },
+    {
+      "name": "Cure Wounds",
+      "level": 1,
+      "school": "Evocation",
+      "casting_time": "1 action",
+      "range": "Touch",
+      "components": "V, S",
+      "duration": "Instant",
+      "classes": [
+        "cleric"
+      ],
+      "text": "Touch a creature; it regains 1d8 + spellcasting mod HP. No effect on undead/constructs. +1d8 per slot above 1st."
+    },
+    {
+      "name": "Healing Word",
+      "level": 1,
+      "school": "Evocation",
+      "casting_time": "1 bonus action",
+      "range": "60 ft",
+      "components": "V",
+      "duration": "Instant",
+      "classes": [
+        "cleric"
+      ],
+      "text": "A creature you can see regains 1d4 + spellcasting mod HP. No effect on undead/constructs. +1d4 per slot above 1st."
+    },
+    {
+      "name": "Bless",
+      "level": 1,
+      "school": "Enchantment",
+      "casting_time": "1 action",
+      "range": "30 ft",
+      "components": "V, S, M",
+      "duration": "Conc. 1 min",
+      "classes": [
+        "cleric"
+      ],
+      "text": "Up to three creatures add 1d4 to attack rolls and saves. +1 target per slot above 1st."
+    },
+    {
+      "name": "Bane",
+      "level": 1,
+      "school": "Enchantment",
+      "casting_time": "1 action",
+      "range": "30 ft",
+      "components": "V, S, M",
+      "duration": "Conc. 1 min",
+      "classes": [
+        "cleric"
+      ],
+      "text": "Up to three creatures (Cha save negates) subtract 1d4 from attack rolls and saves. +1 target per slot above 1st."
+    },
+    {
+      "name": "Guiding Bolt",
+      "level": 1,
+      "school": "Evocation",
+      "casting_time": "1 action",
+      "range": "120 ft",
+      "components": "V, S",
+      "duration": "1 round",
+      "classes": [
+        "cleric"
+      ],
+      "text": "Ranged spell attack; 4d6 radiant and next attack against the target before your next turn has advantage. +1d6 per slot above 1st."
+    },
+    {
+      "name": "Shield of Faith",
+      "level": 1,
+      "school": "Abjuration",
+      "casting_time": "1 bonus action",
+      "range": "60 ft",
+      "components": "V, S, M",
+      "duration": "Conc. 10 min",
+      "classes": [
+        "cleric"
+      ],
+      "text": "A creature gains +2 AC for the duration."
+    },
+    {
+      "name": "Command",
+      "level": 1,
+      "school": "Enchantment",
+      "casting_time": "1 action",
+      "range": "60 ft",
+      "components": "V",
+      "duration": "1 round",
+      "classes": [
+        "cleric"
+      ],
+      "text": "A one-word command; Wis save or the target obeys on its next turn (Approach, Drop, Flee, Grovel, Halt). +1 target per slot above 1st."
+    },
+    {
+      "name": "Sanctuary",
+      "level": 1,
+      "school": "Abjuration",
+      "casting_time": "1 bonus action",
+      "range": "30 ft",
+      "components": "V, S, M",
+      "duration": "1 min",
+      "classes": [
+        "cleric"
+      ],
+      "text": "Attackers of the warded creature make a Wis save or must pick a new target. Ends if the warded one attacks or casts a harmful spell."
+    },
+    {
+      "name": "Inflict Wounds",
+      "level": 1,
+      "school": "Necromancy",
+      "casting_time": "1 action",
+      "range": "Touch",
+      "components": "V, S",
+      "duration": "Instant",
+      "classes": [
+        "cleric"
+      ],
+      "text": "Melee spell attack; 3d10 necrotic. +1d10 per slot above 1st."
+    },
+    {
+      "name": "Detect Evil and Good",
+      "level": 1,
+      "school": "Divination",
+      "casting_time": "1 action",
+      "range": "Self",
+      "components": "V, S",
+      "duration": "Conc. 10 min",
+      "classes": [
+        "cleric"
+      ],
+      "text": "Sense the location of aberrations, celestials, elementals, fey, fiends, and undead within 30 ft, and consecrated/desecrated places."
+    },
+    {
+      "name": "Detect Poison and Disease",
+      "level": 1,
+      "school": "Divination",
+      "casting_time": "1 action (ritual)",
+      "range": "Self",
+      "components": "V, S, M",
+      "duration": "Conc. 10 min",
+      "classes": [
+        "cleric"
+      ],
+      "text": "Sense and identify poisons, poisonous creatures, and diseases within 30 ft."
+    },
+    {
+      "name": "Create or Destroy Water",
+      "level": 1,
+      "school": "Transmutation",
+      "casting_time": "1 action",
+      "range": "30 ft",
+      "components": "V, S, M",
+      "duration": "Instant",
+      "classes": [
+        "cleric"
+      ],
+      "text": "Create up to 10 gallons of clean water (or rain in a 30-ft cube), or destroy that much water/fog. +10 gal per slot above 1st."
+    },
+    {
+      "name": "Purify Food and Drink",
+      "level": 1,
+      "school": "Transmutation",
+      "casting_time": "1 action (ritual)",
+      "range": "10 ft",
+      "components": "V, S",
+      "duration": "Instant",
+      "classes": [
+        "cleric"
+      ],
+      "text": "All nonmagical food and drink in a 5-ft sphere is purified of poison and disease."
+    },
+    {
+      "name": "Burning Hands",
+      "level": 1,
+      "school": "Evocation",
+      "casting_time": "1 action",
+      "range": "Self (15-ft cone)",
+      "components": "V, S",
+      "duration": "Instant",
+      "classes": [
+        "sorcerer"
+      ],
+      "text": "15-ft cone; Dex save, 3d6 fire (half on success). Ignites flammables. +1d6 per slot above 1st."
+    },
+    {
+      "name": "Magic Missile",
+      "level": 1,
+      "school": "Evocation",
+      "casting_time": "1 action",
+      "range": "120 ft",
+      "components": "V, S",
+      "duration": "Instant",
+      "classes": [
+        "sorcerer"
+      ],
+      "text": "Three darts, each 1d4+1 force, auto-hit, split as you like. +1 dart per slot above 1st."
+    },
+    {
+      "name": "Shield",
+      "level": 1,
+      "school": "Abjuration",
+      "casting_time": "1 reaction",
+      "range": "Self",
+      "components": "V, S",
+      "duration": "1 round",
+      "classes": [
+        "sorcerer"
+      ],
+      "text": "Reaction to being hit or targeted by Magic Missile: +5 AC until your next turn (incl. the trigger) and no Magic Missile damage."
+    },
+    {
+      "name": "Sleep",
+      "level": 1,
+      "school": "Enchantment",
+      "casting_time": "1 action",
+      "range": "90 ft",
+      "components": "V, S, M",
+      "duration": "1 min",
+      "classes": [
+        "sorcerer"
+      ],
+      "text": "Roll 5d8; creatures in a 20-ft radius fall unconscious in ascending-HP order until exhausted. Undead/charm-immune unaffected. +2d8 per slot above 1st."
+    },
+    {
+      "name": "Thunderwave",
+      "level": 1,
+      "school": "Evocation",
+      "casting_time": "1 action",
+      "range": "Self (15-ft cube)",
+      "components": "V, S",
+      "duration": "Instant",
+      "classes": [
+        "sorcerer"
+      ],
+      "text": "15-ft cube; Con save, 2d8 thunder and pushed 10 ft (half/no push on success). Audible 300 ft. +1d8 per slot above 1st."
+    },
+    {
+      "name": "Color Spray",
+      "level": 1,
+      "school": "Illusion",
+      "casting_time": "1 action",
+      "range": "Self (15-ft cone)",
+      "components": "V, S, M",
+      "duration": "1 round",
+      "classes": [
+        "sorcerer"
+      ],
+      "text": "Roll 6d10; creatures in a 15-ft cone, ascending-HP order, are blinded until your next turn until the total is exhausted. +2d10 per slot above 1st."
+    },
+    {
+      "name": "Chromatic Orb",
+      "level": 1,
+      "school": "Evocation",
+      "casting_time": "1 action",
+      "range": "90 ft",
+      "components": "V, S, M (50gp diamond)",
+      "duration": "Instant",
+      "classes": [
+        "sorcerer"
+      ],
+      "text": "Ranged spell attack; 3d8 of a chosen type (acid/cold/fire/lightning/poison/thunder). +1d8 per slot above 1st."
+    },
+    {
+      "name": "Witch Bolt",
+      "level": 1,
+      "school": "Evocation",
+      "casting_time": "1 action",
+      "range": "30 ft",
+      "components": "V, S, M",
+      "duration": "Conc. 1 min",
+      "classes": [
+        "sorcerer",
+        "warlock"
+      ],
+      "text": "Ranged spell attack; 1d12 lightning, then 1d12 auto each turn as an action. Ends if target leaves range/sight. +1d12 initial per slot above 1st."
+    },
+    {
+      "name": "Expeditious Retreat",
+      "level": 1,
+      "school": "Transmutation",
+      "casting_time": "1 bonus action",
+      "range": "Self",
+      "components": "V, S",
+      "duration": "Conc. 10 min",
+      "classes": [
+        "sorcerer",
+        "warlock"
+      ],
+      "text": "Dash as the casting bonus action, and as a bonus action each turn after."
+    },
+    {
+      "name": "False Life",
+      "level": 1,
+      "school": "Necromancy",
+      "casting_time": "1 action",
+      "range": "Self",
+      "components": "V, S, M",
+      "duration": "Instant",
+      "classes": [
+        "sorcerer"
+      ],
+      "text": "Gain 1d4+4 temporary HP. +5 temp HP per slot above 1st."
+    },
+    {
+      "name": "Jump",
+      "level": 1,
+      "school": "Transmutation",
+      "casting_time": "1 action",
+      "range": "Touch",
+      "components": "V, S, M",
+      "duration": "1 min",
+      "classes": [
+        "sorcerer"
+      ],
+      "text": "A creature's jump distance triples."
+    },
+    {
+      "name": "Feather Fall",
+      "level": 1,
+      "school": "Transmutation",
+      "casting_time": "1 reaction",
+      "range": "60 ft",
+      "components": "V, M",
+      "duration": "1 min",
+      "classes": [
+        "sorcerer"
+      ],
+      "text": "Up to five falling creatures descend 60 ft/round and take no fall damage."
+    },
+    {
+      "name": "Detect Magic",
+      "level": 1,
+      "school": "Divination",
+      "casting_time": "1 action (ritual)",
+      "range": "Self",
+      "components": "V, S",
+      "duration": "Conc. 10 min",
+      "classes": [
+        "cleric",
+        "sorcerer"
+      ],
+      "text": "Sense magic within 30 ft; with an action, see auras and learn each school. Blocked by 1 ft stone / thin lead."
+    },
+    {
+      "name": "Hex",
+      "level": 1,
+      "school": "Enchantment",
+      "casting_time": "1 bonus action",
+      "range": "90 ft",
+      "components": "V, S, M",
+      "duration": "Conc. 1 hour",
+      "classes": [
+        "warlock"
+      ],
+      "text": "+1d6 necrotic on your hits vs the target, and it has disadvantage on checks with one chosen ability. Move on drop as a bonus action. Higher slots extend duration."
+    },
+    {
+      "name": "Armor of Agathys",
+      "level": 1,
+      "school": "Abjuration",
+      "casting_time": "1 action",
+      "range": "Self",
+      "components": "V, S, M",
+      "duration": "1 hour",
+      "classes": [
+        "warlock"
+      ],
+      "text": "Gain 5 temp HP; melee attackers who hit you take 5 cold. +5/+5 per slot above 1st."
+    },
+    {
+      "name": "Arms of Hadar",
+      "level": 1,
+      "school": "Conjuration",
+      "casting_time": "1 action",
+      "range": "Self (10-ft radius)",
+      "components": "V, S",
+      "duration": "Instant",
+      "classes": [
+        "warlock"
+      ],
+      "text": "All creatures in 10 ft make a Str save, 2d6 necrotic and no reactions until their next turn (half/keep reactions on success). +1d6 per slot above 1st."
+    },
+    {
+      "name": "Hellish Rebuke",
+      "level": 1,
+      "school": "Evocation",
+      "casting_time": "1 reaction",
+      "range": "60 ft",
+      "components": "V, S",
+      "duration": "Instant",
+      "classes": [
+        "warlock"
+      ],
+      "text": "Reaction when damaged by a creature you can see: Dex save, 2d10 fire (half on success). +1d10 per slot above 1st."
+    },
+    {
+      "name": "Charm Person",
+      "level": 1,
+      "school": "Enchantment",
+      "casting_time": "1 action",
+      "range": "30 ft",
+      "components": "V, S",
+      "duration": "1 hour",
+      "classes": [
+        "sorcerer",
+        "warlock"
+      ],
+      "text": "A humanoid (Wis save, advantage if in combat with you) is charmed until the spell ends or harmed. It knows afterward. +1 target per slot above 1st."
+    },
+    {
+      "name": "Comprehend Languages",
+      "level": 1,
+      "school": "Divination",
+      "casting_time": "1 action (ritual)",
+      "range": "Self",
+      "components": "V, S, M",
+      "duration": "1 hour",
+      "classes": [
+        "sorcerer",
+        "warlock"
+      ],
+      "text": "Understand any spoken language you hear and any written language you touch (1 min/page). No secret messages."
+    },
+    {
+      "name": "Protection from Evil and Good",
+      "level": 1,
+      "school": "Abjuration",
+      "casting_time": "1 action",
+      "range": "Touch",
+      "components": "V, S, M",
+      "duration": "Conc. 10 min",
+      "classes": [
+        "cleric",
+        "warlock"
+      ],
+      "text": "A willing creature is protected from aberrations/celestials/elementals/fey/fiends/undead: they attack at disadvantage; can't charm, frighten, or possess it."
+    },
+    {
+      "name": "Lesser Restoration",
+      "level": 2,
+      "school": "Abjuration",
+      "casting_time": "1 action",
+      "range": "Touch",
+      "components": "V, S",
+      "duration": "Instant",
+      "classes": [
+        "cleric"
+      ],
+      "text": "End one disease or one condition: blinded, deafened, paralyzed, or poisoned."
+    },
+    {
+      "name": "Spiritual Weapon",
+      "level": 2,
+      "school": "Evocation",
+      "casting_time": "1 bonus action",
+      "range": "60 ft",
+      "components": "V, S",
+      "duration": "1 min",
+      "classes": [
+        "cleric"
+      ],
+      "text": "A spectral weapon: melee spell attack on cast and as a bonus action each turn, 1d8 + mod force; move it 20 ft. +1d8 per two slots above 2nd."
+    },
+    {
+      "name": "Hold Person",
+      "level": 2,
+      "school": "Enchantment",
+      "casting_time": "1 action",
+      "range": "60 ft",
+      "components": "V, S, M",
+      "duration": "Conc. 1 min",
+      "classes": [
+        "cleric",
+        "sorcerer",
+        "warlock"
+      ],
+      "text": "A humanoid (Wis save) is paralyzed, repeating the save each turn. +1 target per slot above 2nd."
+    },
+    {
+      "name": "Prayer of Healing",
+      "level": 2,
+      "school": "Evocation",
+      "casting_time": "10 minutes",
+      "range": "30 ft",
+      "components": "V",
+      "duration": "Instant",
+      "classes": [
+        "cleric"
+      ],
+      "text": "Up to six creatures regain 2d8 + mod HP. No effect on undead/constructs. +1d8 per slot above 2nd."
+    },
+    {
+      "name": "Aid",
+      "level": 2,
+      "school": "Abjuration",
+      "casting_time": "1 action",
+      "range": "30 ft",
+      "components": "V, S, M",
+      "duration": "8 hours",
+      "classes": [
+        "cleric"
+      ],
+      "text": "Up to three creatures' HP max and current HP +5. +5 per slot above 2nd."
+    },
+    {
+      "name": "Silence",
+      "level": 2,
+      "school": "Illusion",
+      "casting_time": "1 action (ritual)",
+      "range": "120 ft",
+      "components": "V, S",
+      "duration": "Conc. 10 min",
+      "classes": [
+        "cleric"
+      ],
+      "text": "A 20-ft-radius sphere: no sound in or through it; everyone inside deafened; no thunder damage or verbal-component spells. Thematically loud in this campaign."
+    },
+    {
+      "name": "Blindness/Deafness",
+      "level": 2,
+      "school": "Necromancy",
+      "casting_time": "1 action",
+      "range": "30 ft",
+      "components": "V",
+      "duration": "1 min",
+      "classes": [
+        "cleric",
+        "sorcerer"
+      ],
+      "text": "A creature (Con save) is blinded or deafened, repeating the save each turn. +1 target per slot above 2nd."
+    },
+    {
+      "name": "Augury",
+      "level": 2,
+      "school": "Divination",
+      "casting_time": "1 minute (ritual)",
+      "range": "Self",
+      "components": "V, S, M",
+      "duration": "Instant",
+      "classes": [
+        "cleric"
+      ],
+      "text": "Learn whether a course of action in the next 30 min leads to weal, woe, both, or nothing. Repeated casts the same day get unreliable."
+    },
+    {
+      "name": "Calm Emotions",
+      "level": 2,
+      "school": "Enchantment",
+      "casting_time": "1 action",
+      "range": "60 ft",
+      "components": "V, S",
+      "duration": "Conc. 1 min",
+      "classes": [
+        "cleric"
+      ],
+      "text": "Humanoids in a 20-ft radius (Cha save) either lose charm/fright effects, or become indifferent toward chosen creatures."
+    },
+    {
+      "name": "Continual Flame",
+      "level": 2,
+      "school": "Evocation",
+      "casting_time": "1 action",
+      "range": "Touch",
+      "components": "V, S, M (50gp ruby dust)",
+      "duration": "Until dispelled",
+      "classes": [
+        "cleric"
+      ],
+      "text": "A flame as bright as a torch springs from an object; gives off heatless light, can't be extinguished."
+    },
+    {
+      "name": "Enhance Ability",
+      "level": 2,
+      "school": "Transmutation",
+      "casting_time": "1 action",
+      "range": "Touch",
+      "components": "V, S, M",
+      "duration": "Conc. 1 hour",
+      "classes": [
+        "cleric",
+        "sorcerer"
+      ],
+      "text": "A creature gains advantage on checks with one ability (plus a minor rider, e.g. Con grants 2d6 temp HP). +1 target per slot above 2nd."
+    },
+    {
+      "name": "Find Traps",
+      "level": 2,
+      "school": "Divination",
+      "casting_time": "1 action",
+      "range": "120 ft",
+      "components": "V, S",
+      "duration": "Instant",
+      "classes": [
+        "cleric"
+      ],
+      "text": "Sense the presence of any trap within range and line of sight (not its location or nature)."
+    },
+    {
+      "name": "Gentle Repose",
+      "level": 2,
+      "school": "Necromancy",
+      "casting_time": "1 action (ritual)",
+      "range": "Touch",
+      "components": "V, S, M",
+      "duration": "10 days",
+      "classes": [
+        "cleric"
+      ],
+      "text": "A corpse is protected from decay and can't become undead; extends the time limit on raising it."
+    },
+    {
+      "name": "Locate Object",
+      "level": 2,
+      "school": "Divination",
+      "casting_time": "1 action",
+      "range": "Self",
+      "components": "V, S, M",
+      "duration": "Conc. 10 min",
+      "classes": [
+        "cleric"
+      ],
+      "text": "Sense the direction to a familiar object within 1,000 ft, if it's that close."
+    },
+    {
+      "name": "Protection from Poison",
+      "level": 2,
+      "school": "Abjuration",
+      "casting_time": "1 action",
+      "range": "Touch",
+      "components": "V, S",
+      "duration": "1 hour",
+      "classes": [
+        "cleric"
+      ],
+      "text": "Neutralize one poison on a creature; for the duration it has advantage on saves vs poison and resistance to poison damage."
+    },
+    {
+      "name": "Zone of Truth",
+      "level": 2,
+      "school": "Enchantment",
+      "casting_time": "1 action",
+      "range": "60 ft",
+      "components": "V, S",
+      "duration": "10 min",
+      "classes": [
+        "cleric"
+      ],
+      "text": "A 15-ft-radius zone; creatures in it (Cha save) can't speak deliberate lies. They know they're affected; can still evade."
+    },
+    {
+      "name": "Scorching Ray",
+      "level": 2,
+      "school": "Evocation",
+      "casting_time": "1 action",
+      "range": "120 ft",
+      "components": "V, S",
+      "duration": "Instant",
+      "classes": [
+        "sorcerer"
+      ],
+      "text": "Three rays, each a ranged spell attack for 2d6 fire. +1 ray per slot above 2nd."
+    },
+    {
+      "name": "Misty Step",
+      "level": 2,
+      "school": "Conjuration",
+      "casting_time": "1 bonus action",
+      "range": "Self",
+      "components": "V",
+      "duration": "Instant",
+      "classes": [
+        "sorcerer",
+        "warlock"
+      ],
+      "text": "Teleport up to 30 ft to an unoccupied space you can see."
+    },
+    {
+      "name": "Mirror Image",
+      "level": 2,
+      "school": "Illusion",
+      "casting_time": "1 action",
+      "range": "Self",
+      "components": "V, S",
+      "duration": "1 min",
+      "classes": [
+        "sorcerer",
+        "warlock"
+      ],
+      "text": "Three duplicates; attacks may hit a duplicate instead (destroyed when hit). They mimic and move with you."
+    },
+    {
+      "name": "Invisibility",
+      "level": 2,
+      "school": "Illusion",
+      "casting_time": "1 action",
+      "range": "Touch",
+      "components": "V, S, M",
+      "duration": "Conc. 1 hour",
+      "classes": [
+        "sorcerer",
+        "warlock"
+      ],
+      "text": "A creature becomes invisible; ends if it attacks or casts. +1 target per slot above 2nd."
+    },
+    {
+      "name": "Suggestion",
+      "level": 2,
+      "school": "Enchantment",
+      "casting_time": "1 action",
+      "range": "30 ft",
+      "components": "V, M",
+      "duration": "Conc. 8 hours",
+      "classes": [
+        "sorcerer",
+        "warlock"
+      ],
+      "text": "A reasonable-sounding course of action (a sentence or two); Wis save or the target pursues it."
+    },
+    {
+      "name": "Darkness",
+      "level": 2,
+      "school": "Evocation",
+      "casting_time": "1 action",
+      "range": "60 ft",
+      "components": "V, M",
+      "duration": "Conc. 10 min",
+      "classes": [
+        "sorcerer",
+        "warlock"
+      ],
+      "text": "15-ft-radius magical darkness; darkvision can't see through it. Suppressed by a light spell of 2nd+ level."
+    },
+    {
+      "name": "Spider Climb",
+      "level": 2,
+      "school": "Transmutation",
+      "casting_time": "1 action",
+      "range": "Touch",
+      "components": "V, S, M",
+      "duration": "Conc. 1 hour",
+      "classes": [
+        "sorcerer",
+        "warlock"
+      ],
+      "text": "A willing creature gains a climbing speed equal to its walking speed, including ceilings, hands free."
+    },
+    {
+      "name": "Crown of Madness",
+      "level": 2,
+      "school": "Enchantment",
+      "casting_time": "1 action",
+      "range": "120 ft",
+      "components": "V, S",
+      "duration": "Conc. 1 min",
+      "classes": [
+        "sorcerer",
+        "warlock"
+      ],
+      "text": "A humanoid (Wis save) is charmed; each turn you direct it to make one melee attack. Use your action to maintain; it re-saves each turn."
+    },
+    {
+      "name": "Cloud of Daggers",
+      "level": 2,
+      "school": "Conjuration",
+      "casting_time": "1 action",
+      "range": "60 ft",
+      "components": "V, S, M",
+      "duration": "Conc. 1 min",
+      "classes": [
+        "sorcerer",
+        "warlock"
+      ],
+      "text": "A 5-ft cube of spinning blades; 4d4 slashing on entering/starting a turn there. +2d4 per slot above 2nd."
+    },
+    {
+      "name": "Blur",
+      "level": 2,
+      "school": "Illusion",
+      "casting_time": "1 action",
+      "range": "Self",
+      "components": "V",
+      "duration": "Conc. 1 min",
+      "classes": [
+        "sorcerer"
+      ],
+      "text": "Attackers have disadvantage against you unless they don't rely on sight."
+    },
+    {
+      "name": "Alter Self",
+      "level": 2,
+      "school": "Transmutation",
+      "casting_time": "1 action",
+      "range": "Self",
+      "components": "V, S",
+      "duration": "Conc. 1 hour",
+      "classes": [
+        "sorcerer"
+      ],
+      "text": "Choose: adapt to water-breathing/swim, change appearance, or grow natural weapons (1d6 + your usual mods, magical)."
+    },
+    {
+      "name": "Detect Thoughts",
+      "level": 2,
+      "school": "Divination",
+      "casting_time": "1 action",
+      "range": "Self",
+      "components": "V, S, M",
+      "duration": "Conc. 1 min",
+      "classes": [
+        "sorcerer"
+      ],
+      "text": "Read the surface thoughts of a creature within 30 ft (Wis save to resist deeper probing); can search for any thinking minds nearby."
+    },
+    {
+      "name": "Enlarge/Reduce",
+      "level": 2,
+      "school": "Transmutation",
+      "casting_time": "1 action",
+      "range": "30 ft",
+      "components": "V, S, M",
+      "duration": "Conc. 1 min",
+      "classes": [
+        "sorcerer"
+      ],
+      "text": "A creature/object grows (advantage Str, +1d4 weapon damage) or shrinks (disadvantage Str, −1d4 weapon damage) one size."
+    },
+    {
+      "name": "Gust of Wind",
+      "level": 2,
+      "school": "Evocation",
+      "casting_time": "1 action",
+      "range": "Self (60-ft line)",
+      "components": "V, S, M",
+      "duration": "Conc. 1 min",
+      "classes": [
+        "sorcerer"
+      ],
+      "text": "A 60-ft line of strong wind; Str save or pushed 15 ft; disperses gas/vapor; difficult terrain against the wind."
+    },
+    {
+      "name": "Knock",
+      "level": 2,
+      "school": "Transmutation",
+      "casting_time": "1 action",
+      "range": "60 ft",
+      "components": "V",
+      "duration": "Instant",
+      "classes": [
+        "sorcerer"
+      ],
+      "text": "Unlock one locked/stuck/barred object; a loud knock audible 300 ft."
+    },
+    {
+      "name": "Levitate",
+      "level": 2,
+      "school": "Transmutation",
+      "casting_time": "1 action",
+      "range": "60 ft",
+      "components": "V, S, M",
+      "duration": "Conc. 10 min",
+      "classes": [
+        "sorcerer"
+      ],
+      "text": "A creature or object (Con save if unwilling) rises up to 20 ft and can be moved vertically; you direct it."
+    },
+    {
+      "name": "See Invisibility",
+      "level": 2,
+      "school": "Divination",
+      "casting_time": "1 action",
+      "range": "Self",
+      "components": "V, S, M",
+      "duration": "1 hour",
+      "classes": [
+        "sorcerer"
+      ],
+      "text": "See invisible creatures and objects, and into the Ethereal Plane (grayish, ghostly)."
+    },
+    {
+      "name": "Web",
+      "level": 2,
+      "school": "Conjuration",
+      "casting_time": "1 action",
+      "range": "60 ft",
+      "components": "V, S, M",
+      "duration": "Conc. 1 hour",
+      "classes": [
+        "sorcerer"
+      ],
+      "text": "Fill a 20-ft cube with webs (difficult terrain); Dex save on entering/starting there or restrained (Str check to break free). Flammable."
+    },
+    {
+      "name": "Enthrall",
+      "level": 2,
+      "school": "Enchantment",
+      "casting_time": "1 action",
+      "range": "60 ft",
+      "components": "V, S",
+      "duration": "1 min",
+      "classes": [
+        "warlock"
+      ],
+      "text": "Chosen creatures (Wis save) have disadvantage on Perception to notice anything but you."
+    },
+    {
+      "name": "Revivify",
+      "level": 3,
+      "school": "Necromancy",
+      "casting_time": "1 action",
+      "range": "Touch",
+      "components": "V, S, M (300gp diamond, consumed)",
+      "duration": "Instant",
+      "classes": [
+        "cleric"
+      ],
+      "text": "A creature dead ≤1 minute returns with 1 HP. No restored limbs; no return for death of old age."
+    },
+    {
+      "name": "Spirit Guardians",
+      "level": 3,
+      "school": "Conjuration",
+      "casting_time": "1 action",
+      "range": "Self (15-ft radius)",
+      "components": "V, S, M",
+      "duration": "Conc. 10 min",
+      "classes": [
+        "cleric"
+      ],
+      "text": "Spectral guardians; enemies' difficult terrain; on entering/starting a turn there, Wis save, 3d8 radiant or necrotic (half on success). +1d8 per slot above 3rd."
+    },
+    {
+      "name": "Dispel Magic",
+      "level": 3,
+      "school": "Abjuration",
+      "casting_time": "1 action",
+      "range": "120 ft",
+      "components": "V, S",
+      "duration": "Instant",
+      "classes": [
+        "cleric",
+        "sorcerer",
+        "warlock"
+      ],
+      "text": "End spells ≤3rd level automatically; higher needs an ability check (DC 10 + spell level) each."
+    },
+    {
+      "name": "Mass Healing Word",
+      "level": 3,
+      "school": "Evocation",
+      "casting_time": "1 bonus action",
+      "range": "60 ft",
+      "components": "V",
+      "duration": "Instant",
+      "classes": [
+        "cleric"
+      ],
+      "text": "Up to six creatures regain 1d4 + mod HP. No effect on undead/constructs. +1d4 per slot above 3rd."
+    },
+    {
+      "name": "Beacon of Hope",
+      "level": 3,
+      "school": "Abjuration",
+      "casting_time": "1 action",
+      "range": "30 ft",
+      "components": "V, S",
+      "duration": "Conc. 1 min",
+      "classes": [
+        "cleric"
+      ],
+      "text": "Any number of creatures gain advantage on Wis and death saves, and regain max HP from any healing."
+    },
+    {
+      "name": "Animate Dead",
+      "level": 3,
+      "school": "Necromancy",
+      "casting_time": "1 minute",
+      "range": "10 ft",
+      "components": "V, S, M",
+      "duration": "Instant",
+      "classes": [
+        "cleric",
+        "sorcerer"
+      ],
+      "text": "Animate a corpse/bones as a skeleton or zombie. Reassert control within 24 hrs (bonus action) or it turns hostile. +more per slot above 3rd."
+    },
+    {
+      "name": "Bestow Curse",
+      "level": 3,
+      "school": "Necromancy",
+      "casting_time": "1 action",
+      "range": "Touch",
+      "components": "V, S",
+      "duration": "Conc. 1 min",
+      "classes": [
+        "cleric"
+      ],
+      "text": "A creature (Wis save) is cursed: disadvantage on one ability, disadvantage attacking you, lost turn on a failed Wis save, or +1d8 necrotic from you. Higher slots extend."
+    },
+    {
+      "name": "Daylight",
+      "level": 3,
+      "school": "Evocation",
+      "casting_time": "1 action",
+      "range": "60 ft",
+      "components": "V, S",
+      "duration": "1 hour",
+      "classes": [
+        "cleric",
+        "sorcerer"
+      ],
+      "text": "60-ft-radius bright light (+60 ft dim). Dispels magical darkness of 3rd level or lower."
+    },
+    {
+      "name": "Remove Curse",
+      "level": 3,
+      "school": "Abjuration",
+      "casting_time": "1 action",
+      "range": "Touch",
+      "components": "V, S",
+      "duration": "Instant",
+      "classes": [
+        "cleric",
+        "warlock"
+      ],
+      "text": "End all curses on a creature; for a cursed item, break attunement so it can be removed (doesn't end the item's curse itself)."
+    },
+    {
+      "name": "Sending",
+      "level": 3,
+      "school": "Evocation",
+      "casting_time": "1 action",
+      "range": "Unlimited",
+      "components": "V, S, M",
+      "duration": "1 round",
+      "classes": [
+        "cleric"
+      ],
+      "text": "Send a 25-word message to a familiar creature anywhere; it can reply. Cross-planar has a chance to fail."
+    },
+    {
+      "name": "Speak with Dead",
+      "level": 3,
+      "school": "Necromancy",
+      "casting_time": "1 action",
+      "range": "10 ft",
+      "components": "V, S, M",
+      "duration": "10 min",
+      "classes": [
+        "cleric"
+      ],
+      "text": "A corpse with a mouth answers up to five questions. It won't reveal what it didn't know in life; answers may be brief or evasive."
+    },
+    {
+      "name": "Tongues",
+      "level": 3,
+      "school": "Divination",
+      "casting_time": "1 action",
+      "range": "Touch",
+      "components": "V, M",
+      "duration": "1 hour",
+      "classes": [
+        "cleric",
+        "sorcerer",
+        "warlock"
+      ],
+      "text": "A creature understands any spoken language and is understood by anyone who shares a language with it."
+    },
+    {
+      "name": "Water Walk",
+      "level": 3,
+      "school": "Transmutation",
+      "casting_time": "1 action (ritual)",
+      "range": "30 ft",
+      "components": "V, S, M",
+      "duration": "1 hour",
+      "classes": [
+        "cleric",
+        "sorcerer"
+      ],
+      "text": "Up to ten creatures can move across liquid surfaces as if solid ground."
+    },
+    {
+      "name": "Water Breathing",
+      "level": 3,
+      "school": "Transmutation",
+      "casting_time": "1 action (ritual)",
+      "range": "30 ft",
+      "components": "V, S, M",
+      "duration": "24 hours",
+      "classes": [
+        "cleric",
+        "sorcerer"
+      ],
+      "text": "Up to ten creatures can breathe underwater (keeping their normal air-breathing too)."
+    },
+    {
+      "name": "Create Food and Water",
+      "level": 3,
+      "school": "Conjuration",
+      "casting_time": "1 action",
+      "range": "30 ft",
+      "components": "V, S",
+      "duration": "Instant",
+      "classes": [
+        "cleric"
+      ],
+      "text": "Create 45 lb of food and 30 gallons of water — enough for 15 humanoids or 5 mounts for a day."
+    },
+    {
+      "name": "Magic Circle",
+      "level": 3,
+      "school": "Abjuration",
+      "casting_time": "1 minute",
+      "range": "10 ft",
+      "components": "V, S, M (100gp silver dust)",
+      "duration": "1 hour",
+      "classes": [
+        "cleric",
+        "warlock"
+      ],
+      "text": "A 10-ft cylinder warded against a chosen creature type: they can't enter/charm/frighten it, attack at disadvantage. Or invert it to trap."
+    },
+    {
+      "name": "Glyph of Warding",
+      "level": 3,
+      "school": "Abjuration",
+      "casting_time": "1 hour",
+      "range": "Touch",
+      "components": "V, S, M (200gp)",
+      "duration": "Until dispelled",
+      "classes": [
+        "cleric"
+      ],
+      "text": "Inscribe a glyph that triggers a stored spell or a burst of energy (up to 5d8, type chosen) when conditions are met."
+    },
+    {
+      "name": "Protection from Energy",
+      "level": 3,
+      "school": "Abjuration",
+      "casting_time": "1 action",
+      "range": "Touch",
+      "components": "V, S",
+      "duration": "Conc. 1 hour",
+      "classes": [
+        "cleric",
+        "sorcerer"
+      ],
+      "text": "A creature gains resistance to one damage type: acid, cold, fire, lightning, or thunder."
+    },
+    {
+      "name": "Meld into Stone",
+      "level": 3,
+      "school": "Transmutation",
+      "casting_time": "1 action (ritual)",
+      "range": "Touch",
+      "components": "V, S",
+      "duration": "8 hours",
+      "classes": [
+        "cleric"
+      ],
+      "text": "Step into a stone object/surface large enough to fit you; sense and emerge at will."
+    },
+    {
+      "name": "Clairvoyance",
+      "level": 3,
+      "school": "Divination",
+      "casting_time": "10 minutes",
+      "range": "1 mile",
+      "components": "V, S, M (1000gp)",
+      "duration": "Conc. 10 min",
+      "classes": [
+        "cleric",
+        "sorcerer"
+      ],
+      "text": "Create an invisible sensor at a known/obvious location to see or hear there."
+    },
+    {
+      "name": "Fireball",
+      "level": 3,
+      "school": "Evocation",
+      "casting_time": "1 action",
+      "range": "150 ft",
+      "components": "V, S, M",
+      "duration": "Instant",
+      "classes": [
+        "sorcerer"
+      ],
+      "text": "20-ft-radius; Dex save, 8d6 fire (half on success). Ignites flammables. +1d6 per slot above 3rd."
+    },
+    {
+      "name": "Counterspell",
+      "level": 3,
+      "school": "Abjuration",
+      "casting_time": "1 reaction",
+      "range": "60 ft",
+      "components": "S",
+      "duration": "Instant",
+      "classes": [
+        "sorcerer",
+        "warlock"
+      ],
+      "text": "Reaction to a creature casting: a spell ≤3rd level fails; higher needs an ability check (DC 10 + spell level)."
+    },
+    {
+      "name": "Fly",
+      "level": 3,
+      "school": "Transmutation",
+      "casting_time": "1 action",
+      "range": "Touch",
+      "components": "V, S, M",
+      "duration": "Conc. 10 min",
+      "classes": [
+        "sorcerer",
+        "warlock"
+      ],
+      "text": "A willing creature gains a 60-ft flying speed. +1 target per slot above 3rd."
+    },
+    {
+      "name": "Haste",
+      "level": 3,
+      "school": "Transmutation",
+      "casting_time": "1 action",
+      "range": "30 ft",
+      "components": "V, S, M",
+      "duration": "Conc. 1 min",
+      "classes": [
+        "sorcerer"
+      ],
+      "text": "A creature: +2 AC, advantage on Dex saves, doubled speed, one extra limited action. On end, it can't move/act until after its next turn."
+    },
+    {
+      "name": "Slow",
+      "level": 3,
+      "school": "Transmutation",
+      "casting_time": "1 action",
+      "range": "120 ft",
+      "components": "V, S, M",
+      "duration": "Conc. 1 min",
+      "classes": [
+        "sorcerer"
+      ],
+      "text": "Up to six creatures in a 40-ft cube (Wis save): half speed, −2 AC and Dex saves, no reactions, action OR bonus action only. Re-save each turn."
+    },
+    {
+      "name": "Lightning Bolt",
+      "level": 3,
+      "school": "Evocation",
+      "casting_time": "1 action",
+      "range": "Self (100-ft line)",
+      "components": "V, S, M",
+      "duration": "Instant",
+      "classes": [
+        "sorcerer"
+      ],
+      "text": "100-ft line; Dex save, 8d6 lightning (half on success). +1d6 per slot above 3rd."
+    },
+    {
+      "name": "Hypnotic Pattern",
+      "level": 3,
+      "school": "Illusion",
+      "casting_time": "1 action",
+      "range": "120 ft",
+      "components": "S, M",
+      "duration": "Conc. 1 min",
+      "classes": [
+        "sorcerer",
+        "warlock"
+      ],
+      "text": "30-ft cube; Wis save or charmed: incapacitated, speed 0. Ends on damage or a shake-awake action. (Got the Sunken Frets DQ'd at Trill-fest.)"
+    },
+    {
+      "name": "Sleet Storm",
+      "level": 3,
+      "school": "Conjuration",
+      "casting_time": "1 action",
+      "range": "150 ft",
+      "components": "V, S, M",
+      "duration": "Conc. 1 min",
+      "classes": [
+        "sorcerer"
+      ],
+      "text": "20-ft-tall, 40-ft-radius cylinder of freezing rain: difficult terrain, heavily obscured, open flames out; Dex save to stay standing; Con save to keep concentration."
+    },
+    {
+      "name": "Stinking Cloud",
+      "level": 3,
+      "school": "Conjuration",
+      "casting_time": "1 action",
+      "range": "90 ft",
+      "components": "V, S, M",
+      "duration": "Conc. 1 min",
+      "classes": [
+        "sorcerer"
+      ],
+      "text": "20-ft-radius cloud; a creature starting its turn there makes a Con save or loses its action retching. Heavily obscured."
+    },
+    {
+      "name": "Gaseous Form",
+      "level": 3,
+      "school": "Transmutation",
+      "casting_time": "1 action",
+      "range": "Touch",
+      "components": "V, S, M",
+      "duration": "Conc. 1 hour",
+      "classes": [
+        "sorcerer",
+        "warlock"
+      ],
+      "text": "A willing creature becomes a misty cloud: nonmagical resistance, advantage on Str/Dex/Con saves, 10-ft fly, fits through small gaps, can't attack/cast/speak."
+    },
+    {
+      "name": "Major Image",
+      "level": 3,
+      "school": "Illusion",
+      "casting_time": "1 action",
+      "range": "120 ft",
+      "components": "V, S, M",
+      "duration": "Conc. 10 min",
+      "classes": [
+        "sorcerer",
+        "warlock"
+      ],
+      "text": "A detailed illusion up to a 20-ft cube with sound, smell, and temperature; you can move it. Investigation to discern."
+    },
+    {
+      "name": "Fear",
+      "level": 3,
+      "school": "Illusion",
+      "casting_time": "1 action",
+      "range": "Self (30-ft cone)",
+      "components": "V, S, M",
+      "duration": "Conc. 1 min",
+      "classes": [
+        "sorcerer",
+        "warlock"
+      ],
+      "text": "30-ft cone; Wis save or drop held items and flee, frightened. Re-save each turn (disadvantage if it can see you)."
+    },
+    {
+      "name": "Blink",
+      "level": 3,
+      "school": "Transmutation",
+      "casting_time": "1 action",
+      "range": "Self",
+      "components": "V, S",
+      "duration": "1 min",
+      "classes": [
+        "sorcerer"
+      ],
+      "text": "At each turn's end, roll d20: on 11+ you vanish to the Ethereal Plane and return at the start of your next turn near where you left."
+    },
+    {
+      "name": "Tiny Hut",
+      "level": 3,
+      "school": "Evocation",
+      "casting_time": "1 minute (ritual)",
+      "range": "Self (10-ft radius)",
+      "components": "V, S, M",
+      "duration": "8 hours",
+      "classes": [
+        "sorcerer"
+      ],
+      "text": "A 10-ft dome shelters up to nine creatures; blocks weather and (in one direction) ranged attacks; you choose its interior light."
+    },
+    {
+      "name": "Vampiric Touch",
+      "level": 3,
+      "school": "Necromancy",
+      "casting_time": "1 action",
+      "range": "Self",
+      "components": "V, S",
+      "duration": "Conc. 1 min",
+      "classes": [
+        "warlock"
+      ],
+      "text": "Melee spell attack; 3d6 necrotic and you regain half. Repeat as an action each turn. +1d6 per slot above 3rd."
+    },
+    {
+      "name": "Hunger of Hadar",
+      "level": 3,
+      "school": "Conjuration",
+      "casting_time": "1 action",
+      "range": "150 ft",
+      "components": "V, S, M",
+      "duration": "Conc. 1 min",
+      "classes": [
+        "warlock"
+      ],
+      "text": "A 20-ft void of blackness and cold: blinded area, difficult terrain; 2d6 cold starting a turn there; Dex save or 2d6 acid ending a turn there."
+    }
+  ]
+}

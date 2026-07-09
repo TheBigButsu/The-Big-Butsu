@@ -1,0 +1,155 @@
+{
+  "travel": {
+    "categories": [
+      {
+        "id": "church_wardens",
+        "label": "Church & Wardens",
+        "range": "01–20",
+        "encounters": [
+          "Warden checkpoint — two bored officers, checking papers. Haven't seen the notice yet.",
+          "Warden checkpoint — notice is posted. They're checking faces now.",
+          "Warden checkpoint — understaffed, one officer doing the work of three. Distracted. Easy to talk past.",
+          "Warden patrol on horseback — three riders moving fast down the road in the opposite direction. Not stopping. Headed somewhere specific.",
+          "Warden licensing audit at a roadside inn. Every instrument in the building is being catalogued. The innkeeper is furious.",
+          "Approved-songs ceremony in a field. A Conservatory officer leads thirty farmers through a hymn. The crops look terrible.",
+          "A freshly painted Conservatory waypost. The paint is still wet. Someone has added the party's descriptions underneath the standard notices.",
+          "Travelling Conservatory cleric offering free blessings and rations from a cart. Genuine. Knows nothing. The rations are real and the people need them.",
+          "A measurement team — two Church technicians with new-model devices, taking readings at a roadside marker stone. They seem confused by their own results.",
+          "Burned-out Warden station. Recent. No bodies. Nobody in the nearest town wants to talk about it.",
+          "A Confirmed officer (not one of the named three) travelling alone. Full armor, saying nothing, moving with purpose. Headed somewhere the party might also be going.",
+          "Church-sponsored roadwork crew — repairing a bridge. The foreman mentions supply shortages have doubled the timeline.",
+          "A wanted notice for the party, but the descriptions are wrong. Someone reported them inaccurately. For now.",
+          "Two Wardens arguing about whether to arrest a farmer playing an unapproved song to his failing crop. One thinks it's harmless. One thinks it's the law.",
+          "A Church courier overtakes the party on the road. Sealed documents. Moving fast. Doesn't stop.",
+          "A village where the approved-songs ceremony has been cancelled. The officer assigned to lead it hasn't shown up in two weeks.",
+          "A group of displaced Pale Hand clergy walking the road with their belongings. Quiet. Dignified. Going somewhere that isn't clear.",
+          "Conservatory recruiters at a crossroads, signing up young musicians for the \"Restoration Program.\" Promising meals, housing, purpose.",
+          "A roadside shrine to all four gods. Someone has recently scratched out one of the four symbols. The scratch marks are fresh.",
+          "A Warden who recognises the party but pretends not to. Waves them through. Says nothing. Never explained."
+        ]
+      },
+      {
+        "id": "resonant_activity",
+        "label": "Resonant Activity",
+        "range": "21–30",
+        "encounters": [
+          "A broken-string symbol scratched into a milestone. Recent.",
+          "A travelling merchant who uses Resonant hand-signs without realising the party can see. Selling totally normal goods. The signs are for someone else down the road.",
+          "An abandoned campsite with a Resonant measuring device hidden under a rock. Still functional. Left in a hurry.",
+          "Graffiti on a Church waypost — \"THE READINGS ARE WRONG\" in careful letters. Already half-scrubbed.",
+          "A busker playing an unapproved song in a market town. Drawing a crowd. Two Wardens approaching from the far side of the square.",
+          "A dead drop that isn't for the party — a sealed tube in a hollow tree, visible from the road. Contains information about Church shipping schedules.",
+          "A Resonant cell member on the run — wounded, paranoid, won't trust the party without proof. Has information about a nearby cultivation site if they can win them over.",
+          "A pamphlet stuck to a tree. Resonant propaganda. Badly written but factually accurate.",
+          "Evidence of a Resonant sabotage — a Church supply wagon with cut axles, cargo scattered. The supplies are just rations and measurement equipment.",
+          "A tavern where the innkeeper plays a very old song after closing. Pre-Silence. Anyone with musical training can tell the tuning is different from modern approved songs."
+        ]
+      },
+      {
+        "id": "echo_silence",
+        "label": "Echo & Silence Effects",
+        "range": "31–40",
+        "encounters": [
+          "A stretch of road where all sound drops to half volume. Lasts about a mile. Animals avoid it.",
+          "A field of wildflowers that are all the same colour — they shouldn't be. Bees won't land on them.",
+          "A creek where the water sounds like it's humming. Not a tune — a drone. AV's Metrognome ticks irregularly near it.",
+          "A farmstead where the family speaks in monotone. Not hostile, not sad — flat. They've been this way for weeks. The crops are grey.",
+          "A crossroads where an echo repeats words that weren't spoken. Says something different each time the party passes.",
+          "A tree split down the middle, still alive on both sides. The split hums when the wind passes through it. Locals leave offerings.",
+          "A flock of birds flying in perfect geometric patterns. Unnaturally perfect. They don't break formation.",
+          "A stretch of road where the party's instruments won't stay in tune. Constant micro-drift. Maddening for musicians.",
+          "A village well that produces water tasting of copper since last month. The Church measurement team said everything was fine.",
+          "A sleeping Hollow — small, dog-sized, curled up in a ditch like roadkill. Not dead. Not yet dangerous. Visibly made of compressed sound given wrong shape."
+        ]
+      },
+      {
+        "id": "the_road",
+        "label": "The Road",
+        "range": "41–60",
+        "encounters": [
+          "A travelling merchant with an overloaded cart. Sells common supplies at fair prices. Gossips freely — knows which towns have checkpoints and which don't.",
+          "A broken wagon blocking the road. The family needs help with the wheel. Genuine — no ambush, just bad luck.",
+          "A crossroads inn with a surprisingly good house band. The crowd is large for a place this small. Something about the music here draws people.",
+          "A bridge troll. Literally. Wants a toll of one song per person. Judges harshly but fairly.",
+          "A funeral procession on the road. A Pale Hand priest leads it. The family asked specifically for Maelon's rites, not the Church's.",
+          "A travelling Dunwall Co. distributor — Voice tier, selling sunscreen and laser hair removal rocks from a handcart. Recognises the party's product. Excited. Wants tips.",
+          "Rain. Three days of it. The road becomes mud. Movement halves. Morale tested.",
+          "A roadside inn where the party is recognised — not as fugitives, but as musicians. Someone saw them at Trill-fest. Wants an autograph. Loudly.",
+          "A merchant caravan with armed guards. Headed the opposite direction. The guards are tense — they've heard about bandit activity ahead. It's actually Resonant activity.",
+          "A group of pilgrims heading to Solmara for a Church festival. Friendly, talkative, absolutely certain the approved-songs program is working.",
+          "A fork in the road with no signpost. One path is maintained. The other is overgrown but shorter. The overgrown path passes near something interesting.",
+          "A competitor band on the road — nobody famous, just working musicians trying to get to the next gig. Friendly rivalry or useful allies.",
+          "A livestock drive blocking the road for an hour. The ranchers apologise. Their animals look thin.",
+          "An abandoned coaching inn. Recently vacated. Food still on the table. No signs of violence — everyone just left.",
+          "A river crossing where the ferry operator charges double because \"the roads aren't safe.\" Won't explain further.",
+          "A travelling tinker who repairs instruments. Good work, fair prices. Mentions that new instruments from the Conservatory have started sounding \"samey\" to her ear.",
+          "A stretch of old-growth forest where the canopy is thick enough to block scrying. The party doesn't know this yet. The Metrognome settles into a calm, steady tick.",
+          "A milestone marking distance to two cities. One distance is wrong — recently re-chiseled. Someone is misdirecting traffic away from something.",
+          "Dunwall Co. recruitment poster nailed to a tree. Albus's face. \"BE YOUR OWN MAESTRO.\" The irony is unbearable.",
+          "A campsite used by someone who left in a hurry. Cold fire. Scattered gear. A journal page blowing in the wind — a Pale Hand sister's diary entry about being reassigned from her hospice."
+        ]
+      },
+      {
+        "id": "threats",
+        "label": "Threats",
+        "range": "61–75",
+        "encounters": [
+          "Bandits. Three. Desperate, not professional. They'll take food over gold. The roads are getting worse.",
+          "A Hollow — small, fast, sounds like a violin string wound too tight. Came from somewhere nearby. There shouldn't be one this far from a known site.",
+          "Wolves. Normal wolves. The world still has normal problems.",
+          "A rockslide blocks the road. Natural, not sabotage. Costs half a day to clear or find a way around.",
+          "A bounty hunter — solo, professional, has the party's descriptions. Not Church-affiliated. Someone is paying privately.",
+          "An ambush by Church-adjacent thugs — not Wardens, not Confirmed. Hired muscle. Deniable. They have a list of questions about where the party has been.",
+          "A Hollow manifestation at a roadside shrine — a shade that looks like a musician, playing a song that isn't there. Not hostile unless approached. Deeply sad.",
+          "A bridge washed out. Recent storm. The detour adds a day and passes through a town with a checkpoint.",
+          "A pack of wild dogs that have been following the party since the last town. Not attacking. Just following. One of them is humming.",
+          "A tree across the road — cut, not fallen. Someone put it there. The forest on both sides is very quiet.",
+          "Fog. Thick, sudden, wrong. Sound carries strangely in it — conversations from a mile away arrive clearly, the party's own voices don't carry ten feet.",
+          "A sinkhole opens ahead on the road. Below: old stone. Not natural. Possibly a buried structure. Investigating costs time the party may not have.",
+          "A Church patrol specifically looking for the party. Six Wardens, one officer. They have accurate descriptions and orders to detain.",
+          "Night encounter — something large moves through the camp without disturbing anything. Tracks in the morning are musical notation pressed into the dirt.",
+          "A diseased animal blocks the road — aggressive, frothing, not right. Echo-sick, not rabid. Killing it feels wrong. Leaving it feels worse."
+        ]
+      },
+      {
+        "id": "people_opportunities",
+        "label": "People & Opportunities",
+        "range": "76–95",
+        "encounters": [
+          "A Pale Hand hospice — small, underfunded, doing real work. The sister running it mentions Church officials visited last week asking about \"transitioning services.\"",
+          "A farmer who'll trade shelter for a performance. Doesn't care about approved songs. \"Play something real. The crops need it.\"",
+          "A retired Warden living off the road. Drinks too much. Will talk about how the service has changed in the last decade if prompted.",
+          "A child on the road alone. Lost, not endangered — their village is nearby. Walking them home reveals a community that's quietly ignoring Church mandates.",
+          "A Pale Hand priest performing last rites in an open field. The body is a young person. No cause of death is obvious. The priest says \"another one\" quietly.",
+          "A noble's carriage breaks down near the party. The noble is heading to Bellanthorpe and offers passage in exchange for help — skipping a checkpoint in the process.",
+          "A university student researching folklore. Has transcribed old songs. Doesn't understand why the melodies she's collected don't match the approved versions. Hasn't made the connection.",
+          "A mapmaker who will trade a regional map for news of the road ahead. The map is accurate and marks water sources, shelters, and \"places that feel strange.\"",
+          "A group of Echo-sick travellers being moved by Church escorts to an undisclosed facility. The escorts are polite and firm. The travellers look vacant.",
+          "A Pale Hand lay-sister heading to Highmist. Travelling alone, unbothered. Mentions the hospice there is \"changing management.\"",
+          "A bard from out of region who has never heard of approved songs. Baffled by the concept. Plays whatever she wants. Hasn't been stopped yet.",
+          "An old soldier who fought in a border conflict decades ago. Mentions that the songs his unit sang actually kept them alive — wounds closed faster, morale held. \"They don't let you sing those ones anymore.\"",
+          "A merchant who deals in pre-Silence instruments. Expensive, secretive, moves fast. Has exactly one item the party might want.",
+          "A town crier announcing new Church policies — increased measurement frequency, expanded approved-song lists, \"voluntary\" compliance reporting. The crowd listens silently.",
+          "A wandering painter capturing landscapes. Has accidentally painted Echo effects into several pieces — the wrongness is visible in the art even when the eye slides off it in person.",
+          "A Dunwall Co. Conductor-tier distributor running a regional operation. Wants to know why the party's name is on a wanted notice. Could become a problem or an asset depending on how the party handles it.",
+          "A healer (not Church-affiliated) treating Echo-sick patients with music. It's working, slowly. She doesn't know why and doesn't care — results matter.",
+          "Two Church officials arguing at a crossroads inn. One is insisting measurements are wrong. The other is insisting they follow protocol. The first one has an old-model device.",
+          "A town preparing for a festival that technically requires Warden approval. They haven't applied. Nobody mentions this. The party is invited to play.",
+          "A Resonant sympathiser who runs a waystation. Offers shelter, no questions. The broken-string mark is hidden but findable."
+        ]
+      },
+      {
+        "id": "scrying_surveillance",
+        "label": "Scrying & Surveillance",
+        "range": "96–100",
+        "encounters": [
+          "The Metrognome ticks wrong for exactly thirty seconds. Then stops. Then resumes normally. Someone was listening.",
+          "Every stringed instrument in the party's possession hums the same note simultaneously. Brief. Unsettling. A passing farmer doesn't notice.",
+          "The party hears their own conversation repeated back to them from a nearby tree — ten seconds delayed, word for word. Then silence.",
+          "AV's Metrognome goes completely still for a full minute. No ticks at all. When it resumes, it's slightly faster than before, as if catching up.",
+          "A note the party didn't play hangs in the air after a performance. Visible as a faint shimmer. Fades slowly. Someone was watching that one."
+        ]
+      }
+    ]
+  }
+}
