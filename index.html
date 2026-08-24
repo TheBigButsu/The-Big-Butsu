@@ -2018,17 +2018,36 @@ function addCombatant() {
   renderTracker();
 }
 
+// Pull a numeric CR out of a monster's type string ("… · CR 1/2 · …").
+// Fractional CRs (1/8, 1/4, 1/2) parse to their decimal value; missing CR
+// sorts last.
+function monsterCR(m) {
+  const match = (m.type || '').match(/CR\s*([\d]+(?:\/[\d]+)?)/i);
+  if (!match) return { value: Infinity, label: '—' };
+  const raw = match[1];
+  let value;
+  if (raw.includes('/')) {
+    const [n, d] = raw.split('/').map(Number);
+    value = d ? n / d : Infinity;
+  } else {
+    value = Number(raw);
+  }
+  return { value, label: raw };
+}
+
 function populateMonsterDropdown() {
   const sel = document.getElementById('addFromMonster');
   if (!sel) return;
   sel.innerHTML = '<option value="">Add from monster manual…</option>';
-  Object.keys(world.monsters || {}).forEach(id => {
-    const m = world.monsters[id];
-    const opt = document.createElement('option');
-    opt.value = id;
-    opt.textContent = m.name;
-    sel.appendChild(opt);
-  });
+  Object.keys(world.monsters || {})
+    .map(id => ({ id, m: world.monsters[id], cr: monsterCR(world.monsters[id]) }))
+    .sort((a, b) => a.cr.value - b.cr.value || a.m.name.localeCompare(b.m.name))
+    .forEach(({ id, m, cr }) => {
+      const opt = document.createElement('option');
+      opt.value = id;
+      opt.textContent = `CR ${cr.label} · ${m.name}`;
+      sel.appendChild(opt);
+    });
   sel.onchange = () => {
     const id = sel.value;
     if (!id) return;
