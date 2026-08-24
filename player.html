@@ -137,7 +137,7 @@ function render() {
   const sortedFull = [...list].sort((a, b) => (b.initiative || 0) - (a.initiative || 0));
   const activeEntry = sortedFull[activeIdx];
 
-  let html = '<table><thead><tr><th>Init</th><th>Name</th><th>AC</th><th>Status</th></tr></thead><tbody>';
+  let html = '<table><thead><tr><th>Init</th><th>Name</th><th>Status</th></tr></thead><tbody>';
 
   visible.forEach(c => {
     const classes = [];
@@ -165,7 +165,6 @@ function render() {
     html += `<tr class="${classes.join(' ')}">
       <td>${init}</td>
       <td class="name">${marker}${esc(c.name)}</td>
-      <td>${c.ac || '—'}</td>
       <td>${status}</td>
     </tr>`;
   });
