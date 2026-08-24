@@ -926,7 +926,8 @@
       }
     },
     "bandit_captain": {
-      "name": "Bandit Captain",
+      "name": "Cult Devotee",
+      "reskin": "Reskinned from Bandit Captain (Monster Manual, CR 2).",
       "type": "Medium/Small humanoid · CR 2 · 450 XP",
       "ac": 15,
       "hp": 52,
@@ -1014,7 +1015,8 @@
       }
     },
     "yuan_ti_mind_whisperer": {
-      "name": "Yuan-ti Mind Whisperer",
+      "name": "Absolute Acolyte",
+      "reskin": "Reskinned from Yuan-ti Mind Whisperer (Volo's Guide to Monsters, CR 4).",
       "type": "Medium monstrosity (warlock) · CR 4 · 1,100 XP",
       "ac": 14,
       "hp": 71,
@@ -1048,7 +1050,8 @@
       }
     },
     "priest_of_osybus": {
-      "name": "Priest of Osybus",
+      "name": "Choir Warden",
+      "reskin": "Reskinned from Priest of Osybus (Van Richten's Guide to Ravenloft, CR 6).",
       "type": "Medium Humanoid · CR 6",
       "ac": 14,
       "hp": 60,

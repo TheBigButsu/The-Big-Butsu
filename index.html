@@ -529,6 +529,16 @@
   .monster-card .m-section {
     font-family: var(--display); font-size: 14px; margin: 10px 0 4px; color: var(--accent);
   }
+  .monster-card .m-reskin {
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px solid var(--rule);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    color: var(--ink-mute);
+    font-style: italic;
+  }
   .tracker-table tr.pc-row td:first-child { border-left: 2px solid var(--accent-dim); }
   .tracker-table {
     width: 100%;
@@ -1282,7 +1292,7 @@
 
       <div class="section-head">
         <h2>Session Prep</h2>
-        <div class="sub">Scratch space — fill before play, read during. Nothing here is saved; close the window and it's gone.</div>
+        <div class="sub">Scratch space — fill before play, read during. Autosaves every 5 minutes (and when you close the tab).</div>
         <div class="actions"><button class="btn tiny" onclick="clearPrep()">Clear all</button></div>
       </div>
 
@@ -1339,7 +1349,7 @@
         </div>
 
         <div class="prep-box wide" style="margin-top: 8px;">
-          <label>Campaign Narrative <span style="font-weight:400;color:var(--ink-mute);font-size:10px;">· autosaves</span></label>
+          <label>Campaign Narrative <span style="font-weight:400;color:var(--ink-mute);font-size:10px;">· autosaves every 5 min</span></label>
           <textarea id="narrativeNotes" class="prep-field" rows="12"
             placeholder="Arc throughlines, long-game threads, foreshadowing planted and paid off — anything you want to track across the whole campaign."></textarea>
           <span class="save-hint" id="narrSaveHint"></span>
@@ -1682,8 +1692,10 @@ function renderAll() {
 }
 
 function clearPrep() {
-  if (!confirm('Clear all prep boxes? This wipes the worksheet (it was never saved anyway).')) return;
+  if (!confirm('Clear all prep boxes? This wipes the saved worksheet, including the Campaign Narrative.')) return;
   document.querySelectorAll('.prep-field').forEach(f => { f.value = ''; });
+  world.narrative = '';
+  saveSessionPrep(true);
 }
 
 // ============================================================
@@ -2133,6 +2145,7 @@ function monsterCardHTML(id, m, opts) {
     ` : ''}
     ${(fullHTML && !expandedFull) ? `<div class="m-toggle" onclick="toggleMonster('${id}')">▾ Expand</div>` : ''}
     ${fullHTML}
+    ${m.reskin ? `<div class="m-reskin">↺ ${escapeHTML(m.reskin)}</div>` : ''}
     ${showAddButton ? `<div class="m-actions"><button class="btn tiny" onclick="addMonsterToTracker('${id}')">+ Tracker</button></div>` : ''}
   `;
 }
@@ -2793,13 +2806,8 @@ function escapeAttr(s) {
 }
 
 // ============================================================
-// FREE-TEXT AUTOSAVE (Session Notes + Narrative)
+// SESSION PREP AUTOSAVE (worksheet + Campaign Narrative)
 // ============================================================
-function debounce(fn, ms) {
-  let t;
-  return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
-}
-
 function flashSaved(hintId) {
   const h = document.getElementById(hintId);
   if (!h) return;
@@ -2809,16 +2817,47 @@ function flashSaved(hintId) {
   h._t = setTimeout(() => { h.textContent = ''; h.classList.remove('saved'); }, 1400);
 }
 
-(function wireFreeText() {
+// The whole Session Prep worksheet (all prep-field textareas, including the
+// Campaign Narrative) is saved together, but NOT on every keystroke — that
+// churned localStorage needlessly. Instead it autosaves on a 5-minute timer,
+// with a safety flush whenever the tab is hidden or closed so nothing is lost.
+const PREP_KEY = 'gc_prep';
+const PREP_AUTOSAVE_MS = 5 * 60 * 1000; // 5 minutes
+
+function collectPrep() {
+  const data = {};
+  document.querySelectorAll('.prep-field[data-prep]').forEach(f => {
+    data[f.dataset.prep] = f.value;
+  });
+  return data;
+}
+
+function loadPrep() {
+  let data = {};
+  try { data = JSON.parse(localStorage.getItem(PREP_KEY) || '{}'); } catch { data = {}; }
+  document.querySelectorAll('.prep-field[data-prep]').forEach(f => {
+    if (data[f.dataset.prep] != null) f.value = data[f.dataset.prep];
+  });
+}
+
+function saveSessionPrep(flash) {
+  // Campaign Narrative lives on world.narrative (its own key); the rest of the
+  // worksheet is stored together under PREP_KEY.
   const narrTA = document.getElementById('narrativeNotes');
-  if (narrTA) {
-    const save = debounce(() => {
-      world.narrative = narrTA.value;
-      persistWorld();
-      flashSaved('narrSaveHint');
-    }, 500);
-    narrTA.addEventListener('input', save);
-  }
+  if (narrTA) { world.narrative = narrTA.value; persistWorld(); }
+  localStorage.setItem(PREP_KEY, JSON.stringify(collectPrep()));
+  if (flash) flashSaved('narrSaveHint');
+}
+
+(function wirePrepAutosave() {
+  loadPrep();
+  // Periodic autosave every 5 minutes.
+  setInterval(() => saveSessionPrep(true), PREP_AUTOSAVE_MS);
+  // Safety flush so an unlucky close/reload between ticks doesn't lose work.
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') saveSessionPrep(false);
+  });
+  window.addEventListener('beforeunload', () => saveSessionPrep(false));
 })();
 
 // ============================================================
